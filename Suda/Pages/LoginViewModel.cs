@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using Music;
 using Music.QQMusic;
 using Stylet;
+using Suda.Else;
 
 namespace Suda.Pages
 {
@@ -19,19 +20,22 @@ namespace Suda.Pages
         {
             if(CtrlWebBrowser == null)
                 CtrlWebBrowser = ((LoginView)this.View).ctrlWebBrowser;
-            CtrlWebBrowser.Navigate(VMMain.Account.URL_LOGIN);
+            CtrlWebBrowser.Navigate(Global.QQRecord.URL_LOGIN);
             CtrlWebBrowser.DocumentCompleted += DocumentCompleted;
         }
 
         private void DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            if (VMMain.Account.LoginDocumentCompleted(CtrlWebBrowser.DocumentTitle, CtrlWebBrowser.Document.Cookie))
+            if (Global.QQRecord.LoginDocumentCompleted(CtrlWebBrowser.DocumentTitle, CtrlWebBrowser.Document.Cookie))
             {
-                Cache obj = new Cache();
-                obj.QQCookie = VMMain.Account.Cookie;
-                obj.QQGTK = VMMain.Account.GTK;
-                obj.QQNumber = VMMain.Account.QQNumber;
+                Cache obj = new Cache()
+                {
+                    QQCookie = Global.QQRecord.Cookie,
+                    QQGTK = Global.QQRecord.GTK,
+                    QQNumber = Global.QQRecord.QQNumber,
+                };
                 Cache.Write(obj);
+                VMMain.LoginComplete();
             }
         }
     }

@@ -68,6 +68,14 @@ namespace Music.QQMusic
                 return false;
 
             obj.DissList = JsonHelper.ConverStringToObject<List<Diss>>(ret, "data", "mydiss", "list");
+            obj.Playlists = new List<Playlist>();
+            for (int i = 0; i < obj.DissList.Count(); i++)
+            {
+                var item = await GetPlaylist(obj.DissList[i].DissID);
+                if (item != null)
+                    obj.Playlists.Add(item);
+            }
+
             User = obj;
             return true;
         }

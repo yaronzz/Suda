@@ -12,7 +12,8 @@ namespace Music.QQMusic
         public string Nick { get; set; } //昵称
         public string Headpic { get; set; } //头像
         public string Uin { get; set; } //qq号
-        public List<Diss> DissList { get; set; } //歌单列表
+        public List<Diss> DissList { get; set; } //歌单简介列表
+        public List<Playlist> Playlists { get; set; } //歌单列表
     }
 
     //歌单简介
@@ -32,6 +33,7 @@ namespace Music.QQMusic
         public string DirID { get; set; } 
         public string Logo { get; set; } //歌单封面
         public string Nick { get; set; } //创建者昵称
+        public string Desc { get; set; } 
         public int SongNum { get; set; } //歌曲数量
 
         public List<Song> SongList { get; set; } = new List<Song>();
@@ -43,6 +45,7 @@ namespace Music.QQMusic
         public string SongName { set; get; } //歌名
         public string SongID { set; get; } //歌曲ID
         public string SongMid { set; get; } //歌曲MID
+        public int Interval { set; get; } //时长
 
         public string AlbumID { set; get; } //专辑ID
         public string AlbumName { set; get; } //专辑名

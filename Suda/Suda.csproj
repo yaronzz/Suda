@@ -82,6 +82,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Else\Global.cs" />
+    <Compile Include="Music\Model.cs" />
     <Compile Include="Music\QQMusic\Model.cs" />
     <Compile Include="Music\QQMusic\Record.cs" />
   </ItemGroup>
@@ -96,6 +98,10 @@
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\MainViewModel.cs" />
+    <Compile Include="Pages\PlaylistView.xaml.cs">
+      <DependentUpon>PlaylistView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PlaylistViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -131,6 +137,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Pages\PlaylistView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="img\avatar.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

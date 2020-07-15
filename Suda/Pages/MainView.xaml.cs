@@ -24,5 +24,7 @@ namespace Suda.Pages
         {
             InitializeComponent();
         }
+
+        
     }
 }
