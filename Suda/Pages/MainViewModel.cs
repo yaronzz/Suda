@@ -16,14 +16,17 @@ namespace Suda.Pages
         public ObservableCollection<Music.Playlist> UserPlaylists { get; set; }
 
         public Visibility LoginVisibility { get; set; } = Visibility.Hidden;
+        public bool SelectImportBtn { get; set; } = false;
 
         public LoginViewModel VMLogin { get; set; }
         public PlaylistViewModel VMPlaylist { get; set; }
+        public ImportViewModel VMImport { get; set; }
 
-        public MainViewModel(LoginViewModel login, PlaylistViewModel playlist)
+        public MainViewModel(LoginViewModel login, PlaylistViewModel playlist, ImportViewModel import)
         {
             VMLogin = login;
             VMPlaylist = playlist;
+            VMImport = import;
 
             VMLogin.VMMain = this;
         }
@@ -71,6 +74,8 @@ namespace Suda.Pages
 
         public void SelectedPlaylist(object sender, RoutedEventArgs e)
         {
+            SelectImportBtn = false;
+
             ListBox ctrl = (ListBox)sender;
             int index = ctrl.SelectedIndex;
             VMPlaylist.Playlist = UserPlaylists[index];

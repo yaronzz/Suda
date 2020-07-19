@@ -10,8 +10,8 @@
             </s:ApplicationLoader.Bootstrapper>
 
             <ResourceDictionary.MergedDictionaries>
-                <!--<ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDefault.xaml"/>-->
-                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDefault.xaml"/>
+                <!--<ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDark.xaml"/>-->
                 <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </s:ApplicationLoader>

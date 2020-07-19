@@ -40,7 +40,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AIGS">
-      <HintPath>..\..\AIGS.git\trunk\debug\AIGS.dll</HintPath>
+      <HintPath>..\..\AIGS.git\trunk\bin\Debug\AIGS.dll</HintPath>
     </Reference>
     <Reference Include="Costura, Version=4.1.0.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
       <HintPath>packages\Costura.Fody.4.1.0\lib\net40\Costura.dll</HintPath>
@@ -53,6 +53,9 @@
     </Reference>
     <Reference Include="Stylet, Version=1.3.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\Stylet.1.3.3\lib\net45\Stylet.dll</HintPath>
+    </Reference>
+    <Reference Include="SudaLib">
+      <HintPath>..\SudaLib\bin\Debug\SudaLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -83,6 +86,8 @@
     </Compile>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Else\Global.cs" />
+    <Compile Include="Music\CloudMusic\Model.cs" />
+    <Compile Include="Music\CloudMusic\Record.cs" />
     <Compile Include="Music\Model.cs" />
     <Compile Include="Music\QQMusic\Model.cs" />
     <Compile Include="Music\QQMusic\Record.cs" />
@@ -90,6 +95,10 @@
   <ItemGroup>
     <Compile Include="Music\Cache.cs" />
     <Compile Include="Music\Method.cs" />
+    <Compile Include="Pages\ImportView.xaml.cs">
+      <DependentUpon>ImportView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ImportViewModel.cs" />
     <Compile Include="Pages\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
@@ -129,6 +138,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Pages\ImportView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\LoginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
