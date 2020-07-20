@@ -5,16 +5,61 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Suda.Pages"
              xmlns:s="https://github.com/canton7/Stylet"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:aigsc="clr-namespace:AIGS.Control;assembly=AIGS"
+             xmlns:aigs="clr-namespace:AIGS.Common;assembly=AIGS"
              xmlns:Forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
              xmlns:WindowsFormsIntegration="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
+             d:DesignHeight="500" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance local:LoginViewModel}">
-    
-    <Grid Background="Black" Opacity="0.6">
-        <WindowsFormsIntegration:WindowsFormsHost Height="450" Width="450">
-            <Forms:WebBrowser x:Name="ctrlWebBrowser"/>
-        </WindowsFormsIntegration:WindowsFormsHost>
-    </Grid>
 
+    <Grid Visibility="{Binding ViewVisibility}">
+        <Grid Background="{DynamicResource RegionBrush}" Opacity="0.6" />
+        <Grid>
+            <Grid Height="500" Width="450">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <TextBlock Foreground="LightGray" Text="{Binding PlatformTitle}" VerticalAlignment="Center" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center"/>
+
+                <!--Login by web-->
+                <WindowsFormsIntegration:WindowsFormsHost Height="450" Width="450" Grid.Row="1" Visibility="{Binding WebVisibility}">
+                    <Forms:WebBrowser x:Name="ctrlWebBrowser"/>
+                </WindowsFormsIntegration:WindowsFormsHost>
+
+                <!--Login by username and password-->
+                <Border Style="{StaticResource BorderRegion}" Visibility="{Binding InputVisibility}" Effect="{StaticResource EffectShadow1}" Margin="0,50,0,180" Grid.RowSpan="2">
+                    <Grid Background="{DynamicResource RegionBrush}" >
+                        <Grid Height="200" Width="400">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Path Fill="Gray" Width="18" Margin="6" Data="{StaticResource AccountGeometry}"/>
+                                <hc:TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" Width="300" FontFamily="Microsoft Yahei Regular" hc:InfoElement.Placeholder="Account" FontWeight="Normal" VerticalAlignment="Center"  />
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Path Fill="Gray" Width="18" Margin="6" Data="{StaticResource KeyGeometry}"/>
+                                <PasswordBox FontFamily="Microsoft Yahei Regular" Width="300" aigsc:PasswordBoxHelper.Attach="True" aigsc:PasswordBoxHelper.Password="{Binding Path=Password,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontWeight="Normal" VerticalAlignment="Center" />
+                            </StackPanel>
+
+                            <Button Grid.Row="2" IsDefault="True" Command="{s:Action Login}" IsEnabled="{Binding BtnLoginEnable}" 
+                                CommandParameter="{Binding ElementName=PasswordBox}" Style="{StaticResource ButtonPrimary}"
+                                Content="Login" Width="315" VerticalAlignment="Center" VerticalContentAlignment="Center" 
+                                HorizontalAlignment="Center" Margin="50,18.4,35,18" />
+
+                            <TextBlock Grid.Row="2" Text="{Binding Errlabel,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Foreground="Red" VerticalAlignment="Bottom" Margin="10,0,0,4" ></TextBlock>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
 </UserControl>

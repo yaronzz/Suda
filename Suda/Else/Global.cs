@@ -8,8 +8,7 @@ namespace Suda.Else
 {
     public static class Global
     {
-        public static Music.QQMusic.Record QQRecord { get; set; } = new Music.QQMusic.Record();
-        public static Music.Cache MusicCache { get; set; } = Music.Cache.Read(true);
+        public static Cache Cache { get; set; } = Cache.Read();
 
     }
 }

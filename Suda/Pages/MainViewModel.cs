@@ -2,8 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using Music;
-using Music.QQMusic;
+using System.Windows.Media;
 using Stylet;
 using Suda.Else;
 
@@ -11,78 +10,74 @@ namespace Suda.Pages
 {
     public class MainViewModel : Screen
     {
-        public string UserName { get; set; } = "请登录";
-        public string UserImg { get; set; } = "/Img/avatar.png";
-        public ObservableCollection<Music.Playlist> UserPlaylists { get; set; }
-
-        public Visibility LoginVisibility { get; set; } = Visibility.Hidden;
-        public bool SelectImportBtn { get; set; } = false;
+        public int PlatformsSelectIndex { get; set; } = -1;
+        public ObservableCollection<Platform> Platforms { get; set; } = new ObservableCollection<Platform>();
+        public ObservableCollection<SudaPlaylist> SudaPlaylists { get; set; } = new ObservableCollection<SudaPlaylist>();
 
         public LoginViewModel VMLogin { get; set; }
+        public PlatformViewModel VMPlatform { get; set; }
         public PlaylistViewModel VMPlaylist { get; set; }
-        public ImportViewModel VMImport { get; set; }
-
-        public MainViewModel(LoginViewModel login, PlaylistViewModel playlist, ImportViewModel import)
+        public MainViewModel(PlaylistViewModel playlist, LoginViewModel login, PlatformViewModel platform)
         {
-            VMLogin = login;
             VMPlaylist = playlist;
-            VMImport = import;
-
-            VMLogin.VMMain = this;
+            VMLogin = login;
+            VMPlatform = platform;
         }
 
-        /// <summary>
-        /// 程序打开前的检查工作
-        /// </summary>
+        #region Prepare work
         protected override void OnViewLoaded()
         {
-            if (Global.MusicCache.IsQQValid())
-            {
-                Global.QQRecord.QQNumber = Global.MusicCache.QQNumber;
-                Global.QQRecord.GTK = Global.MusicCache.QQGTK;
-                Global.QQRecord.Cookie = Global.MusicCache.QQCookie;
-                RefreshUser();
+            PreparePlatforms();
+        }
+
+        void PreparePlatforms()
+        {
+            Platform QQMusic = new Platform();
+            QQMusic.Logo = (Geometry)Application.Current.TryFindResource("QQGeometry");
+            QQMusic.Name = "Login";
+            QQMusic.Type = SudaLib.ePlatform.QQMusic;
+            QQMusic.LoginKey = Global.Cache.QQLoginkey;
+
+            Platform CloudMusic = new Platform();
+            CloudMusic.Logo = (Geometry)Application.Current.TryFindResource("NeteaseGeometry");
+            CloudMusic.Name = "Login";
+            CloudMusic.Type = SudaLib.ePlatform.CloudMusic;
+            CloudMusic.LoginKey = Global.Cache.CloudLoginkey;
+
+            Platforms.Add(QQMusic);
+            Platforms.Add(CloudMusic);
+        }
+        #endregion
+
+
+        #region Platform select change
+
+        public void PlatformSelectChange(object sender, RoutedEventArgs e)
+        {
+            if (PlatformsSelectIndex < 0)
                 return;
+            //Show login view
+            if (Platforms[PlatformsSelectIndex].LoginKey == null)
+            {
+                VMLogin.Load(Platforms[PlatformsSelectIndex]);
             }
-
-            LoginVisibility = Visibility.Visible;
-            VMLogin.LoadWebBrowser();
-        }
-
-        /// <summary>
-        /// 登录后的工作
-        /// </summary>
-        public void LoginComplete()
-        {
-            LoginVisibility = Visibility.Hidden;
-            RefreshUser();
-        }
-
-        /// <summary>
-        /// 刷新用户信息
-        /// </summary>
-        public async void RefreshUser()
-        {
-            var check = await Global.QQRecord.GetUser();
-            if (!check)
-                return; //print err
-
-            UserName = Global.QQRecord.User.Nick;
-            UserImg = Global.QQRecord.User.Headpic;
-            UserPlaylists = Music.Method.LoadPlaylist(Global.QQRecord.User.Playlists.ToArray());
-        }
-
-        public void SelectedPlaylist(object sender, RoutedEventArgs e)
-        {
-            SelectImportBtn = false;
-
-            ListBox ctrl = (ListBox)sender;
-            int index = ctrl.SelectedIndex;
-            VMPlaylist.Playlist = UserPlaylists[index];
+            //Show platform view
+            VMPlatform.Platform = Platforms[PlatformsSelectIndex];
             return;
         }
-        
-        #region 窗口响应
+
+        #endregion
+
+
+        #region Suda playlist select change
+        public void SudaPlaylistSelectChange(object sender, RoutedEventArgs e)
+        {
+            return;
+        }
+        #endregion
+
+
+        #region Windows
         public void WindowMove()
         {
             ((MainView)this.View).DragMove();

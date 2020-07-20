@@ -23,7 +23,7 @@
                 <Image Source="{Binding Playlist.ImgUrl}" Width="180" Height="180" VerticalAlignment="Top" Margin="15,0,0,15" HorizontalAlignment="Left" ></Image>
                 <StackPanel >
                     <TextBlock Text="{Binding Playlist.Title}" FontSize="30" VerticalAlignment="Top" Height="60" FontWeight="ExtraBlack" Margin="15,0,0,0" />
-                    <TextBlock Text="{Binding Playlist.Author}" Foreground="Gray" FontSize="13" VerticalAlignment="Top" Height="25" Margin="15,0,0,0" />
+                    <!--<TextBlock Text="{Binding Playlist.Author}" Foreground="Gray" FontSize="13" VerticalAlignment="Top" Height="25" Margin="15,0,0,0" />-->
                     <TextBlock Text="{Binding Playlist.Desc}" Foreground="Gray" FontSize="13" VerticalAlignment="Top" Margin="15,0,0,0" TextWrapping="Wrap" Width="500"/>
                 </StackPanel>
             </StackPanel>
@@ -43,6 +43,7 @@
                     <DataGridTextColumn IsReadOnly="True" Binding="{Binding Duration}" Header="时长" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
+            <Button Content="Button" HorizontalAlignment="Left" Margin="370,129.6,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75"/>
 
             <!--<DockPanel Grid.Row="2">
                 <Path Fill="Gray" Width="18" Margin="10,0,10,0">

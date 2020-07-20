@@ -1,4 +1,4 @@
-﻿using Music;
+﻿using Suda.Else;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +9,6 @@ namespace Suda.Pages
 {
     public class PlaylistViewModel : Stylet.Screen
     {
-        public Playlist Playlist { get; set; }
+        public SudaPlaylist Playlist { get; set; }
     }
 }

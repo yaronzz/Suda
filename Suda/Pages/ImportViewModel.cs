@@ -9,9 +9,8 @@ namespace Suda.Pages
 {
     public class ImportViewModel : Screen
     {
-        public async void Search(string SearchStr)
-        {
-            await Music.CloudMusic.Record.GetPlaylist();
-        }
+        //public async void Search(string SearchStr)
+        //{
+        //}
     }
 }

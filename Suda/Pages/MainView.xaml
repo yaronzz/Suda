@@ -16,6 +16,7 @@
             d:DataContext="{d:DesignInstance local:MainViewModel}">
     
     <Window.Resources>
+        <aigs:BigEqualThanIntToVisibilityConverter x:Key="ConverterBigEqualThanInt" />
         <aigs:UnBoolConverter x:Key="ConverterUnbool" />
         <aigs:StringNotEmptyToBallConverter x:Key="ConverterStringNotEmpty" />
         <Style x:Key="ListBoxItemTransparent" BasedOn="{StaticResource ListBoxItemBaseStyle}" TargetType="ListBoxItem">
@@ -43,80 +44,47 @@
         <!--Windows button-->
         <StackPanel Background="{DynamicResource RegionBrush}" MouseLeftButtonDown="{s:Action WindowMove}" Orientation="Horizontal" FlowDirection="RightToLeft" Grid.ColumnSpan="2" Margin="0,0,-0.4,0">
             <Button Command="{s:Action WindowClose}" Height="32" Width="32" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource ButtonCustom}" hc:BackgroundSwitchElement.MouseHoverBackground="Red" hc:BackgroundSwitchElement.MouseDownBackground="PaleVioletRed" Padding="0" Grid.Column="1">
-                <Path Fill="LightGray" Width="12">
-                    <Path.Data>
-                        <PathGeometry Figures="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-                    </Path.Data>
-                </Path>
+                <Path Fill="LightGray" Width="12" Data="{StaticResource CloseGeometry}"></Path>
             </Button>
             <Button Command="{s:Action WindowMax}" Height="32" Width="32" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource ButtonCustom}" hc:BackgroundSwitchElement.MouseHoverBackground="{DynamicResource DarkDefaultBrush}" hc:BackgroundSwitchElement.MouseDownBackground="PaleVioletRed" Padding="5" Grid.Column="1">
-                <Path Fill="LightGray" Width="12">
-                    <Path.Data>
-                        <PathGeometry Figures="M4,4H20V20H4V4M6,8V18H18V8H6Z" />
-                    </Path.Data>
-                </Path>
-            </Button>
+                <Path Fill="LightGray" Width="12" Data="{StaticResource WindowMaxGeometry}"></Path>
+            </Button> 
             <Button Command="{s:Action WindowMin}" Height="32" Width="32" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource ButtonCustom}" hc:BackgroundSwitchElement.MouseHoverBackground="{DynamicResource DarkDefaultBrush}" hc:BackgroundSwitchElement.MouseDownBackground="PaleVioletRed" Padding="5" Grid.Column="1">
-                <Path Fill="LightGray" Width="12" Height="12">
-                    <Path.Data>
-                        <PathGeometry Figures="M20,14H4V10H20" />
-                    </Path.Data>
-                </Path>
+                <Path Fill="LightGray" Width="12" Data="{StaticResource WindowMinGeometry}"></Path>
             </Button>
         </StackPanel>
 
         <!--Left menu-->
         <Grid Grid.RowSpan="2" Background="black">
             <StackPanel Margin="0,0,0,0" >
-                <Button Margin="15,45,29,15" Background="black" BorderThickness="0" Height="60" hc:BackgroundSwitchElement.MouseHoverBackground="Gray" Padding="0" Width="156">
+                <Button Margin="15,20,29,15" Background="black" BorderThickness="0" Height="60" hc:BackgroundSwitchElement.MouseHoverBackground="Gray" Padding="0" Width="156">
                     <StackPanel Orientation="Horizontal">
-                        <hc:Gravatar Height="32" Width="32" Style="{StaticResource GravatarCircle}" Source="{Binding UserImg}"/>
-                        <TextBlock Foreground="White" Text="{Binding UserName}" VerticalAlignment="Center" FontWeight="Bold" FontSize="20" Margin="5,0,0,0"></TextBlock>
+                        <Path Fill="LightGray" Width="32" Data="{StaticResource LogoGeometry}"></Path>
+                        <TextBlock Foreground="LightGray" Text="SUDA" VerticalAlignment="Center" FontWeight="Bold" FontSize="20" Margin="5,0,0,0"></TextBlock>
                     </StackPanel>
                 </Button>
-
-                <!--选项-->
-                <TextBlock Foreground="Gray" Text="选项" VerticalAlignment="Center" FontSize="12" Margin="20,0,0,0"></TextBlock>
-                <ListBox Grid.Row="1" Margin="15" BorderThickness="0" Style="{StaticResource ListBoxTransparent}">
-                    <ListBoxItem Margin="0,0,0,5" IsSelected="{Binding SelectImportBtn}">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Fill="LightGray" Width="18">
-                                <Path.Data>
-                                    <PathGeometry Figures="M14,12L10,8V11H2V13H10V16M20,18V6C20,4.89 19.1,4 18,4H6A2,2 0 0,0 4,6V9H6V6H18V18H6V15H4V18A2,2 0 0,0 6,20H18A2,2 0 0,0 20,18Z" />
-                                </Path.Data>
-                            </Path>
-                            <TextBlock Margin="6,0,0,0" Text="导入" Foreground="LightGray"/>
-                        </StackPanel>
-                    </ListBoxItem>
-                </ListBox>
-
-                <!--歌单-->
-                <DockPanel>
-                    <TextBlock Foreground="Gray" Text="创建的歌单" VerticalAlignment="Center" FontSize="12" Margin="20,0,0,0"></TextBlock>
-                    <Button DockPanel.Dock="Right" Background="black" BorderThickness="0" hc:BackgroundSwitchElement.MouseHoverBackground="Gray" Padding="0" HorizontalAlignment="Right" Margin="0,0,20,0" >
-                        <Path Fill="Gray" Width="15">
-                            <Path.Data>
-                                <PathGeometry Figures="M11 9V5H9v4H5v2h4v4h2v-4h4V9h-4zm-1 11a10 10 0 1 1 0-20 10 10 0 0 1 0 20z" />
-                            </Path.Data>
-                        </Path>
-                    </Button>
-                    <Button DockPanel.Dock="Right" Background="black" BorderThickness="0" hc:BackgroundSwitchElement.MouseHoverBackground="Gray" Padding="0" HorizontalAlignment="Right" Margin="0,0,20,0" >
-                        <Path Fill="Gray" Width="15">
-                            <Path.Data>
-                                <PathGeometry Figures="M12 2A10 10 0 1 0 22 12A10 10 0 0 0 12 2M18 11H13L14.81 9.19A3.94 3.94 0 0 0 12 8A4 4 0 1 0 15.86 13H17.91A6 6 0 1 1 12 6A5.91 5.91 0 0 1 16.22 7.78L18 6Z" />
-                            </Path.Data>
-                        </Path>
-                    </Button>
-                </DockPanel>
-                <ListBox Grid.Row="1" Margin="15" BorderThickness="0" ItemsSource="{Binding UserPlaylists}" Style="{StaticResource ListBoxTransparent}" SelectionChanged="{s:Action SelectedPlaylist}">
+                <!--Platform-->
+                <TextBlock Foreground="Gray" Text="Platform" VerticalAlignment="Center" FontSize="12" Margin="20,0,0,0"></TextBlock>
+                <ListBox Grid.Row="1" Margin="15" BorderThickness="0" ItemsSource="{Binding Platforms}" SelectedIndex="{Binding PlatformsSelectIndex}" Style="{StaticResource ListBoxTransparent}" SelectionChanged="{s:Action PlatformSelectChange}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <Path Fill="LightGray" Width="18">
-                                    <Path.Data>
-                                        <PathGeometry Figures="M15,6H3V8H15V6M15,10H3V12H15V10M3,16H11V14H3V16M17,6V14.18C16.69,14.07 16.35,14 16,14A3,3 0 0,0 13,17A3,3 0 0,0 16,20A3,3 0 0,0 19,17V8H22V6H17Z" />
-                                    </Path.Data>
-                                </Path>
+                                <Path Fill="LightGray" Width="15" Data="{Binding Logo}"></Path>
+                                <TextBlock Margin="6,0,0,0" Text="{Binding Name}" Foreground="LightGray" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <!--Playlist-->
+                <DockPanel>
+                    <TextBlock Foreground="Gray" Text="Playlist" VerticalAlignment="Center" FontSize="12" Margin="20,0,0,0"></TextBlock>
+                </DockPanel>
+                <ListBox Grid.Row="1" Margin="15" BorderThickness="0" ItemsSource="{Binding SudaPlaylists}" Style="{StaticResource ListBoxTransparent}" SelectionChanged="{s:Action SudaPlaylistSelectChange}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Path Fill="LightGray" Width="15" Data="{StaticResource PlaylistGeometry}"></Path>
                                 <TextBlock Margin="6,0,0,0" Text="{Binding Title}" Foreground="LightGray"/>
                             </StackPanel>
                         </DataTemplate>
@@ -128,10 +96,12 @@
         <!--Playlist-->
         <local:PlaylistView Grid.Row="1" Grid.Column="1" s:View.Model="{Binding VMPlaylist}"/>
 
-        <!--Import view-->
-        <local:ImportView Grid.Row="1" Grid.Column="1" s:View.Model="{Binding VMImport}" Visibility="{Binding SelectImportBtn, Converter={x:Static s:BoolToVisibilityConverter.Instance}}"/>
+        
+        <local:PlatformView Grid.Row="1" Grid.Column="1" s:View.Model="{Binding VMPlatform}"/>
 
-        <!--login view-->
-        <local:LoginView Grid.ColumnSpan="3" Grid.RowSpan="3" s:View.Model="{Binding VMLogin}" Visibility="{Binding LoginVisibility}"/>
+        <!--Login-->
+        <local:LoginView Grid.Row="1" Grid.Column="1" s:View.Model="{Binding VMLogin}"/>
+
+
     </Grid>
 </hc:BlurWindow>
