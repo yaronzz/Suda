@@ -49,7 +49,7 @@ namespace Suda.Pages
         public async void LoginSuccess()
         {
             Plat.UserInfo = await SudaLib.Method.GetUserInfo(Plat.LoginKey);
-            Plat.Playlists = await SudaLib.Method.GetUserPlaylists(Plat.LoginKey, Plat.UserInfo);
+            Plat.Playlists = await SudaLib.Method.GetUserPlaylists(Plat.LoginKey);
             ViewVisibility = Visibility.Hidden;
 
             if(Plat.Type == ePlatform.CloudMusic)

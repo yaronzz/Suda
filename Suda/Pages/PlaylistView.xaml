@@ -8,64 +8,67 @@
              xmlns:aigs="clr-namespace:AIGS.Common;assembly=AIGS"
              xmlns:s="https://github.com/canton7/Stylet"
              xmlns:local="clr-namespace:Suda.Pages"
+             xmlns:sudaelse="clr-namespace:Suda.Else"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="800"
+             d:DesignHeight="600" d:DesignWidth="1000"
              d:DataContext="{d:DesignInstance local:PlaylistViewModel}">
     <Grid>
-        <Grid Grid.Row="1" Margin="10" Background="{DynamicResource RegionBrush}">
+        <Grid Margin="10" Background="{DynamicResource RegionBrush}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="190"/>
+                <RowDefinition Height="210"/>
                 <RowDefinition />
-                <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
 
-            <StackPanel Orientation="Horizontal">
-                <Image Source="{Binding Playlist.ImgUrl}" Width="180" Height="180" VerticalAlignment="Top" Margin="15,0,0,15" HorizontalAlignment="Left" ></Image>
-                <StackPanel >
-                    <TextBlock Text="{Binding Playlist.Title}" FontSize="30" VerticalAlignment="Top" Height="60" FontWeight="ExtraBlack" Margin="15,0,0,0" />
-                    <!--<TextBlock Text="{Binding Playlist.Author}" Foreground="Gray" FontSize="13" VerticalAlignment="Top" Height="25" Margin="15,0,0,0" />-->
-                    <TextBlock Text="{Binding Playlist.Desc}" Foreground="Gray" FontSize="13" VerticalAlignment="Top" Margin="15,0,0,0" TextWrapping="Wrap" Width="500"/>
-                </StackPanel>
-            </StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                
+                <hc:Gravatar Height="180" Width="180" Source="{Binding Playlist.ImgUrl}"  Margin="10"/>
+                <DockPanel Grid.Column="1" Margin="15,0,0,0">
+                    <TextBlock Text="{Binding Playlist.Title}" DockPanel.Dock="Top" FontSize="40" VerticalAlignment="Top" FontWeight="ExtraBlack" Margin="0,15,0,0" />
+                    <TextBlock Text="{Binding Playlist.CreatorName}" DockPanel.Dock="Top" Foreground="Gray" FontSize="13" VerticalAlignment="Top" Height="25" Margin="0" />
+                    <TextBlock Text="{Binding Playlist.Desc}" DockPanel.Dock="Top" Foreground="Gray" FontSize="13" VerticalAlignment="Top" TextWrapping="Wrap" Width="500" HorizontalAlignment="Left"/>
 
-            <DataGrid Grid.Row="1" HeadersVisibility="All" CanUserSortColumns="False" RowHeaderWidth="60" hc:DataGridAttach.ShowRowNumber="True" SelectionMode="Single"  AutoGenerateColumns="False" ItemsSource="{Binding Playlist.Tracks}" >
+                    <DockPanel DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Margin="0,0,0,20">
+                        <Button Content="Upload" Command="{s:Action Upload}" hc:IconElement.Geometry="{StaticResource SUploadGeometry}" DockPanel.Dock="Left" Margin="0,0,10,0" Padding="15,6" HorizontalAlignment="Left" ></Button>
+                        <Button Content="Delete" Command="{s:Action DeletePlaylist}" hc:IconElement.Geometry="{StaticResource DeleteFillCircleGeometry}" Style="{StaticResource ButtonDanger}" DockPanel.Dock="Left" Margin="0,0,10,0" Padding="15,6" HorizontalAlignment="Left" ></Button>
+                    </DockPanel>
+                </DockPanel>
+            </Grid>
+
+            <DataGrid Grid.Row="1" HeadersVisibility="All" RowHeaderWidth="60" hc:DataGridAttach.ShowRowNumber="True" SelectionMode="Single"  AutoGenerateColumns="False" ItemsSource="{Binding Playlist.Tracks}" >
                 <DataGrid.Columns>
-                    <!--<DataGridCheckBoxColumn Binding="{Binding Data.WaitDownload,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                    <!--<DataGridCheckBoxColumn Binding="{Binding Check,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
                         <DataGridCheckBoxColumn.Header>
                             <Border Background="Transparent" Padding="0" HorizontalAlignment="Center">
-                                <CheckBox IsChecked="{Binding AllCheck}" DataContext="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext}"  Click="{s:Action CheckChange}"/>
+                                <CheckBox IsChecked="{Binding AllCheck}" DataContext="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext}" Command="{s:Action ClickAllCheck}"/>
                             </Border>
                         </DataGridCheckBoxColumn.Header>
                     </DataGridCheckBoxColumn>-->
-                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding Title}" Header="歌曲"/>
-                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding Artists}" Header="歌手"/>
-                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding AlbumTitle}" Header="专辑"/>
-                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding Duration}" Header="时长" Width="*"/>
+                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding Title}" Width="250" Header="TITLE"/>
+                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding ArtistsName}" Width="200" Header="ARTISTS"/>
+                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding AlbumTitle}" Width="200" Header="ALBUM"/>
+                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding DurationStr}" Header="DURATION" Width="*"/>
+                    <DataGridTemplateColumn Header="ACT">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <DockPanel Background="Transparent" HorizontalAlignment="Center" Width="32">
+                                    <Button Command="{s:Action Delete}" CommandParameter="{Binding MidArray}" Width="32" BorderThickness="0" DockPanel.Dock="Right" Padding="0" Background="Transparent">
+                                        <Path Fill="{DynamicResource DangerBrush}" Data="{StaticResource CloseGeometry}"></Path>
+                                    </Button>
+                                </DockPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-            <Button Content="Button" HorizontalAlignment="Left" Margin="370,129.6,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75"/>
 
-            <!--<DockPanel Grid.Row="2">
-                <Path Fill="Gray" Width="18" Margin="10,0,10,0">
-                    <Path.Data>
-                        <PathGeometry Figures="M160 288h-16c-35.35 0-64 28.7-64 64.12v63.76c0 35.41 28.65 64.12 64 64.12h16c17.67 0 32-14.36 32-32.06V320.06c0-17.71-14.33-32.06-32-32.06zm208 0h-16c-17.67 0-32 14.35-32 32.06v127.88c0 17.7 14.33 32.06 32 32.06h16c35.35 0 64-28.71 64-64.12v-63.76c0-35.41-28.65-64.12-64-64.12zM256 32C112.91 32 4.57 151.13 0 288v112c0 8.84 7.16 16 16 16h16c8.84 0 16-7.16 16-16V288c0-114.67 93.33-207.8 208-207.82 114.67.02 208 93.15 208 207.82v112c0 8.84 7.16 16 16 16h16c8.84 0 16-7.16 16-16V288C507.43 151.13 399.09 32 256 32z" />
-                    </Path.Data>
-                </Path>
-                <ComboBox hc:DropDownElement.ConsistentWidth="False" ItemsSource="{Binding ComboxTrackQuality}" SelectedValuePath="Key" DisplayMemberPath="Value"
-                          SelectionChanged="{s:Action ChangeQuality}"
-                          SelectedIndex="{Binding SelectedIndexTrackQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" />
-                <Path Fill="Gray" Width="18" Margin="10,0,10,0">
-                    <Path.Data>
-                        <PathGeometry Figures="M768 661.333c0 47.061-38.272 85.333-85.333 85.333h-512c-47.061 0-85.333-38.272-85.333-85.333v-426.667c0-47.061 38.272-85.333 85.333-85.333h512c47.061 0 85.333 38.272 85.333 85.333v142.208l170.667-142.208v426.667l-170.667-142.208v142.208z" />
-                    </Path.Data>
-                </Path>
-                <ComboBox hc:DropDownElement.ConsistentWidth="False" ItemsSource="{Binding ComboxVideoResolution}" SelectedValuePath="Key" DisplayMemberPath="Key"
-                          SelectionChanged="{s:Action ChangeResolution}"
-                          SelectedValue="{Binding SelectedValueVideoResolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
-                <Button Command="{s:Action Download}" Content="Download" DockPanel.Dock="Right" Style="{StaticResource ButtonPrimary}" HorizontalAlignment="Right" Margin="0,0,10,0" Padding="15,6"></Button>
-            </DockPanel>-->
-
-            
+            <!--Message page-->
+            <ScrollViewer Grid.Row="0" Grid.RowSpan="3" VerticalScrollBarVisibility="Hidden" HorizontalAlignment="Right" VerticalAlignment="Top">
+                <StackPanel hc:Growl.Token="{x:Static sudaelse:Global.TOKEN_PLAYLIST}" VerticalAlignment="Top" Margin="0,10,10,10"/>
+            </ScrollViewer>
         </Grid>        
     </Grid>
 </UserControl>

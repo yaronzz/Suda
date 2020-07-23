@@ -25,6 +25,6 @@ namespace Suda.Pages
             InitializeComponent();
         }
 
-        
+
     }
 }

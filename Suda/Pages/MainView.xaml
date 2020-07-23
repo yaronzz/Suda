@@ -8,17 +8,19 @@
             xmlns:aigsc="clr-namespace:AIGS.Control;assembly=AIGS"
             xmlns:aigs="clr-namespace:AIGS.Common;assembly=AIGS"
             xmlns:s="https://github.com/canton7/Stylet"
+            xmlns:sudaelse="clr-namespace:Suda.Else"
             mc:Ignorable="d"
             ShowNonClientArea="False"
             WindowStartupLocation="CenterScreen"
             Title="Suda" 
-            Height="800" Width="1000"
+            Height="650" Width="1200"
             d:DataContext="{d:DesignInstance local:MainViewModel}">
     
     <Window.Resources>
         <aigs:BigEqualThanIntToVisibilityConverter x:Key="ConverterBigEqualThanInt" />
         <aigs:UnBoolConverter x:Key="ConverterUnbool" />
         <aigs:StringNotEmptyToBallConverter x:Key="ConverterStringNotEmpty" />
+        
         <Style x:Key="ListBoxItemTransparent" BasedOn="{StaticResource ListBoxItemBaseStyle}" TargetType="ListBoxItem">
             <Setter Property="Visibility" Value="{Binding IsVisible,Converter={StaticResource Boolean2VisibilityConverter}}"/>
             <Setter Property="hc:BorderElement.CornerRadius" Value="4"/>
@@ -29,8 +31,64 @@
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="ItemContainerStyle" Value="{StaticResource ListBoxItemTransparent}"/>
         </Style>
+        <Style x:Key="RadioButtonIconBaseStyle" BasedOn="{StaticResource BaseStyle}" TargetType="RadioButton">
+            <Setter Property="Height" Value="{StaticResource DefaultControlHeight}"/>
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisualRadius0}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="0,0,0,5"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="hc:BorderElement.CornerRadius" Value="0"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="hc:VisualElement.HighlightBrush" Value="{DynamicResource PrimaryBrush}"/>
+            <Setter Property="hc:IconElement.Width" Value="16"/>
+            <Setter Property="hc:IconElement.Height" Value="16"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border CornerRadius="{Binding Path=(hc:BorderElement.CornerRadius),RelativeSource={RelativeSource TemplatedParent}}" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
+                            <Border  Style="{StaticResource BorderRegion}" Name="BorderHighlight" BorderBrush="Transparent" Background="Transparent" Padding="0">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}">
+                                    <Path x:Name="PathMain" Height="{Binding Path=(hc:IconElement.Height),RelativeSource={RelativeSource TemplatedParent}}" Width="{Binding Path=(hc:IconElement.Width),RelativeSource={RelativeSource TemplatedParent}}" Fill="{TemplateBinding Foreground}" SnapsToDevicePixels="True" Stretch="Uniform" Data="{TemplateBinding hc:IconElement.Geometry}" />
+                                    <ContentPresenter x:Name="ContentPresenterMain" RecognizesAccessKey="True" VerticalAlignment="Center" Margin="6,0,0,0" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                </StackPanel>
+                            </Border>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Content" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed" TargetName="ContentPresenterMain"/>
+                            </Trigger>
+                            <Trigger Property="hc:IconElement.Geometry" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed" TargetName="PathMain"/>
+                                <Setter Property="Margin" Value="0" TargetName="ContentPresenterMain"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{Binding OtherButtonHoverBackground,RelativeSource={RelativeSource TemplatedParent}}"  TargetName="BorderHighlight"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"  TargetName="BorderHighlight"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value=".9"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Opacity" Value=".6"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.4"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
-
+    
     <Grid Background="{DynamicResource RegionBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
@@ -52,56 +110,67 @@
             <Button Command="{s:Action WindowMin}" Height="32" Width="32" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource ButtonCustom}" hc:BackgroundSwitchElement.MouseHoverBackground="{DynamicResource DarkDefaultBrush}" hc:BackgroundSwitchElement.MouseDownBackground="PaleVioletRed" Padding="5" Grid.Column="1">
                 <Path Fill="LightGray" Width="12" Data="{StaticResource WindowMinGeometry}"></Path>
             </Button>
+            <hc:Divider LineStrokeThickness="1" Orientation="Vertical" MaxHeight="16"/>
+            <Button Command="{s:Action WindowMin}" Height="32" Width="32" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource ButtonCustom}" hc:BackgroundSwitchElement.MouseHoverBackground="{DynamicResource DarkDefaultBrush}" hc:BackgroundSwitchElement.MouseDownBackground="PaleVioletRed" Padding="5" Grid.Column="1">
+                <Path Fill="LightGray" Width="15" Data="{StaticResource SettingsGeometry}"></Path>
+            </Button>
+            <Button Command="{s:Action WindowMin}" Height="32" Width="32" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource ButtonCustom}" hc:BackgroundSwitchElement.MouseHoverBackground="{DynamicResource DarkDefaultBrush}" hc:BackgroundSwitchElement.MouseDownBackground="PaleVioletRed" Padding="5" Grid.Column="1">
+                <Path Fill="LightGray" Width="15" Data="{StaticResource AboutGeometry}"></Path>
+            </Button>
         </StackPanel>
 
         <!--Left menu-->
         <Grid Grid.RowSpan="2" Background="black">
-            <StackPanel Margin="0,0,0,0" >
-                <Button Margin="15,20,29,15" Background="black" BorderThickness="0" Height="60" hc:BackgroundSwitchElement.MouseHoverBackground="Gray" Padding="0" Width="156">
+            <DockPanel Margin="0,0,0,0" >
+                <Button DockPanel.Dock="Top" Margin="15,20,29,15" Background="black" BorderThickness="0" Height="60" hc:BackgroundSwitchElement.MouseHoverBackground="Gray" Padding="0" Width="156">
                     <StackPanel Orientation="Horizontal">
                         <Path Fill="LightGray" Width="32" Data="{StaticResource LogoGeometry}"></Path>
                         <TextBlock Foreground="LightGray" Text="SUDA" VerticalAlignment="Center" FontWeight="Bold" FontSize="20" Margin="5,0,0,0"></TextBlock>
                     </StackPanel>
                 </Button>
+                
                 <!--Platform-->
-                <TextBlock Foreground="Gray" Text="Platform" VerticalAlignment="Center" FontSize="12" Margin="20,0,0,0"></TextBlock>
-                <ListBox Grid.Row="1" Margin="15" BorderThickness="0" ItemsSource="{Binding Platforms}" SelectedIndex="{Binding PlatformsSelectIndex}" Style="{StaticResource ListBoxTransparent}" SelectionChanged="{s:Action PlatformSelectChange}">
-                    <ListBox.ItemTemplate>
+                <TextBlock DockPanel.Dock="Top" Foreground="Gray" Text="Platform" VerticalAlignment="Center" FontSize="12" Margin="20,0,0,0"></TextBlock>
+                <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding Platforms}" Margin="15">
+                    <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <Path Fill="LightGray" Width="15" Data="{Binding Logo}"></Path>
-                                <TextBlock Margin="6,0,0,0" Text="{Binding Name}" Foreground="LightGray" VerticalAlignment="Center"/>
-                            </StackPanel>
+                            <RadioButton Style="{StaticResource RadioButtonIconBaseStyle}"  Content="{Binding Name}" Foreground="LightGray" GroupName="Menu" hc:IconElement.Geometry="{Binding Logo}" Checked="{s:Action MenuSelectChange}"/>
                         </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
 
                 <!--Playlist-->
-                <DockPanel>
+                <DockPanel DockPanel.Dock="Top" Margin="0,0,20,0">
                     <TextBlock Foreground="Gray" Text="Playlist" VerticalAlignment="Center" FontSize="12" Margin="20,0,0,0"></TextBlock>
+                    <Button hc:IconElement.Geometry="{StaticResource SDeleteGeometry}" Command="{s:Action SudaPlaylistDelAll}" DockPanel.Dock="Right" Style="{StaticResource ButtonIcon}" Foreground="Gray" HorizontalAlignment="Right" Height="14" Padding="5,0"/>
+                    <Button hc:IconElement.Geometry="{StaticResource SaveGeometry}" Command="{s:Action SudaPlaylistSave}" DockPanel.Dock="Right" Style="{StaticResource ButtonIcon}" Foreground="Gray"  HorizontalAlignment="Right" Height="13" Padding="5,0"/>
+                    <Button hc:IconElement.Geometry="{StaticResource SUploadGeometry}" Command="{s:Action SudaPlaylistUploadAll}" DockPanel.Dock="Right" Style="{StaticResource ButtonIcon}" Foreground="Gray" HorizontalAlignment="Right" Height="13" Padding="5,0"/>
                 </DockPanel>
-                <ListBox Grid.Row="1" Margin="15" BorderThickness="0" ItemsSource="{Binding SudaPlaylists}" Style="{StaticResource ListBoxTransparent}" SelectionChanged="{s:Action SudaPlaylistSelectChange}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <Path Fill="LightGray" Width="15" Data="{StaticResource PlaylistGeometry}"></Path>
-                                <TextBlock Margin="6,0,0,0" Text="{Binding Title}" Foreground="LightGray"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </StackPanel>
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Visibility="{Binding SudaPlaylists.Count, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
+                    <ItemsControl ItemsSource="{Binding SudaPlaylists}" Margin="15" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <RadioButton Style="{StaticResource RadioButtonIconBaseStyle}"  Content="{Binding Title}" Foreground="LightGray" GroupName="Menu" hc:IconElement.Geometry="{StaticResource PlaylistGeometry}" Checked="{s:Action MenuSelectChange}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </DockPanel>
         </Grid>
 
-        <!--Playlist-->
-        <local:PlaylistView Grid.Row="1" Grid.Column="1" s:View.Model="{Binding VMPlaylist}"/>
-
-        
+        <!--Platform-->
         <local:PlatformView Grid.Row="1" Grid.Column="1" s:View.Model="{Binding VMPlatform}"/>
+
+        <!--Playlist-->
+        <local:PlaylistView Grid.Row="1" Grid.Column="1" s:View.Model="{Binding VMPlaylist}" Visibility="{Binding PlaylistVisibility}"/>
 
         <!--Login-->
         <local:LoginView Grid.Row="1" Grid.Column="1" s:View.Model="{Binding VMLogin}"/>
 
 
+        <!--Message page-->
+        <ScrollViewer Grid.Row="0" Grid.RowSpan="3" VerticalScrollBarVisibility="Hidden" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <StackPanel hc:Growl.Token="{x:Static sudaelse:Global.TOKEN_MAIN}" VerticalAlignment="Top" Margin="0,10,10,10"/>
+        </ScrollViewer>
     </Grid>
 </hc:BlurWindow>
