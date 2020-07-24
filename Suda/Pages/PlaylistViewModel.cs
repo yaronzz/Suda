@@ -36,6 +36,7 @@ namespace Suda.Pages
 
         public void Upload()
         {
+            VMMain.SelectUploadPlatform(Playlist);
             return;
         }
 

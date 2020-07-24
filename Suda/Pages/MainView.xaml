@@ -88,8 +88,8 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
-    
-    <Grid Background="{DynamicResource RegionBrush}">
+
+    <Grid Background="{DynamicResource RegionBrush}" MouseLeftButtonDown="{s:Action WindowMove}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
             <ColumnDefinition />
@@ -99,25 +99,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <!--Windows button-->
-        <StackPanel Background="{DynamicResource RegionBrush}" MouseLeftButtonDown="{s:Action WindowMove}" Orientation="Horizontal" FlowDirection="RightToLeft" Grid.ColumnSpan="2" Margin="0,0,-0.4,0">
-            <Button Command="{s:Action WindowClose}" Height="32" Width="32" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource ButtonCustom}" hc:BackgroundSwitchElement.MouseHoverBackground="Red" hc:BackgroundSwitchElement.MouseDownBackground="PaleVioletRed" Padding="0" Grid.Column="1">
-                <Path Fill="LightGray" Width="12" Data="{StaticResource CloseGeometry}"></Path>
-            </Button>
-            <Button Command="{s:Action WindowMax}" Height="32" Width="32" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource ButtonCustom}" hc:BackgroundSwitchElement.MouseHoverBackground="{DynamicResource DarkDefaultBrush}" hc:BackgroundSwitchElement.MouseDownBackground="PaleVioletRed" Padding="5" Grid.Column="1">
-                <Path Fill="LightGray" Width="12" Data="{StaticResource WindowMaxGeometry}"></Path>
-            </Button> 
-            <Button Command="{s:Action WindowMin}" Height="32" Width="32" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource ButtonCustom}" hc:BackgroundSwitchElement.MouseHoverBackground="{DynamicResource DarkDefaultBrush}" hc:BackgroundSwitchElement.MouseDownBackground="PaleVioletRed" Padding="5" Grid.Column="1">
-                <Path Fill="LightGray" Width="12" Data="{StaticResource WindowMinGeometry}"></Path>
-            </Button>
-            <hc:Divider LineStrokeThickness="1" Orientation="Vertical" MaxHeight="16"/>
-            <Button Command="{s:Action WindowMin}" Height="32" Width="32" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource ButtonCustom}" hc:BackgroundSwitchElement.MouseHoverBackground="{DynamicResource DarkDefaultBrush}" hc:BackgroundSwitchElement.MouseDownBackground="PaleVioletRed" Padding="5" Grid.Column="1">
-                <Path Fill="LightGray" Width="15" Data="{StaticResource SettingsGeometry}"></Path>
-            </Button>
-            <Button Command="{s:Action WindowMin}" Height="32" Width="32" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource ButtonCustom}" hc:BackgroundSwitchElement.MouseHoverBackground="{DynamicResource DarkDefaultBrush}" hc:BackgroundSwitchElement.MouseDownBackground="PaleVioletRed" Padding="5" Grid.Column="1">
-                <Path Fill="LightGray" Width="15" Data="{StaticResource AboutGeometry}"></Path>
-            </Button>
-        </StackPanel>
+        
 
         <!--Left menu-->
         <Grid Grid.RowSpan="2" Background="black">
@@ -159,18 +141,44 @@
         </Grid>
 
         <!--Platform-->
-        <local:PlatformView Grid.Row="1" Grid.Column="1" s:View.Model="{Binding VMPlatform}"/>
-
+        <local:PlatformView Grid.Row="1" Grid.Column="1" s:View.Model="{Binding VMPlatform}" Visibility="{Binding PlatformVisibility}"/>
         <!--Playlist-->
         <local:PlaylistView Grid.Row="1" Grid.Column="1" s:View.Model="{Binding VMPlaylist}" Visibility="{Binding PlaylistVisibility}"/>
-
         <!--Login-->
-        <local:LoginView Grid.Row="1" Grid.Column="1" s:View.Model="{Binding VMLogin}"/>
-
+        <local:LoginView Grid.Row="1" Grid.Column="1" s:View.Model="{Binding VMLogin}" Visibility="{Binding LoginVisibility}"/>
+        <!--Upload-->
+        <hc:TransitioningContentControl Visibility="{Binding UploadVisibility}" Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalContentAlignment="Right">
+            <local:UploadView s:View.Model="{Binding VMUpload}" HorizontalAlignment="Right" />
+        </hc:TransitioningContentControl>
 
         <!--Message page-->
         <ScrollViewer Grid.Row="0" Grid.RowSpan="3" VerticalScrollBarVisibility="Hidden" HorizontalAlignment="Right" VerticalAlignment="Top">
             <StackPanel hc:Growl.Token="{x:Static sudaelse:Global.TOKEN_MAIN}" VerticalAlignment="Top" Margin="0,10,10,10"/>
         </ScrollViewer>
+
+        <!--Windows button-->
+        <StackPanel Background="{DynamicResource RegionBrush}" MouseLeftButtonDown="{s:Action WindowMove}" Orientation="Horizontal" FlowDirection="RightToLeft" Grid.Column="1" Margin="0" HorizontalAlignment="Right">
+            <Button Command="{s:Action WindowClose}" Height="32" Width="32" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource ButtonCustom}" hc:BackgroundSwitchElement.MouseHoverBackground="Red" hc:BackgroundSwitchElement.MouseDownBackground="PaleVioletRed" Padding="0" Grid.Column="1">
+                <Path Fill="LightGray" Width="12" Data="{StaticResource CloseGeometry}"></Path>
+            </Button>
+            <Button Command="{s:Action WindowMax}" Height="32" Width="32" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource ButtonCustom}" hc:BackgroundSwitchElement.MouseHoverBackground="{DynamicResource DarkDefaultBrush}" hc:BackgroundSwitchElement.MouseDownBackground="PaleVioletRed" Padding="5" Grid.Column="1">
+                <Path Fill="LightGray" Width="12" Data="{StaticResource WindowMaxGeometry}"></Path>
+            </Button>
+            <Button Command="{s:Action WindowMin}" Height="32" Width="32" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource ButtonCustom}" hc:BackgroundSwitchElement.MouseHoverBackground="{DynamicResource DarkDefaultBrush}" hc:BackgroundSwitchElement.MouseDownBackground="PaleVioletRed" Padding="5" Grid.Column="1">
+                <Path Fill="LightGray" Width="12" Data="{StaticResource WindowMinGeometry}"></Path>
+            </Button>
+            <hc:Divider LineStrokeThickness="1" Orientation="Vertical" MaxHeight="16"/>
+            <Button Command="{s:Action WindowSettings}" Height="32" Width="32" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource ButtonCustom}" hc:BackgroundSwitchElement.MouseHoverBackground="{DynamicResource DarkDefaultBrush}" hc:BackgroundSwitchElement.MouseDownBackground="PaleVioletRed" Padding="5" Grid.Column="1">
+                <Path Fill="LightGray" Width="15" Data="{StaticResource SettingsGeometry}"></Path>
+            </Button>
+            <Button Command="{s:Action WindowAbout}" Height="32" Width="32" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource ButtonCustom}" hc:BackgroundSwitchElement.MouseHoverBackground="{DynamicResource DarkDefaultBrush}" hc:BackgroundSwitchElement.MouseDownBackground="PaleVioletRed" Padding="5" Grid.Column="1">
+                <Path Fill="LightGray" Width="15" Data="{StaticResource AboutGeometry}"></Path>
+            </Button>
+            <Button Command="{s:Action WindowUpload}" Height="32" Width="32" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource ButtonCustom}" hc:BackgroundSwitchElement.MouseHoverBackground="{DynamicResource DarkDefaultBrush}" hc:BackgroundSwitchElement.MouseDownBackground="PaleVioletRed" Padding="5" Grid.Column="1">
+                <Path Fill="LightGray" Width="17" Data="{StaticResource LeftRightGeometry}"></Path>
+            </Button>
+        </StackPanel>
+
+
     </Grid>
 </hc:BlurWindow>
