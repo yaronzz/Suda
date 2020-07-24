@@ -1,0 +1,71 @@
+﻿<UserControl x:Class="Suda.Pages.PlatformView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Suda.Pages"
+             xmlns:s="https://github.com/canton7/Stylet"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:aigsc="clr-namespace:AIGS.Control;assembly=AIGS"
+             xmlns:aigs="clr-namespace:AIGS.Common;assembly=AIGS"
+             xmlns:sudaelse="clr-namespace:Suda.Else"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance local:PlatformViewModel}">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="210"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <hc:Gravatar Style="{StaticResource GravatarCircleImg}" Height="180" Width="180">
+                <Image Source="{Binding Platform.UserInfo.AvatarUrl}" Stretch="Uniform" />
+            </hc:Gravatar>
+            <DockPanel Grid.Column="1" Margin="15,0,0,0">
+                <TextBlock DockPanel.Dock="Top" Text="{Binding Platform.UserInfo.NickName}" FontSize="40" VerticalAlignment="Top" FontWeight="ExtraBlack" Margin="0,40,15,15" />
+                <DockPanel DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Margin="0,0,0,20">
+                    <Button Content="ToLocal" Command="{s:Action ToLocal}" hc:IconElement.Geometry="{StaticResource SDownloadGeometry}" DockPanel.Dock="Left"  HorizontalAlignment="Right" Margin="0,0,10,0" Padding="15,6" ></Button>
+                    <Button Content="Refresh" Command="{s:Action RefreshPlaylist}" hc:IconElement.Geometry="{StaticResource RefreshGeometry}" DockPanel.Dock="Left"  HorizontalAlignment="Right" Margin="0,0,10,0" Padding="15,6" ></Button>
+                    <Button Content="Logout" Command="{s:Action Logout}" hc:IconElement.Geometry="{StaticResource LogoutGeometry}" DockPanel.Dock="Left" Style="{StaticResource ButtonDanger}" HorizontalAlignment="Left" Margin="10,0,10,0" Padding="15,6" ></Button>
+                </DockPanel>
+            </DockPanel>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <DataGrid HeadersVisibility="All" CanUserSortColumns="False" RowHeaderWidth="60" hc:DataGridAttach.ShowRowNumber="True" SelectionMode="Single"  AutoGenerateColumns="False" ItemsSource="{Binding Platform.Playlists}" >
+                <DataGrid.Columns>
+                    <DataGridCheckBoxColumn Binding="{Binding Check,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="50">
+                        <DataGridCheckBoxColumn.Header>
+                            <Border Background="Transparent" Padding="0" HorizontalAlignment="Center">
+                                <CheckBox IsChecked="{Binding AllCheck}" DataContext="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext}" Command="{s:Action ClickAllCheck}"/>
+                            </Border>
+                        </DataGridCheckBoxColumn.Header>
+                    </DataGridCheckBoxColumn>
+                    <DataGridTemplateColumn Width="60" CanUserResize="False">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding ImgUrl}" Width="32" Height="32" Stretch="Uniform"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding Title}" Header="TITLE"/>
+                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding Tracks.Count}" Header="TRACK NUM"/>
+                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding CreatorName}" Header="CREATOR" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+
+        
+
+        <!--Message page-->
+        <ScrollViewer Grid.Row="0" Grid.RowSpan="3" VerticalScrollBarVisibility="Hidden" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <StackPanel hc:Growl.Token="{x:Static sudaelse:Global.TOKEN_PLATFORM}" VerticalAlignment="Top" Margin="0,10,10,10"/>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

@@ -18,25 +18,42 @@ namespace Suda.Pages
 {
     public class MainViewModel : Screen
     {
+        /// <summary>
+        /// Menu list
+        /// </summary>
         public ObservableCollection<Platform> Platforms { get; set; } = new ObservableCollection<Platform>();
         public ObservableCollection<Playlist> SudaPlaylists { get; set; } = new ObservableCollection<Playlist>();
 
+        /// <summary>
+        /// Page Visibility
+        /// </summary>
         public Visibility UploadVisibility { get; set; } = Visibility.Hidden;
         public Visibility PlatformVisibility { get; set; } = Visibility.Hidden;
         public Visibility PlaylistVisibility { get; set; } = Visibility.Hidden;
         public Visibility LoginVisibility { get; set; } = Visibility.Hidden;
+        public Visibility SettingsVisibility { get; set; } = Visibility.Hidden;
+        public Visibility AboutVisibility { get; set; } = Visibility.Hidden;
 
+        /// <summary>
+        /// Page ViewModel
+        /// </summary>
         public SelectPlatformView VMSelect { get; set; }
         public LoginViewModel VMLogin { get; set; }
         public PlatformViewModel VMPlatform { get; set; }
         public PlaylistViewModel VMPlaylist { get; set; }
         public UploadViewModel VMUpload { get; set; }
-        public MainViewModel(PlaylistViewModel playlist, LoginViewModel login, PlatformViewModel platform, UploadViewModel upload)
+        public AboutViewModel VMAbout { get; set; }
+        public SettingsViewModel VMSettings { get; set; }
+
+
+        public MainViewModel(PlaylistViewModel playlist, LoginViewModel login, PlatformViewModel platform, UploadViewModel upload, AboutViewModel about, SettingsViewModel settings)
         {
             VMPlaylist = playlist;
             VMLogin = login;
             VMPlatform = platform;
             VMUpload = upload;
+            VMAbout = about;
+            VMSettings = settings;
         }
 
         #region Prepare work
@@ -65,23 +82,23 @@ namespace Suda.Pages
             QQMusic.Playlists = await SudaLib.Method.GetUserPlaylists(QQMusic.LoginKey);
             Platforms.Add(QQMusic);
 
-            //Platform CloudMusic = new Platform();
-            //CloudMusic.Logo = (Geometry)Application.Current.TryFindResource("NeteaseGeometry");
-            //CloudMusic.Name = "网易云";
-            //CloudMusic.Type = SudaLib.ePlatform.CloudMusic;
-            //CloudMusic.LoginKey = await SudaLib.Method.RefreshLoginKey(Global.Cache.CloudLoginkey);
-            //CloudMusic.UserInfo = await SudaLib.Method.GetUserInfo(CloudMusic.LoginKey);
-            //CloudMusic.Playlists = await SudaLib.Method.GetUserPlaylists(CloudMusic.LoginKey);
-            //Platforms.Add(CloudMusic);
+            Platform CloudMusic = new Platform();
+            CloudMusic.Logo = (Geometry)Application.Current.TryFindResource("NeteaseGeometry");
+            CloudMusic.Name = "网易云";
+            CloudMusic.Type = SudaLib.ePlatform.CloudMusic;
+            CloudMusic.LoginKey = await SudaLib.Method.RefreshLoginKey(Global.Cache.CloudLoginkey);
+            CloudMusic.UserInfo = await SudaLib.Method.GetUserInfo(CloudMusic.LoginKey);
+            CloudMusic.Playlists = await SudaLib.Method.GetUserPlaylists(CloudMusic.LoginKey);
+            Platforms.Add(CloudMusic);
 
-            //Platform Tidal = new Platform();
-            //Tidal.Logo = (Geometry)Application.Current.TryFindResource("TidalGeometry");
-            //Tidal.Name = "Tidal";
-            //Tidal.Type = SudaLib.ePlatform.Tidal;
-            //Tidal.LoginKey = await SudaLib.Method.RefreshLoginKey(Global.Cache.TidalLoginkey);
-            //Tidal.UserInfo = await SudaLib.Method.GetUserInfo(Tidal.LoginKey);
-            //Tidal.Playlists = await SudaLib.Method.GetUserPlaylists(Tidal.LoginKey);
-            //Platforms.Add(Tidal);
+            Platform Tidal = new Platform();
+            Tidal.Logo = (Geometry)Application.Current.TryFindResource("TidalGeometry");
+            Tidal.Name = "Tidal";
+            Tidal.Type = SudaLib.ePlatform.Tidal;
+            Tidal.LoginKey = await SudaLib.Method.RefreshLoginKey(Global.Cache.TidalLoginkey);
+            Tidal.UserInfo = await SudaLib.Method.GetUserInfo(Tidal.LoginKey);
+            Tidal.Playlists = await SudaLib.Method.GetUserPlaylists(Tidal.LoginKey);
+            Platforms.Add(Tidal);
 
             //Platform Spotify = new Platform();
             //Spotify.Logo = (Geometry)Application.Current.TryFindResource("SpotifyGeometry");
@@ -114,6 +131,10 @@ namespace Suda.Pages
                 return PlatformVisibility == Visibility.Visible;
             if (type == typeof(PlaylistViewModel))
                 return PlaylistVisibility == Visibility.Visible;
+            if (type == typeof(AboutViewModel))
+                return AboutVisibility == Visibility.Visible;
+            if (type == typeof(SettingsViewModel))
+                return SettingsVisibility == Visibility.Visible;
             return false;}
 
         public void ShowPage(object viewmodel)
@@ -134,35 +155,33 @@ namespace Suda.Pages
             PlatformVisibility = Visibility.Hidden;
             PlaylistVisibility = Visibility.Hidden;
             UploadVisibility = Visibility.Hidden;
+            AboutVisibility = Visibility.Hidden;
+            SettingsVisibility = Visibility.Hidden;
             if (type == typeof(PlatformViewModel))
                 PlatformVisibility = Visibility.Visible;
             if (type == typeof(PlaylistViewModel))
                 PlaylistVisibility = Visibility.Visible;
+            if (type == typeof(AboutViewModel))
+                AboutVisibility = Visibility.Visible;
+            if (type == typeof(SettingsViewModel))
+                SettingsVisibility = Visibility.Visible;
         }
 
         public void HidePage(object viewmodel)
         {
             Type type = viewmodel.GetType();
             if (type == typeof(LoginViewModel))
-            {
                 LoginVisibility = Visibility.Hidden;
-                return;
-            }
             if (type == typeof(UploadViewModel))
-            {
                 UploadVisibility = Visibility.Hidden;
-                return;
-            }
             if (type == typeof(PlatformViewModel))
-            {
                 PlatformVisibility = Visibility.Hidden;
-                return;
-            }
             if (type == typeof(PlaylistViewModel))
-            {
                 PlaylistVisibility = Visibility.Hidden;
-                return;
-            }
+            if (type == typeof(AboutViewModel))
+                AboutVisibility = Visibility.Hidden;
+            if (type == typeof(SettingsViewModel))
+                SettingsVisibility = Visibility.Hidden;
         }
 
         #endregion
@@ -211,11 +230,11 @@ namespace Suda.Pages
 
         public void SudaPlaylistDelAll()
         {
-            if (MessageBox.Show("Delete all playlist?", "Info", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            Dialog.Show(new MessageView(MessageBoxImage.Information, "Delete all playlist?", true, (x) =>
             {
                 SudaPlaylists.Clear();
                 VMPlaylist.Playlist = null;
-            }
+            }));
         }
         #endregion
 
@@ -307,9 +326,9 @@ namespace Suda.Pages
             }
 
             if (!flag)
-                MessageBox.Show("Save failed!", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+                Dialog.Show(new MessageView(MessageBoxImage.Warning, "Save failed!",false));
             else
-                MessageBox.Show("Save success!", "INFO", MessageBoxButton.OK, MessageBoxImage.Information);
+                Dialog.Show(new MessageView(MessageBoxImage.Information, "Save success!", false));
         }
 
         public void SudaPlaylistRead()
@@ -329,33 +348,23 @@ namespace Suda.Pages
 
         #endregion
 
-        public int NumWait { get; set; } = 100;
 
         #region Suda playlist upload
 
-        public async void SelectUploadPlatform(Playlist data)
+        public void SudaPlaylistUpload(Playlist data)
         {
-            VMSelect = new SelectPlatformView();
-            VMSelect.Load(Platforms, this, data);
-            Dialog.Show(VMSelect);
-        }
+            Dialog.Show(new SelectPlatformView(Platforms, (type)=> {
 
-        public async void SudaPlaylistUpload(Playlist data)
-        {
-            if (VMSelect.SelectPlatform != SudaLib.ePlatform.None)
-            {
-                Platform to = Platforms.First(x => x.Type == VMSelect.SelectPlatform);
-                if (to != null)
+                if (type != SudaLib.ePlatform.None)
                 {
-                    VMUpload.Load(data, this, to);
-                    ShowPage(VMUpload);
+                    Platform to = Platforms.First(x => x.Type == type);
+                    if (to != null)
+                    {
+                        VMUpload.Load(data, this, to);
+                        ShowPage(VMUpload);
+                    }
                 }
-            }
-        }
-
-        public void SudaPlaylistUploadEnd()
-        {
-            HidePage(VMUpload);
+            }));
         }
 
         public void SudaPlaylistUploadAll()
@@ -393,12 +402,12 @@ namespace Suda.Pages
 
         public void WindowAbout()
         {
-
+            ShowPage(VMAbout);
         }
 
         public void WindowSettings()
         {
-
+            ShowPage(VMSettings);
         }
 
         public void WindowUpload()

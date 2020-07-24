@@ -97,6 +97,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Else\Settings.cs" />
+    <Compile Include="Pages\AboutView.xaml.cs">
+      <DependentUpon>AboutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\AboutViewModel.cs" />
     <Compile Include="Pages\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
@@ -105,6 +109,9 @@
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\MainViewModel.cs" />
+    <Compile Include="Pages\MessageView.xaml.cs">
+      <DependentUpon>MessageView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\PlatformView.xaml.cs">
       <DependentUpon>PlatformView.xaml</DependentUpon>
     </Compile>
@@ -116,6 +123,10 @@
     <Compile Include="Pages\SelectPlatformView.xaml.cs">
       <DependentUpon>SelectPlatformView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SettingsViewModel.cs" />
     <Compile Include="Pages\UploadView.xaml.cs">
       <DependentUpon>UploadView.xaml</DependentUpon>
     </Compile>
@@ -147,6 +158,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Pages\AboutView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\LoginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -154,6 +169,10 @@
     <Page Include="Pages\MainView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\MessageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\PlatformView.xaml">
       <SubType>Designer</SubType>
@@ -167,7 +186,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\SettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\UploadView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Properties\ControlResources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

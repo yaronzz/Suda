@@ -1,4 +1,5 @@
-﻿using Suda.Else;
+﻿using HandyControl.Controls;
+using Suda.Else;
 using SudaLib;
 using System;
 using System.Collections.Generic;
@@ -36,17 +37,17 @@ namespace Suda.Pages
 
         public void Upload()
         {
-            VMMain.SelectUploadPlatform(Playlist);
+            VMMain.SudaPlaylistUpload(Playlist);
             return;
         }
 
         public void DeletePlaylist()
         {
-            if (MessageBox.Show("Delete this playlist?", "Info", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            Dialog.Show(new MessageView(MessageBoxImage.Information, "Delete this playlist?", true, (x) =>
             {
                 VMMain.SudaPlaylistDel(Playlist);
                 Playlist = null;
-            }
+            }));
         }
 
 

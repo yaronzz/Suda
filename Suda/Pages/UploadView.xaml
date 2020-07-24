@@ -1,0 +1,91 @@
+﻿<UserControl x:Class="Suda.Pages.UploadView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:aigsc="clr-namespace:AIGS.Control;assembly=AIGS"
+             xmlns:aigs="clr-namespace:AIGS.Common;assembly=AIGS"
+             xmlns:s="https://github.com/canton7/Stylet"
+             xmlns:local="clr-namespace:Suda.Pages"
+             xmlns:sudaelse="clr-namespace:Suda.Else"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance local:UploadViewModel}">
+
+    <Border Background="{DynamicResource RegionBrush}" Effect="{StaticResource EffectShadow5}" Width="300" BorderThickness="1" BorderBrush="{DynamicResource BorderBrush}" Padding="0">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Margin="20,35,20,0">
+                <TextBlock Margin="0,0,0,5" Text="UPLOAD LIST" FontWeight="ExtraBold" Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Left"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="WAIT: " Foreground="{DynamicResource SecondaryTextBrush}" HorizontalAlignment="Left"/>
+                    <TextBlock Text="{Binding NumWait}" HorizontalAlignment="Left"/>
+                    <TextBlock Text="SUCCESS: " Foreground="{DynamicResource SecondaryTextBrush}" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                    <TextBlock Text="{Binding NumSuccess}" Foreground="Green" HorizontalAlignment="Left"/>
+                    <TextBlock Text="ERROR: " Foreground="{DynamicResource SecondaryTextBrush}" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                    <TextBlock Text="{Binding NumError}" Foreground="Red" HorizontalAlignment="Left"/>
+                </StackPanel>
+                <hc:Divider Margin="0,10,0,2"></hc:Divider>
+            </StackPanel>
+
+            <TabControl Grid.Row="1" Margin="20,0,20,20" Style="{StaticResource TabControlInLine}">
+                <TabItem Header="WAIT">
+                    <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding UploadItems}" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel Width="240" Margin="0,5,0,10">
+                                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                                            <TextBlock Text="{Binding Track.Title}"></TextBlock>
+                                            <TextBlock Text="{Binding Track.ArtistsName}" Foreground="{DynamicResource SecondaryTextBrush}" Margin="10,0,0,0"></TextBlock>
+                                        </StackPanel>
+                                        <TextBlock Text="{Binding Status}" Foreground="{Binding StatusColor}" VerticalAlignment="Center"></TextBlock>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </TabItem>
+                <TabItem Header="SUCCESS">
+                    <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding SuccessItems}" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel Width="240" Margin="0,5,0,10">
+                                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                                            <TextBlock Text="{Binding Track.Title}"></TextBlock>
+                                            <TextBlock Text="{Binding Track.ArtistsName}" Foreground="{DynamicResource SecondaryTextBrush}" Margin="10,0,0,0"></TextBlock>
+                                        </StackPanel>
+                                        <TextBlock Text="{Binding Status}" Foreground="{Binding StatusColor}" VerticalAlignment="Center"></TextBlock>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </TabItem>
+                <TabItem Header="ERROR">
+                    <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding ErrorItems}" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel Width="240" Margin="0,5,0,10">
+                                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                                            <TextBlock Text="{Binding Track.Title}"></TextBlock>
+                                            <TextBlock Text="{Binding Track.ArtistsName}" Foreground="{DynamicResource SecondaryTextBrush}" Margin="10,0,0,0"></TextBlock>
+                                        </StackPanel>
+                                        <TextBlock Text="{Binding Status}" Foreground="{Binding StatusColor}" VerticalAlignment="Center"></TextBlock>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </Border>
+</UserControl>
