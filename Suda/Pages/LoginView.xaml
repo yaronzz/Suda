@@ -14,52 +14,64 @@
              d:DesignHeight="500" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance local:LoginViewModel}">
 
-    <Grid Visibility="{Binding ViewVisibility}">
-        <Grid Background="{DynamicResource RegionBrush}" Opacity="0.6" />
-        <Grid>
-            <Grid Height="500" Width="450">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition />
-                </Grid.RowDefinitions>
+    <Grid >
+        <Grid Background="{DynamicResource SecondaryRegionBrush}" Opacity="0.6" />
+        
+        <Grid Height="500" Width="450">
+            <!--Login by web-->
+            <Grid Visibility="{Binding WebVisibility}">
+                <Border Style="{StaticResource BorderRegion}" Effect="{StaticResource EffectShadow4}" >
+                    <Grid >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <TextBlock Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Plat.Name}" VerticalAlignment="Center" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center"/>
+                        <WindowsFormsIntegration:WindowsFormsHost Grid.Row="1" Visibility="{Binding WebVisibility}">
+                            <Forms:WebBrowser x:Name="ctrlWebBrowser"/>
+                        </WindowsFormsIntegration:WindowsFormsHost>
+                    </Grid>
+                </Border>
+            </Grid>
 
-                <TextBlock Foreground="LightGray" Text="{Binding PlatformTitle}" VerticalAlignment="Center" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center"/>
-
-                <!--Login by web-->
-                <WindowsFormsIntegration:WindowsFormsHost Height="450" Width="450" Grid.Row="1" Visibility="{Binding WebVisibility}">
-                    <Forms:WebBrowser x:Name="ctrlWebBrowser"/>
-                </WindowsFormsIntegration:WindowsFormsHost>
-
-                <!--Login by username and password-->
-                <Border Style="{StaticResource BorderRegion}" Visibility="{Binding InputVisibility}" Effect="{StaticResource EffectShadow1}" Margin="0,50,0,180" Grid.RowSpan="2">
+            <!--Login by username and password -->
+            <Grid Visibility="{Binding InputVisibility}">
+                <Border Style="{StaticResource BorderRegion}"  Effect="{StaticResource EffectShadow4}" Grid.RowSpan="2">
                     <Grid Background="{DynamicResource RegionBrush}" >
-                        <Grid Height="200" Width="400">
+                        <Grid >
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="150"/>
                                 <RowDefinition Height="50"/>
                                 <RowDefinition Height="50"/>
-                                <RowDefinition />
+                                <RowDefinition Height="100"/>
                             </Grid.RowDefinitions>
 
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                <Path Fill="Gray" Width="18" Margin="6" Data="{StaticResource AccountGeometry}"/>
+                                <Path Fill="{DynamicResource PrimaryTextBrush}" Width="50" Data="{Binding Plat.Logo}"></Path>
+                                <TextBlock Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Plat.Name}" VerticalAlignment="Center" FontWeight="Bold" FontSize="40" Margin="5,0,0,0"></TextBlock>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Path Fill="{DynamicResource PrimaryTextBrush}" Width="18" Margin="6" Data="{StaticResource AccountGeometry}"/>
                                 <hc:TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" Width="300" FontFamily="Microsoft Yahei Regular" hc:InfoElement.Placeholder="Account" FontWeight="Normal" VerticalAlignment="Center"  />
                             </StackPanel>
 
-                            <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <Path Fill="Gray" Width="18" Margin="6" Data="{StaticResource KeyGeometry}"/>
+                            <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Path Fill="{DynamicResource PrimaryTextBrush}" Width="18" Margin="6" Data="{StaticResource KeyGeometry}"/>
                                 <PasswordBox FontFamily="Microsoft Yahei Regular" Width="300" aigsc:PasswordBoxHelper.Attach="True" aigsc:PasswordBoxHelper.Password="{Binding Path=Password,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontWeight="Normal" VerticalAlignment="Center" />
                             </StackPanel>
 
-                            <Button Grid.Row="2" IsDefault="True" Command="{s:Action Login}" IsEnabled="{Binding BtnLoginEnable}" 
+                            <Button Grid.Row="3" IsDefault="True" Command="{s:Action Login}" IsEnabled="{Binding BtnLoginEnable}" 
                                 CommandParameter="{Binding ElementName=PasswordBox}" Style="{StaticResource ButtonPrimary}"
-                                Content="Login" Width="315" VerticalAlignment="Center" VerticalContentAlignment="Center" 
-                                HorizontalAlignment="Center" Margin="50,18.4,35,18" />
+                                Content="Login" Width="295" Margin="69,35,64,35.8" />
 
-                            <TextBlock Grid.Row="2" Text="{Binding Errlabel,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Foreground="Red" VerticalAlignment="Bottom" Margin="10,0,0,4" ></TextBlock>
+                            <TextBlock Grid.Row="3" Text="{Binding Errlabel,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10,0,0,4" ></TextBlock>
                         </Grid>
                     </Grid>
                 </Border>
             </Grid>
+
         </Grid>
+
     </Grid>
 </UserControl>

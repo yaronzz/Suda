@@ -25,6 +25,8 @@ namespace Suda.Pages
         public int NumSuccess { get; set; }
         public int NumError { get; set; }
 
+        public bool IsCancel { get; set; }
+
         public class UploadItem : Stylet.Screen
         {
             public Track Track { get; set; }
@@ -38,12 +40,16 @@ namespace Suda.Pages
             PlaylistFrom = playlist;
             Platform = plat;
             VMMain = main;
+            IsCancel = false;
 
             SuccessItems = new ObservableCollection<UploadItem>();
             ErrorItems = new ObservableCollection<UploadItem>();
             UploadItems = new ObservableCollection<UploadItem>();
             foreach (var item in playlist.Tracks)
             {
+                if (item.Check == false)
+                    continue;
+
                 UploadItems.Add(new UploadItem()
                 {
                     Track = item,
@@ -58,15 +64,21 @@ namespace Suda.Pages
             Upload();
         }
 
+        public void Cancel()
+        {
+            IsCancel = true;
+        }
 
         public async void Upload()
         {
+            Global.InUploading = true;
+
             //get user playlist
-            ObservableCollection<Playlist> plAarray = await SudaLib.Method.GetUserPlaylists(Platform.LoginKey);
+            (string msg, ObservableCollection<Playlist> plAarray) = await SudaLib.Method.GetUserPlaylists(Platform.LoginKey);
             if(plAarray == null)
             {
-                SetAllItemsError("Get user playlists failed!");
-                return;
+                SetAllItemsError("Get user playlists failed! " + msg);
+                goto END_POINT;
             }
 
             //find playlist, if can't find, creat new one
@@ -76,11 +88,11 @@ namespace Suda.Pages
                 playlistTo = plAarray[index];
             else
             {
-                playlistTo = await SudaLib.Method.CreatPlaylist(Platform.LoginKey, PlaylistFrom.Title, PlaylistFrom.Desc);
+                (msg,playlistTo) = await SudaLib.Method.CreatPlaylist(Platform.LoginKey, PlaylistFrom.Title, PlaylistFrom.Desc);
                 if (playlistTo == null)
                 {
-                    SetAllItemsError("Creat playlist failed!");
-                    return;
+                    SetAllItemsError("Creat playlist failed! " + msg);
+                    goto END_POINT;
                 }
             }
 
@@ -112,10 +124,10 @@ namespace Suda.Pages
                     goto NEXT_POINT;
                 }
 
-                bool flag = await SudaLib.Method.AddTracksToPlaylist(Platform.LoginKey, new string[] { track.MID }, playlistTo.MID);
+                (string msg1,bool flag) = await SudaLib.Method.AddTracksToPlaylist(Platform.LoginKey, new string[] { track.MID }, playlistTo.MID);
                 if (flag == false)
                 {
-                    item.Status = "Can't add to playlist!";
+                    item.Status = "Can't add to playlist! "+ msg1;
                     item.StatusColor = Brushes.Red;
                     NumError++;
                     ErrorItems.Add(item);
@@ -130,8 +142,21 @@ namespace Suda.Pages
             NEXT_POINT:
                 NumWait -= 1;
                 UploadItems.RemoveAt(0);
+
+                //check cancel
+                if (IsCancel)
+                    SetAllItemsCancel();
             }
+
+            //update user playlists
+            (msg, plAarray) = await SudaLib.Method.GetUserPlaylists(Platform.LoginKey);
+            if (plAarray != null)
+                Platform.Playlists = plAarray;
+
+        END_POINT:
+            Global.InUploading = false;
         }
+
 
         public void SetAllItemsError(string errmsg)
         {
@@ -141,6 +166,23 @@ namespace Suda.Pages
 
                 item.Status = errmsg;
                 item.StatusColor = Brushes.Red;
+                ErrorItems.Add(item);
+
+                UploadItems.RemoveAt(0);
+            }
+
+            NumError = NumWait;
+            NumWait = 0;
+        }
+
+        public void SetAllItemsCancel()
+        {
+            while (UploadItems.Count > 0)
+            {
+                UploadItem item = UploadItems[0];
+
+                item.Status = "Cancel!";
+                item.StatusColor = Brushes.DarkOrange;
                 ErrorItems.Add(item);
 
                 UploadItems.RemoveAt(0);

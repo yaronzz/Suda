@@ -13,9 +13,9 @@
              d:DesignHeight="600" d:DesignWidth="1000"
              d:DataContext="{d:DesignInstance local:PlaylistViewModel}">
     <Grid>
-        <Grid Margin="10" Background="{DynamicResource RegionBrush}">
+        <Grid Background="{DynamicResource RegionBrush}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="210"/>
+                <RowDefinition Height="200"/>
                 <RowDefinition />
             </Grid.RowDefinitions>
 
@@ -32,7 +32,7 @@
                     <TextBlock Text="{Binding Playlist.Desc}" DockPanel.Dock="Top" Foreground="Gray" FontSize="13" VerticalAlignment="Top" TextWrapping="Wrap" Width="500" HorizontalAlignment="Left"/>
 
                     <DockPanel DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Margin="0,0,0,20">
-                        <Button Content="Upload" Command="{s:Action Upload}" hc:IconElement.Geometry="{StaticResource SUploadGeometry}" DockPanel.Dock="Left" Margin="0,0,10,0" Padding="15,6" HorizontalAlignment="Left" ></Button>
+                        <Button Content="Upload" Command="{s:Action Upload}" IsEnabled="{Binding Path=(sudaelse:Global.InUploading),Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ConverterUnbool}}" hc:IconElement.Geometry="{StaticResource SUploadGeometry}" DockPanel.Dock="Left" Margin="0,0,10,0" Padding="15,6" HorizontalAlignment="Left" ></Button>
                         <Button Content="Delete" Command="{s:Action DeletePlaylist}" hc:IconElement.Geometry="{StaticResource DeleteFillCircleGeometry}" Style="{StaticResource ButtonDanger}" DockPanel.Dock="Left" Margin="0,0,10,0" Padding="15,6" HorizontalAlignment="Left" ></Button>
                     </DockPanel>
                 </DockPanel>
@@ -40,17 +40,17 @@
 
             <DataGrid Grid.Row="1" HeadersVisibility="All" RowHeaderWidth="60" hc:DataGridAttach.ShowRowNumber="True" SelectionMode="Single"  AutoGenerateColumns="False" ItemsSource="{Binding Playlist.Tracks}" >
                 <DataGrid.Columns>
-                    <!--<DataGridCheckBoxColumn Binding="{Binding Check,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                    <DataGridCheckBoxColumn Binding="{Binding Check,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
                         <DataGridCheckBoxColumn.Header>
                             <Border Background="Transparent" Padding="0" HorizontalAlignment="Center">
                                 <CheckBox IsChecked="{Binding AllCheck}" DataContext="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext}" Command="{s:Action ClickAllCheck}"/>
                             </Border>
                         </DataGridCheckBoxColumn.Header>
-                    </DataGridCheckBoxColumn>-->
+                    </DataGridCheckBoxColumn>
                     <DataGridTextColumn IsReadOnly="True" Binding="{Binding Title}" Width="250" Header="TITLE"/>
                     <DataGridTextColumn IsReadOnly="True" Binding="{Binding ArtistsName}" Width="200" Header="ARTISTS"/>
                     <DataGridTextColumn IsReadOnly="True" Binding="{Binding AlbumTitle}" Width="200" Header="ALBUM"/>
-                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding DurationStr}" Header="DURATION" Width="*"/>
+                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding DurationStr}" Header="DURATION" />
                     <DataGridTemplateColumn Header="ACT">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

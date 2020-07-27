@@ -8,11 +8,9 @@ using static SudaLib.Common;
 
 namespace Suda.Else
 {
-    public class Settings
+    public class Settings : Stylet.Screen
     {
         public CompareArgs Compare { get; set; } = new CompareArgs();
-
-
 
         public void Write()
         {

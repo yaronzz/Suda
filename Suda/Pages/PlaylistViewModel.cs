@@ -37,7 +37,16 @@ namespace Suda.Pages
 
         public void Upload()
         {
-            VMMain.SudaPlaylistUpload(Playlist);
+            int iNum = 0;
+            foreach (var item in Playlist.Tracks)
+            {
+                if (item.Check)
+                    iNum++;
+            }
+            if (iNum <= 0)
+                Growl.Error("Please select tracks!", Global.TOKEN_PLAYLIST);
+            else
+                VMMain.SudaPlaylistUpload(Playlist);
             return;
         }
 

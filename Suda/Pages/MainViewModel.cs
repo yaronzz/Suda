@@ -73,40 +73,41 @@ namespace Suda.Pages
 
         async Task PreparePlatforms()
         {
+            string msg;
             Platform QQMusic = new Platform();
             QQMusic.Logo = (Geometry)Application.Current.TryFindResource("QQGeometry");
             QQMusic.Name = "QQ音乐";
             QQMusic.Type = SudaLib.ePlatform.QQMusic;
-            QQMusic.LoginKey = await SudaLib.Method.RefreshLoginKey(Global.Cache.QQLoginkey);
-            QQMusic.UserInfo = await SudaLib.Method.GetUserInfo(QQMusic.LoginKey);
-            QQMusic.Playlists = await SudaLib.Method.GetUserPlaylists(QQMusic.LoginKey);
+            (msg, QQMusic.LoginKey) = await SudaLib.Method.RefreshLoginKey(Global.Cache.QQLoginkey);
+            (msg, QQMusic.UserInfo) = await SudaLib.Method.GetUserInfo(QQMusic.LoginKey);
+            (msg, QQMusic.Playlists) = await SudaLib.Method.GetUserPlaylists(QQMusic.LoginKey);
             Platforms.Add(QQMusic);
 
             Platform CloudMusic = new Platform();
             CloudMusic.Logo = (Geometry)Application.Current.TryFindResource("NeteaseGeometry");
             CloudMusic.Name = "网易云";
             CloudMusic.Type = SudaLib.ePlatform.CloudMusic;
-            CloudMusic.LoginKey = await SudaLib.Method.RefreshLoginKey(Global.Cache.CloudLoginkey);
-            CloudMusic.UserInfo = await SudaLib.Method.GetUserInfo(CloudMusic.LoginKey);
-            CloudMusic.Playlists = await SudaLib.Method.GetUserPlaylists(CloudMusic.LoginKey);
+            (msg, CloudMusic.LoginKey) = await SudaLib.Method.RefreshLoginKey(Global.Cache.CloudLoginkey);
+            (msg, CloudMusic.UserInfo) = await SudaLib.Method.GetUserInfo(CloudMusic.LoginKey);
+            (msg, CloudMusic.Playlists) = await SudaLib.Method.GetUserPlaylists(CloudMusic.LoginKey);
             Platforms.Add(CloudMusic);
 
             Platform Tidal = new Platform();
             Tidal.Logo = (Geometry)Application.Current.TryFindResource("TidalGeometry");
             Tidal.Name = "Tidal";
             Tidal.Type = SudaLib.ePlatform.Tidal;
-            Tidal.LoginKey = await SudaLib.Method.RefreshLoginKey(Global.Cache.TidalLoginkey);
-            Tidal.UserInfo = await SudaLib.Method.GetUserInfo(Tidal.LoginKey);
-            Tidal.Playlists = await SudaLib.Method.GetUserPlaylists(Tidal.LoginKey);
+            (msg, Tidal.LoginKey) = await SudaLib.Method.RefreshLoginKey(Global.Cache.TidalLoginkey);
+            (msg, Tidal.UserInfo) = await SudaLib.Method.GetUserInfo(Tidal.LoginKey);
+            (msg, Tidal.Playlists) = await SudaLib.Method.GetUserPlaylists(Tidal.LoginKey);
             Platforms.Add(Tidal);
 
             //Platform Spotify = new Platform();
             //Spotify.Logo = (Geometry)Application.Current.TryFindResource("SpotifyGeometry");
             //Spotify.Name = "Spotify";
             //Spotify.Type = SudaLib.ePlatform.Spotify;
-            //Spotify.LoginKey = await SudaLib.Method.RefreshLoginKey(Global.Cache.SpotifyLoginkey);
-            //Spotify.UserInfo = await SudaLib.Method.GetUserInfo(Spotify.LoginKey);
-            //Spotify.Playlists = await SudaLib.Method.GetUserPlaylists(Spotify.LoginKey);
+            //(msg, Spotify.LoginKey) = await SudaLib.Method.RefreshLoginKey(Global.Cache.SpotifyLoginkey);
+            //(msg, Spotify.UserInfo) = await SudaLib.Method.GetUserInfo(Spotify.LoginKey);
+            //(msg, Spotify.Playlists) = await SudaLib.Method.GetUserPlaylists(Spotify.LoginKey);
             //Platforms.Add(Spotify);
 
             //Platform Apple = new Platform();
@@ -119,7 +120,7 @@ namespace Suda.Pages
 
 
         #region Show page
-        
+
         public bool IsPageShow(object viewmodel)
         {
             Type type = viewmodel.GetType();
@@ -194,16 +195,7 @@ namespace Suda.Pages
             object data = ((RadioButton)sender).DataContext;
             //select platform
             if (data.GetType() == typeof(Platform))
-            {
-                Platform plat = (Platform)data;
-                //if (plat.LoginKey == null)
-                //{
-                //    VMLogin.Load(plat);
-                //}
-                VMPlatform.Load(plat, this);
-                ShowPage(VMPlatform);
-            }
-
+                MenuSelectPlatform(data);
             //select playlist
             else
             {
@@ -213,6 +205,25 @@ namespace Suda.Pages
             }
             return;
         }
+
+        public void MenuSelectPlatform(object data)
+        {
+            Platform plat = (Platform)data;
+            Action<object> action = (x) =>
+            {
+                VMPlatform.Load(plat, this);
+                ShowPage(VMPlatform);
+            };
+
+            if (plat.LoginKey == null)
+            {
+                VMLogin.Load(plat, action);
+                ShowPage(VMLogin);
+            }
+            else
+                action(null);
+        }
+
         #endregion
 
         #region Suda playlist del
@@ -241,43 +252,49 @@ namespace Suda.Pages
 
         #region Suda playlist add
 
-        public void SudaPlaylistAdd(Playlist data)
+        public void SudaPlaylistAdd(ObservableCollection<Playlist> list)
         {
-            if (data == null)
+            if (list == null)
                 return;
 
-            //Find playlist
-            int index = FindPlaylist(SudaPlaylists, data);
-
-            //If can't find, creat new one
             int updataNum = 0;
-            if (index < 0)
+            foreach (var data in list)
             {
-                Playlist additem = (Playlist)AIGS.Common.Convert.CloneObject(data);
-                additem.Tracks = new ObservableCollection<Track>(); //can't clone the list
-                for (int i = 0; i < data.Tracks.Count; i++)
-                    additem.Tracks.Add(data.Tracks[i]);
-                updataNum = data.Tracks.Count;
+                //Find playlist
+                int index = FindPlaylist(SudaPlaylists, data);
 
-                SudaPlaylists.Add(additem);
-            }
-            //If exist, add tracks
-            else
-            {
-                Playlist existitem = SudaPlaylists[index];
-                for (int i = 0; i < data.Tracks.Count; i++)
+                //If can't find, creat new one
+                if (index < 0)
                 {
-                    if (FindTrack(existitem.Tracks, data.Tracks[i]) >= 0)
-                        continue;
+                    Playlist additem = (Playlist)AIGS.Common.Convert.CloneObject(data);
+                    additem.Tracks = new ObservableCollection<Track>(); //can't clone the list
+                    for (int i = 0; i < data.Tracks.Count; i++)
+                        additem.Tracks.Add(data.Tracks[i]);
+                    updataNum += data.Tracks.Count;
 
-                    updataNum++;
-                    existitem.Tracks.Add(data.Tracks[i]);
+                    SudaPlaylists.Add(additem);
+                }
+                //If exist, add tracks
+                else
+                {
+                    Playlist existitem = SudaPlaylists[index];
+                    for (int i = 0; i < data.Tracks.Count; i++)
+                    {
+                        if (FindTrack(existitem.Tracks, data.Tracks[i]) >= 0)
+                            continue;
+
+                        updataNum++;
+                        existitem.Tracks.Add(data.Tracks[i]);
+                    }
                 }
             }
 
-            Growl.Success($"\"{data.Title}\" to local success! Updata {updataNum} tracks.", Global.TOKEN_PLATFORM);
+            if(list.Count == 1)
+                Growl.Success($"\"{list[0].Title}\" to local success! Updata {updataNum} tracks.", Global.TOKEN_MAIN);
+            else
+                Growl.Success($"To local success! Updata {updataNum} tracks.", Global.TOKEN_MAIN);
         }
-        
+
         public int FindPlaylist(ObservableCollection<Playlist> Array, Playlist item)
         {
             int index = -1;
@@ -319,16 +336,12 @@ namespace Suda.Pages
             {
                 string sTxt = JsonHelper.ConverObjectToString<ObservableCollection<Playlist>>(SudaPlaylists);
                 flag = FileHelper.Write(sTxt, true, Global.PATH_SUDA_PLAYLIST);
-            }
-            catch(Exception e)
-            {
-                
-            }
-
-            if (!flag)
-                Dialog.Show(new MessageView(MessageBoxImage.Warning, "Save failed!",false));
-            else
                 Dialog.Show(new MessageView(MessageBoxImage.Information, "Save success!", false));
+            }
+            catch (Exception e)
+            {
+                Dialog.Show(new MessageView(MessageBoxImage.Warning, "Save failed! "+e.Message, false));
+            }
         }
 
         public void SudaPlaylistRead()
@@ -342,7 +355,7 @@ namespace Suda.Pages
             }
             catch (Exception e)
             {
-
+                Dialog.Show(new MessageView(MessageBoxImage.Warning, "Read playlists failed! " + e.Message, false));
             }
         }
 

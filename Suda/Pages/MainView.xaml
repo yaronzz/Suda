@@ -13,7 +13,7 @@
             ShowNonClientArea="False"
             WindowStartupLocation="CenterScreen"
             Title="Suda" 
-            Height="650" Width="1200"
+            Height="650" Width="1300"
             d:DataContext="{d:DesignInstance local:MainViewModel}">
     
     <Grid Background="{DynamicResource RegionBrush}" MouseLeftButtonDown="{s:Action WindowMove}">
@@ -66,13 +66,13 @@
         </Grid>
 
         <!--Platform-->
-        <local:PlatformView Grid.Row="1" Grid.Column="1" s:View.Model="{Binding VMPlatform}" Visibility="{Binding PlatformVisibility}"/>
+        <local:PlatformView Padding="10,0,10,10" Grid.Row="1" Grid.Column="1" s:View.Model="{Binding VMPlatform}" Visibility="{Binding PlatformVisibility}"/>
         <!--Playlist-->
-        <local:PlaylistView Grid.Row="1" Grid.Column="1" s:View.Model="{Binding VMPlaylist}" Visibility="{Binding PlaylistVisibility}"/>
+        <local:PlaylistView Padding="10,0,10,10" Grid.Row="1" Grid.Column="1" s:View.Model="{Binding VMPlaylist}" Visibility="{Binding PlaylistVisibility}"/>
         <!--About-->
-        <local:AboutView Grid.Row="1" Grid.Column="1" s:View.Model="{Binding VMAbout}" Visibility="{Binding AboutVisibility}"/>
+        <local:AboutView Padding="10,0,10,10" Grid.Row="1" Grid.Column="1" s:View.Model="{Binding VMAbout}" Visibility="{Binding AboutVisibility}"/>
         <!--Settings-->
-        <local:SettingsView Grid.Row="1" Grid.Column="1" s:View.Model="{Binding VMSettings}" Visibility="{Binding SettingsVisibility}"/>
+        <local:SettingsView Padding="10,0,10,10" Grid.Row="1" Grid.Column="1" s:View.Model="{Binding VMSettings}" Visibility="{Binding SettingsVisibility}"/>
         
         <!--Login-->
         <local:LoginView Grid.Row="1" Grid.Column="1" s:View.Model="{Binding VMLogin}" Visibility="{Binding LoginVisibility}"/>

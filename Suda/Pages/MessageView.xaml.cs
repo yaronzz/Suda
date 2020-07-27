@@ -21,6 +21,7 @@ namespace Suda.Pages
     public partial class MessageView : UserControl
     {
         Action<string> Action { get; set; }
+        public bool Result { get; set; } = false;
 
         public MessageView(MessageBoxImage type = MessageBoxImage.Information, string message = null, bool cancel = true, Action<string> action = null)
         {
@@ -57,6 +58,7 @@ namespace Suda.Pages
             if (Action != null)
                 Action(null);
 
+            Result = true;
             BtnClose.Command.Execute(null);
         }
 
