@@ -10,9 +10,9 @@
              xmlns:aigs="clr-namespace:AIGS.Common;assembly=AIGS"
              xmlns:sudaelse="clr-namespace:Suda.Else"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="1100"
+             d:DesignHeight="600" d:DesignWidth="1100"            
              d:DataContext="{d:DesignInstance local:PlatformViewModel}">
-    <Grid >
+    <Grid Visibility="{Binding ViewVisibility}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250"/>
             <ColumnDefinition Width="auto"/>
@@ -25,16 +25,16 @@
                 <hc:Gravatar Padding="0" Style="{StaticResource GravatarCircleImg}">
                     <Image Source="{Binding Platform.UserInfo.AvatarUrl}" Stretch="Uniform" />
                 </hc:Gravatar>
-                <StackPanel Margin="12,0,0,0">
+                <StackPanel Margin="12,0,0,0" VerticalAlignment="Center">
                     <TextBlock Text="{Binding Platform.UserInfo.NickName}" FontSize="20" VerticalAlignment="Top" FontWeight="ExtraBlack"/>
-                    <StackPanel Orientation="Horizontal" Margin="0,11,0,0">
-                        <Button Command="{s:Action ToLocal}" Height="32" Width="32" Style="{StaticResource ButtonDefault}" Padding="0" >
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <Button Command="{s:Action ToLocal}" Height="32" Width="32" Style="{StaticResource MyButtonDefault}" Padding="0" >
                             <Path Fill="Gray" Width="12" Data="{StaticResource SDownloadGeometry}"></Path>
                         </Button>
-                        <Button Command="{s:Action RefreshPlaylist}" Height="32" Width="32" Style="{StaticResource ButtonDefault}" Padding="0" >
+                        <Button Command="{s:Action RefreshPlaylist}" Height="32" Width="32" Style="{StaticResource MyButtonDefault}" Padding="0" >
                             <Path Fill="Gray" Width="12" Data="{StaticResource RefreshGeometry}"></Path>
                         </Button>
-                        <Button Command="{s:Action Logout}" Height="32" Width="32" Style="{StaticResource ButtonClose}" Padding="0" >
+                        <Button Command="{s:Action Logout}" Height="32" Width="32" Style="{StaticResource MyButtonClose}" Padding="0" >
                             <Path Fill="Gray" Width="12" Data="{StaticResource LogoutGeometry}"></Path>
                         </Button>
                     </StackPanel>
@@ -43,24 +43,30 @@
 
             <hc:Divider Margin="0,10,0,2" DockPanel.Dock="Top"></hc:Divider>
 
-            <ListBox ItemsSource="{Binding Platform.Playlists}" SelectedIndex="{Binding PlSelectIndex}" SelectionChanged="{s:Action PlaylistSelectChange}" BorderThickness="0" Margin="0" Style="{StaticResource ListBoxTransparent}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,10,0,10" VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <hc:Gravatar Padding="0" Width="45" Height="45">
-                                <Image Source="{Binding ImgUrl}" Stretch="Uniform" />
-                            </hc:Gravatar>
-                            <StackPanel Margin="12,0,0,0" VerticalAlignment="Center">
-                                <TextBlock Text="{Binding Title}" VerticalAlignment="Top" FontSize="13" FontWeight="ExtraBlack" Margin="0,0,0,5"/>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="TrackNum: " VerticalAlignment="Top" />
-                                    <TextBlock Text="{Binding Tracks.Count}" VerticalAlignment="Top" />
+            <Grid>
+                <ListBox ItemsSource="{Binding Platform.Playlists}" SelectedIndex="{Binding PlSelectIndex}" SelectionChanged="{s:Action PlaylistSelectChange}" BorderThickness="0" Margin="0" Style="{StaticResource MyListBoxTransparent}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,10,0,10" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <hc:Gravatar Padding="0" Width="45" Height="45">
+                                    <Image Source="{Binding ImgUrl}" Stretch="Uniform" />
+                                </hc:Gravatar>
+                                <StackPanel Margin="12,0,0,0" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Title}" VerticalAlignment="Top" FontSize="13" FontWeight="ExtraBlack" Margin="0,0,0,5"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource strTrackNum}" VerticalAlignment="Top" />
+                                        <TextBlock Text=": " VerticalAlignment="Top" />
+                                        <TextBlock Text="{Binding Tracks.Count}" VerticalAlignment="Top" />
+                                    </StackPanel>
                                 </StackPanel>
                             </StackPanel>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>    
-            </ListBox>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>    
+                </ListBox>
+                <Grid Visibility="{Binding LoadingVisibility}" Background="{DynamicResource RegionBrush}">
+                    <hc:LoadingLine></hc:LoadingLine>
+                </Grid>
+            </Grid>
         </DockPanel>
 
         <hc:Divider Grid.Column="1" Orientation="Vertical"></hc:Divider>
@@ -80,13 +86,19 @@
 
                 <hc:Gravatar Height="180" Width="180" Source="{Binding Playlist.ImgUrl}"  Margin="10"/>
                 <DockPanel Grid.Column="1" Margin="15,0,0,0">
-                    <TextBlock Text="{Binding Playlist.Title}" DockPanel.Dock="Top" FontSize="40" VerticalAlignment="Top" FontWeight="ExtraBlack" Margin="0,15,0,0" />
-                    <TextBlock Text="{Binding Playlist.CreatorName}" DockPanel.Dock="Top" Foreground="Gray" FontSize="13" VerticalAlignment="Top" Height="25" Margin="0" />
-                    <TextBlock Text="{Binding Playlist.Desc}" DockPanel.Dock="Top" Foreground="Gray" FontSize="13" VerticalAlignment="Top" TextWrapping="Wrap" Width="500" HorizontalAlignment="Left"/>
+                    <TextBlock Text="{Binding Playlist.Title}" DockPanel.Dock="Top" FontSize="40" VerticalAlignment="Top" FontWeight="ExtraBlack" Margin="0,15,0,5" />
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,5">
+                        <TextBlock Text="{Binding Playlist.CreatorName}" Foreground="{DynamicResource SecondaryTextBrush}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        <TextBlock Text=" | " Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        <TextBlock Text="{DynamicResource strTrackNum}" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        <TextBlock Text=": "/>
+                        <TextBlock Text="{Binding Playlist.Tracks.Count}" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    </StackPanel>
+                    <TextBlock Text="{Binding Playlist.Desc}" DockPanel.Dock="Top" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="13" VerticalAlignment="Top" TextWrapping="Wrap" Width="500" HorizontalAlignment="Left" Height="49"/>
 
                     <DockPanel DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Margin="0,0,0,20">
-                        <Button Content="ToLoacl" Command="{s:Action ToLocal}" CommandParameter="{Binding Playlist.Title}" hc:IconElement.Geometry="{StaticResource SDownloadGeometry}" DockPanel.Dock="Left" Margin="0,0,10,0" Padding="15,6" HorizontalAlignment="Left" ></Button>
-                        <Button Content="Delete" Command="{s:Action AskDeletePlaylist}" hc:IconElement.Geometry="{StaticResource DeleteFillCircleGeometry}" Style="{StaticResource ButtonDanger}" DockPanel.Dock="Left" Margin="0,0,10,0" Padding="15,6" HorizontalAlignment="Left" ></Button>
+                        <Button Content="{DynamicResource strToLocal}" Command="{s:Action ToLocal}" CommandParameter="{Binding Playlist.Title}" hc:IconElement.Geometry="{StaticResource SDownloadGeometry}" DockPanel.Dock="Left" Margin="0,0,10,0" Padding="15,6" HorizontalAlignment="Left" ></Button>
+                        <Button Content="{DynamicResource strDelete}" Command="{s:Action AskDeletePlaylist}" hc:IconElement.Geometry="{StaticResource DeleteFillCircleGeometry}" Style="{StaticResource ButtonDanger}" DockPanel.Dock="Left" Margin="0,0,10,0" Padding="15,6" HorizontalAlignment="Left" ></Button>
                     </DockPanel>
                 </DockPanel>
             </Grid>
@@ -100,10 +112,10 @@
                             </Border>
                         </DataGridCheckBoxColumn.Header>
                     </DataGridCheckBoxColumn>-->
-                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding Title}" Width="250" Header="TITLE"/>
-                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding ArtistsName}" Width="200" Header="ARTISTS"/>
-                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding AlbumTitle}" Width="200" Header="ALBUM"/>
-                    <DataGridTemplateColumn Header="ACT">
+                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding Title}" Width="250" Header="{DynamicResource strTITLE}"/>
+                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding ArtistsName}" Width="200" Header="{DynamicResource strARTISTS}"/>
+                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding AlbumTitle}" Width="200" Header="{DynamicResource strALBUM}"/>
+                    <DataGridTemplateColumn Header="{DynamicResource strACT}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <!--<DockPanel Background="Transparent" HorizontalAlignment="Center" Width="32">
@@ -111,7 +123,7 @@
                                         <Path Fill="{DynamicResource DangerBrush}" Data="{StaticResource CloseGeometry}"></Path>
                                     </Button>
                                 </DockPanel>-->
-                                <Button Command="{s:Action DeleteTrack}" CommandParameter="{Binding MidArray}" Height="32" Width="32" Style="{StaticResource ButtonClose}" Padding="0" Background="Transparent">
+                                <Button Command="{s:Action DeleteTrack}" CommandParameter="{Binding MidArray}" Height="32" Width="32" Style="{StaticResource MyButtonClose}" Padding="0" Background="Transparent">
                                     <Path Fill="{DynamicResource DangerBrush}" Width="12" Data="{StaticResource CloseGeometry}"></Path>
                                 </Button>
                             </DataTemplate>
@@ -124,6 +136,11 @@
             <ScrollViewer Grid.Row="0" Grid.RowSpan="3" VerticalScrollBarVisibility="Hidden" HorizontalAlignment="Right" VerticalAlignment="Top">
                 <StackPanel hc:Growl.Token="{x:Static sudaelse:Global.TOKEN_PLAYLIST}" VerticalAlignment="Top" Margin="0,10,10,10"/>
             </ScrollViewer>
+
+            <Grid Grid.Row="0" Grid.RowSpan="3" Visibility="{Binding LoadingVisibility}" Background="{DynamicResource RegionBrush}">
+                <hc:LoadingLine></hc:LoadingLine>
+            </Grid>
+
         </Grid>
 
 

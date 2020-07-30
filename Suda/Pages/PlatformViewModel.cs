@@ -15,30 +15,48 @@ using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace Suda.Pages
 {
-    public class PlatformViewModel : Stylet.Screen
+    public class PlatformViewModel : Suda.Else.ModelBase
     {
         public MainViewModel VMMain { get; set; }
         public Platform Platform { get; set; }
         public Playlist Playlist { get; set; }
         public int PlSelectIndex { get; set; }
         public bool AllCheck { get; set; }
+        public bool AlreadyLoad { get; set; }
+        public Visibility LoadingVisibility { get; set; }
 
-        public void Load(Platform plat, MainViewModel main)
+        public async void Load(Platform plat, MainViewModel main)
         {
+            if (AlreadyLoad)
+                return;
+
             VMMain = main;
             Platform = plat;
             Playlist = null;
             AllCheck = false;
+            PlSelectIndex = 0;
+            Playlist = null;
+            LoadingVisibility = Visibility.Hidden;
+            AlreadyLoad = true;
 
-            if (Platform.Playlists.Count > 0)
+            if (Platform != null)
             {
-                PlSelectIndex = 0;
-                Playlist = Platform.Playlists[0];
-            }
-            else
-            {
-                PlSelectIndex = -1;
-                Playlist = null;
+                string msg;
+                if (Platform.UserInfo == null || Platform.Playlists == null)
+                {
+                    LoadingVisibility = Visibility.Visible;
+                    if (Platform.UserInfo == null)
+                        (msg, Platform.UserInfo) = await Method.GetUserInfo(Platform.LoginKey);
+                    if (Platform.Playlists == null)
+                        (msg, Platform.Playlists) = await Method.GetUserPlaylists(Platform.LoginKey);
+                    LoadingVisibility = Visibility.Hidden;
+                }
+                
+                if (Platform.Playlists != null && Platform.Playlists.Count > 0)
+                {
+                    PlSelectIndex = 0;
+                    Playlist = Platform.Playlists[0];
+                }
             }
         }
 
@@ -64,7 +82,7 @@ namespace Suda.Pages
 
         public void AskDeletePlaylist()
         {
-            Dialog.Show(new MessageView(MessageBoxImage.Information, "Delete this playlist?", true, (x) =>
+            Dialog.Show(new MessageView(MessageBoxImage.Information, Language.Get("strmsgDeleteThisPlaylist"), true, (x) =>
             {
                 //Remove track from platform
                 DeletePlaylist();
@@ -76,7 +94,7 @@ namespace Suda.Pages
             (string msg, bool flag) = await Method.DeletePlaylist(Platform.LoginKey, Playlist.MID);
             if (flag == false)
             {
-                Growl.Error("Delete playlist failed! " + msg, Global.TOKEN_MAIN);
+                Growl.Error(Language.Get("strmsgDeletePlaylistFailed") + " " + msg, Global.TOKEN_MAIN);
                 return;
             }
             Platform.Playlists.RemoveAt(PlSelectIndex);
@@ -93,7 +111,7 @@ namespace Suda.Pages
                     (string msg, bool flag) = await Method.DelTracksFromPlaylist(Platform.LoginKey, new string[] { item.MID }, Playlist.MID);
                     if(flag == false)
                     {
-                        Growl.Error("Delete track failed! " + msg, Global.TOKEN_MAIN);
+                        Growl.Error(Language.Get("strmsgDeleteTrackFailed") + " " + msg, Global.TOKEN_MAIN);
                         return;
                     }
 
@@ -126,18 +144,18 @@ namespace Suda.Pages
         {
             (string msg, ObservableCollection<Playlist> plist) = await SudaLib.Method.GetUserPlaylists(Platform.LoginKey);
             if(plist == null)
-                Growl.Error("Refresh playlists err! " + msg, Global.TOKEN_MAIN);
+                Growl.Error(Language.Get("strmsgeRefreshPlaylistsFailed") + " " + msg, Global.TOKEN_MAIN);
             else
             {
                 Platform.Playlists = plist;
                 PlaylistSelectChange();
-                Growl.Success("Refresh playlists success! ", Global.TOKEN_MAIN);
+                Growl.Success(Language.Get("strmsgeRefreshPlaylistsSuccess"), Global.TOKEN_MAIN);
             }
         }
 
         public void Logout()
         {
-            Dialog.Show(new MessageView(MessageBoxImage.Information, "Logout?", true, (x) =>
+            Dialog.Show(new MessageView(MessageBoxImage.Information, Language.Get("strmsgLogout"), true, (x) =>
             {
                 Platform.LoginKey = null;
                 Platform.UserInfo = null;

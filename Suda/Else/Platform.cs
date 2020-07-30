@@ -1,4 +1,5 @@
 ﻿using Stylet;
+using Suda.Pages;
 using SudaLib;
 using System;
 using System.Collections.Generic;
@@ -20,5 +21,7 @@ namespace Suda.Else
         public object LoginKey { get; set; }
         public UserInfo UserInfo { get; set; }
         public ObservableCollection<Playlist> Playlists { get; set; }
+
+        public PlatformViewModel VMPlatform { get; set; }
     }
 }

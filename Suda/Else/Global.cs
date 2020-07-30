@@ -1,4 +1,5 @@
 ﻿using AIGS.Common;
+using AIGS.Helper;
 using Suda.Pages;
 using System;
 using System.Collections.Generic;
@@ -16,14 +17,18 @@ namespace Suda.Else
         public static Settings Settings { get; set; }
 
         //Path
-        public static string PATH_CACHE = "./data/cache.json";
-        public static string PATH_SETTINGS = "./data/settings.json";
-        public static string PATH_SUDA_PLAYLIST = "./data/sudaplaylist.json";
+        public static string PATH_BASE = SystemHelper.GetUserFolders().PersonalPath + "/Suda/";
+        public static string PATH_CACHE = PATH_BASE + "/data/cache.json";
+        public static string PATH_SETTINGS = PATH_BASE + "/data/settings.json";
+        public static string PATH_SUDA_PLAYLIST = PATH_BASE + "/data/sudaplaylist.json";
 
         //Token
         public static string TOKEN_PLATFORM = "PlatformToken";
         public static string TOKEN_MAIN = "MainToken";
         public static string TOKEN_PLAYLIST = "PlaylistToken";
+
+        //KEY
+        public static string KEY_CACHE = "38&*hjkfsau)(#";
 
         //Global DynamicResource
         public static event EventHandler<PropertyChangedEventArgs> StaticPropertyChanged;

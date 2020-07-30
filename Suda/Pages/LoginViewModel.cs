@@ -1,18 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using AIGS.Common;
+using CefSharp;
+using CefSharp.Wpf;
 using Stylet;
 using Suda.Else;
 using SudaLib;
 
 namespace Suda.Pages
 {
-    public class LoginViewModel : Stylet.Screen
+    public class LoginViewModel : Suda.Else.ModelBase
     {
         public Platform Plat { get; set; }
         public Visibility InputVisibility { get; set; } = Visibility.Hidden;
@@ -24,15 +27,23 @@ namespace Suda.Pages
         public bool   BtnLoginEnable { get; set; } = true;
 
         public Action<object> Action { get; set; }
+        CollapsableChromiumWebBrowser Browser { get; set; }
 
         public void Load(Platform data, Action<object> action = null)
         {
             Plat = data;
             Action = action;
-
-            switch(Plat.Type)
+            ShowPage(Plat.Type);
+            switch (Plat.Type)
             {
                 case ePlatform.QQMusic:
+                case ePlatform.Spotify:
+                    //creat Browser
+                    if (Browser == null)
+                    {
+                        Browser = new CollapsableChromiumWebBrowser();
+                        ((LoginView)this.View).ctrlBrowerGrid.Children.Add(Browser);
+                    }
                     LoadWebBrowser(Plat.Type);
                     break;
                 case ePlatform.CloudMusic:
@@ -41,7 +52,6 @@ namespace Suda.Pages
                     break;
             }
 
-            ShowPage(Plat.Type);
         }
 
         public void ShowPage(ePlatform type)
@@ -59,22 +69,19 @@ namespace Suda.Pages
         /// <summary>
         /// Callback wehn login success
         /// </summary>
-        public async Task LoginSuccess()
+        public void LoginSuccess()
         {
-            string msg, msg1;
-            (msg, Plat.UserInfo) = await SudaLib.Method.GetUserInfo(Plat.LoginKey);
-            (msg1, Plat.Playlists) = await SudaLib.Method.GetUserPlaylists(Plat.LoginKey);
-
-            if(Plat.Type == ePlatform.CloudMusic)
-                Global.Cache.CloudLoginkey = (CloudMusic.LoginKey)Plat.LoginKey;
-            else if (Plat.Type == ePlatform.QQMusic)
-                Global.Cache.QQLoginkey = (QQMusic.LoginKey)Plat.LoginKey;
-            else if (Plat.Type == ePlatform.Tidal)
-                Global.Cache.TidalLoginkey = (Tidal.LoginKey)Plat.LoginKey;
-
-            Global.Cache.Write();
             if (Action != null)
                 Action(null);
+
+            Global.Cache.Save(Plat.LoginKey);
+
+            //remove Browser (consume big memory)
+            if (Browser != null)
+            {
+                ((LoginView)this.View).ctrlBrowerGrid.Children.Remove(Browser);
+                Browser = null;
+            }
         }
 
         #region Login by input username and password
@@ -100,7 +107,7 @@ namespace Suda.Pages
 
             if(Username.IsBlank() || Password.IsBlank())
             {
-                Errlabel = "Username or password is error!";
+                Errlabel = Language.Get("strmsgUsernamePasswordError");
                 goto RETURN;
             }
 
@@ -108,11 +115,11 @@ namespace Suda.Pages
             if (key != null)
             {
                 Plat.LoginKey = key;
-                await LoginSuccess();
+                LoginSuccess();
                 goto RETURN;
             }
 
-            Errlabel = "Login err! " + msg;
+            Errlabel = Language.Get("strmsgLoginFailed") + " " + msg;
 
         RETURN:
             BtnLoginEnable = true;
@@ -126,30 +133,83 @@ namespace Suda.Pages
         /// Load url
         /// </summary>
         /// <param name="type"></param>
-        void LoadWebBrowser(ePlatform type)
+        async void LoadWebBrowser(ePlatform type)
         {
-            WebBrowser CtrlWebBrowser = ((LoginView)this.View).ctrlWebBrowser;
-            if(type == ePlatform.QQMusic)
-                CtrlWebBrowser.Navigate(QQMusic.GetLoginUrl());
-
-            CtrlWebBrowser.DocumentCompleted += DocumentCompleted;
+            //load
+            if (type == ePlatform.QQMusic)
+            {
+                Browser.FrameLoadEnd += Browser_FrameLoadEnd;
+                Browser.Address = QQMusic.GetLoginUrl();
+            }
+            else if (type == ePlatform.Spotify)
+            {
+                await Spotify.WorkBeforeLogin((AccessToken) => { TryLogin((AccessToken, "")); });
+                Browser.Address = Spotify.GetLoginUrl();
+               
+            }
         }
 
-        /// <summary>
-        /// Web Document Completed
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        public async void TryLogin(object data)
         {
-            WebBrowser CtrlWebBrowser = (WebBrowser)sender;
-            (string msg, object key) = SudaLib.Method.GetLoginKey(Plat.Type, CtrlWebBrowser.DocumentTitle, CtrlWebBrowser.Document.Cookie).Result;
-            if(key != null)
+            (string html,string cookies) = ((string,string))data;
+            (string msg, object key) = SudaLib.Method.GetLoginKey(Plat.Type, html, cookies).Result;
+            if (key != null)
             {
                 Plat.LoginKey = key;
                 LoginSuccess();
             }
         }
+
+        private async void Browser_FrameLoadEnd(object sender, FrameLoadEndEventArgs e)
+        {
+            CookieVisitor.Html = await Browser.GetSourceAsync();
+            CookieVisitor visitor = new CookieVisitor();
+            visitor.Action += TryLogin;
+            Cef.GetGlobalCookieManager().VisitAllCookies(visitor);
+            return;
+        }
+
+        public class CookieVisitor : ICookieVisitor
+        {
+            public static string Cookies = null;
+            public static string Html = null;
+            public event Action<object> Action;
+            public bool Visit(CefSharp.Cookie cookie, int count, int total, ref bool deleteCookie)
+            {
+                if(count == 0)
+                    Cookies = null;
+                
+                Cookies += cookie.Name + "=" + cookie.Value + ";";
+                deleteCookie = false;
+                return true;
+            }
+
+            public void Dispose() 
+            {
+                if (Action != null)
+                    Action((Html, Cookies));
+                return;
+            }
+        }
+
         #endregion
+    }
+
+    internal sealed class CollapsableChromiumWebBrowser : ChromiumWebBrowser
+    {
+        public CollapsableChromiumWebBrowser()
+        {
+            this.Loaded += this.BrowserLoaded;
+        }
+
+        private void BrowserLoaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            // Avoid loading CEF in designer
+            if (DesignerProperties.GetIsInDesignMode(this))
+                return;
+            // Avoid NRE in AbstractRenderHandler.OnPaint
+            ApplyTemplate();
+            CreateOffscreenBrowser(new Size(400, 400));
+        }
     }
 }

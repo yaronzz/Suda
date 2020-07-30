@@ -9,18 +9,18 @@
     <aigs:UnBoolConverter x:Key="ConverterUnbool" />
     <aigs:StringNotEmptyToBallConverter x:Key="ConverterStringNotEmpty" />
 
-    <Style x:Key="ListBoxItemTransparent" BasedOn="{StaticResource ListBoxItemBaseStyle}" TargetType="ListBoxItem">
+    <Style x:Key="MyListBoxItemTransparent" BasedOn="{StaticResource ListBoxItemBaseStyle}" TargetType="ListBoxItem">
         <Setter Property="Visibility" Value="{Binding IsVisible,Converter={StaticResource Boolean2VisibilityConverter}}"/>
         <Setter Property="hc:BorderElement.CornerRadius" Value="4"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Margin" Value="0,0,0,5"/>
     </Style>
-    <Style x:Key="ListBoxTransparent" BasedOn="{StaticResource ListBoxBaseStyle}" TargetType="ListBox">
+    <Style x:Key="MyListBoxTransparent" BasedOn="{StaticResource ListBoxBaseStyle}" TargetType="ListBox">
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="ItemContainerStyle" Value="{StaticResource ListBoxItemTransparent}"/>
+        <Setter Property="ItemContainerStyle" Value="{StaticResource MyListBoxItemTransparent}"/>
     </Style>
     
-    <Style x:Key="RadioButtonIconBaseStyle" BasedOn="{StaticResource BaseStyle}" TargetType="RadioButton">
+    <Style x:Key="MyRadioButtonIconBaseStyle" BasedOn="{StaticResource BaseStyle}" TargetType="RadioButton">
         <Setter Property="Height" Value="{StaticResource DefaultControlHeight}"/>
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisualRadius0}"/>
         <Setter Property="Background" Value="Transparent"/>
@@ -83,7 +83,7 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="ButtonBaseStyle" BasedOn="{StaticResource ButtonBaseBaseStyle}" TargetType="Button">
+    <Style x:Key="MyButtonBaseStyle" BasedOn="{StaticResource ButtonBaseBaseStyle}" TargetType="Button">
         <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
         <Setter Property="Background" Value="{DynamicResource RegionBrush}"/>
         <Setter Property="hc:BorderElement.CornerRadius" Value="{StaticResource DefaultCornerRadius}"/>
@@ -125,14 +125,14 @@
         </Style.Triggers>
     </Style>
 
-    <Style  x:Key="ButtonClose" BasedOn="{StaticResource ButtonBaseStyle}" TargetType="Button">
+    <Style  x:Key="MyButtonClose" BasedOn="{StaticResource MyButtonBaseStyle}" TargetType="Button">
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="Red"/>
             </Trigger>
         </Style.Triggers>
     </Style>
-    <Style  x:Key="ButtonDefault" BasedOn="{StaticResource ButtonBaseStyle}" TargetType="Button">
+    <Style  x:Key="MyButtonDefault" BasedOn="{StaticResource MyButtonBaseStyle}" TargetType="Button">
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="{DynamicResource SecondaryRegionBrush}"/>

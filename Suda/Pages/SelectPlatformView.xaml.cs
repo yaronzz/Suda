@@ -1,4 +1,5 @@
-﻿using Suda.Else;
+﻿using HandyControl.Controls;
+using Suda.Else;
 using SudaLib;
 using System;
 using System.Collections.Generic;
@@ -42,6 +43,12 @@ namespace Suda.Pages
 
         private void Confim(object sender, RoutedEventArgs e)
         {
+            if(ComboxPlatforms.Count <= 0)
+            {
+                Growl.Error(Suda.Else.Language.Get("strmsgNoPlatform"), Global.TOKEN_MAIN);
+                return;
+            }
+
             if (CtlCombox.SelectedIndex >= 0)
             {
                 ePlatform type = (ePlatform)ComboxPlatforms.ElementAt(CtlCombox.SelectedIndex).Key;

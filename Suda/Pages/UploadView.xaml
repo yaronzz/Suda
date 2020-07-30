@@ -13,7 +13,7 @@
              d:DesignHeight="600" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance local:UploadViewModel}">
 
-    <Border Background="{DynamicResource RegionBrush}" Effect="{StaticResource EffectShadow5}" Width="300" BorderThickness="1" BorderBrush="{DynamicResource BorderBrush}" Padding="0">
+    <Border Visibility="{Binding ViewVisibility}" Background="{DynamicResource RegionBrush}" Effect="{StaticResource EffectShadow5}" Width="300" BorderThickness="1,0,0,0" BorderBrush="{DynamicResource BorderBrush}" Padding="0">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -22,13 +22,19 @@
             </Grid.RowDefinitions>
 
             <StackPanel Margin="20,35,20,0">
-                <TextBlock Margin="0,0,0,5" Text="UPLOAD LIST" FontWeight="ExtraBold" Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Left"/>
+                <TextBlock Margin="0,0,0,5" Text="{DynamicResource strUPLOADLIST}" FontWeight="ExtraBold" Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Left"/>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="WAIT: " Foreground="{DynamicResource SecondaryTextBrush}" HorizontalAlignment="Left"/>
+                    <TextBlock Text="{DynamicResource strWAIT}" Foreground="{DynamicResource SecondaryTextBrush}" HorizontalAlignment="Left"/>
+                    <TextBlock Text=": " Foreground="{DynamicResource SecondaryTextBrush}" HorizontalAlignment="Left"/>
                     <TextBlock Text="{Binding NumWait}" HorizontalAlignment="Left"/>
-                    <TextBlock Text="SUCCESS: " Foreground="{DynamicResource SecondaryTextBrush}" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                    <TextBlock Text="{DynamicResource strSUCCESS}" Foreground="{DynamicResource SecondaryTextBrush}" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                    <TextBlock Text=": " Foreground="{DynamicResource SecondaryTextBrush}" HorizontalAlignment="Left"/>
                     <TextBlock Text="{Binding NumSuccess}" Foreground="Green" HorizontalAlignment="Left"/>
-                    <TextBlock Text="ERROR: " Foreground="{DynamicResource SecondaryTextBrush}" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                    <TextBlock Text="{DynamicResource strUPDATE}" Foreground="{DynamicResource SecondaryTextBrush}" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                    <TextBlock Text=": " Foreground="{DynamicResource SecondaryTextBrush}" HorizontalAlignment="Left"/>
+                    <TextBlock Text="{Binding NumUpdate}" Foreground="Green" HorizontalAlignment="Left"/>
+                    <TextBlock Text="{DynamicResource strERROR}" Foreground="{DynamicResource SecondaryTextBrush}" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                    <TextBlock Text=": " Foreground="{DynamicResource SecondaryTextBrush}" HorizontalAlignment="Left"/>
                     <TextBlock Text="{Binding NumError}" Foreground="Red" HorizontalAlignment="Left"/>
                 </StackPanel>
                 <hc:Divider Margin="0,10,0,2"></hc:Divider>
@@ -36,7 +42,7 @@
 
             <!--Upload list-->
             <TabControl Grid.Row="1" Margin="20,0,20,0" Style="{StaticResource TabControlInLine}">
-                <TabItem Header="WAIT">
+                <TabItem Header="{DynamicResource strWAIT}">
                     <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                         <ItemsControl ItemsSource="{Binding UploadItems}" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left">
                             <ItemsControl.ItemTemplate>
@@ -53,7 +59,7 @@
                         </ItemsControl>
                     </ScrollViewer>
                 </TabItem>
-                <TabItem Header="SUCCESS">
+                <TabItem Header="{DynamicResource strSUCCESS}">
                     <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                         <ItemsControl ItemsSource="{Binding SuccessItems}" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left">
                             <ItemsControl.ItemTemplate>
@@ -70,7 +76,7 @@
                         </ItemsControl>
                     </ScrollViewer>
                 </TabItem>
-                <TabItem Header="ERROR">
+                <TabItem Header="{DynamicResource strERROR}">
                     <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                         <ItemsControl ItemsSource="{Binding ErrorItems}" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left">
                             <ItemsControl.ItemTemplate>
@@ -90,7 +96,7 @@
             </TabControl>
        
             <!--Concel button-->
-            <Button Grid.Row="2" Command="{s:Action Cancel}" Style="{DynamicResource ButtonDanger}" Content="Cancel" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" Margin="10" />
+            <Button Grid.Row="2" Command="{s:Action Cancel}" IsEnabled="{Binding IsCancel,Converter={StaticResource ConverterUnbool}}" Style="{DynamicResource ButtonDanger}" Content="{DynamicResource strCancel}" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" Margin="10" />
         </Grid>
     </Border>
 </UserControl>

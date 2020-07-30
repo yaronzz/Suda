@@ -19,9 +19,12 @@
                 <!--control-->
                 <ResourceDictionary Source="Properties/Geometries.xaml" />
                 <ResourceDictionary Source="Properties/ControlResources.xaml" />
+                
+                <!--Language-->
+                <ResourceDictionary Source="Properties/Lang/StringResource.xaml" />
+                <ResourceDictionary Source="Properties/Lang/StringResource.zh-CN.xaml" />
 
             </ResourceDictionary.MergedDictionaries>
-
         </s:ApplicationLoader>
     </Application.Resources>
 </Application>

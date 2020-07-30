@@ -5,11 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Suda.Pages
+namespace Suda.Else
 {
-    public class SettingsViewModel : Suda.Else.ModelBase
+    public class ModelBase : Stylet.Screen
     {
-       
-
+        public Visibility ViewVisibility { get; set; } = Visibility.Hidden;
     }
 }

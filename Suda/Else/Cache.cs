@@ -1,4 +1,5 @@
-﻿using AIGS.Helper;
+﻿using AIGS.Common;
+using AIGS.Helper;
 using SudaLib;
 using System;
 using System.Collections.Generic;
@@ -15,15 +16,27 @@ namespace Suda.Else
         public Tidal.LoginKey TidalLoginkey { get; set; }
         public Spotify.LoginKey SpotifyLoginkey { get; set; }
 
-        public void Write()
+        public void Save(object Logkey)
         {
+            ePlatform type = Method.GetPlatform(Logkey);
+            if (type == ePlatform.CloudMusic)
+                CloudLoginkey = (CloudMusic.LoginKey)Logkey;
+            else if (type == ePlatform.QQMusic)
+                QQLoginkey = (QQMusic.LoginKey)Logkey;
+            else if (type == ePlatform.Tidal)
+                TidalLoginkey = (Tidal.LoginKey)Logkey;
+            else if (type == ePlatform.Spotify)
+                SpotifyLoginkey = (Spotify.LoginKey)Logkey;
+
             string data = JsonHelper.ConverObjectToString<Cache>(this);
-            FileHelper.Write(data, true, Global.PATH_CACHE);
+            string edata = EncryptHelper.Encode(data, Global.KEY_CACHE);
+            FileHelper.Write(edata, true, Global.PATH_CACHE);
         }
 
         public static Cache Read()
         {
-            string data = FileHelper.Read(Global.PATH_CACHE);
+            string edata = FileHelper.Read(Global.PATH_CACHE);
+            string data = EncryptHelper.Decode(edata, Global.KEY_CACHE);
             Cache ret = JsonHelper.ConverStringToObject<Cache>(data);
             if (ret == null)
                 return new Cache();

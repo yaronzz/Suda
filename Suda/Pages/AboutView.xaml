@@ -10,9 +10,82 @@
              xmlns:aigs="clr-namespace:AIGS.Common;assembly=AIGS"
              xmlns:sudaelse="clr-namespace:Suda.Else"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
+             d:DesignHeight="800" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance local:AboutViewModel}">
-    <Grid>
-            
+
+    <Grid Visibility="{Binding ViewVisibility}">
+        <Grid Background="Black" Opacity="0.3"></Grid>
+        <Border Style="{StaticResource BorderRegion}" Effect="{DynamicResource EffectShadow3}" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Grid Margin="10,0,10,10">
+                <Grid.RowDefinitions>
+                    <RowDefinition  Height="AUTO"/>
+                    <RowDefinition  Height="AUTO"/>
+                    <RowDefinition  Height="AUTO"/>
+                </Grid.RowDefinitions>
+
+                <Button Command="{s:Action WindowClose}" Height="32" Width="32" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource MyButtonClose}" hc:BackgroundSwitchElement.MouseHoverBackground="Red" hc:BackgroundSwitchElement.MouseDownBackground="PaleVioletRed" Padding="0" Grid.Column="1">
+                    <Path Fill="LightGray" Width="12" Data="{StaticResource CloseGeometry}"></Path>
+                </Button>
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Path Fill="{DynamicResource PrimaryTextBrush}" Height="180" Width="180"  Data="{StaticResource LogoGeometry}"></Path>
+                    <DockPanel Grid.Column="1" Margin="15,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="SUDA" DockPanel.Dock="Top" FontSize="40" VerticalAlignment="Top" FontWeight="ExtraBlack" Margin="0,15,0,15" />
+                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                            <TextBlock Text="MADE WITH ♥ BY " Foreground="Gray" FontSize="15" VerticalAlignment="Center" Height="25" Margin="0" FontFamily="Global Monospace" />
+                            <TextBlock Text="YARONZZ" Foreground="BlueViolet" FontSize="15" VerticalAlignment="Center" Height="25" Margin="0" FontFamily="Global Monospace" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                            <TextBlock Text="{DynamicResource strVERSION}" Foreground="Gray" FontSize="14" FontFamily="Global Monospace" VerticalAlignment="Center" TextWrapping="Wrap" Margin="0,0,5,0" />
+                            <TextBlock Text="{Binding Version}" Foreground="BlueViolet" FontSize="14" FontFamily="Global Monospace" VerticalAlignment="Center" TextWrapping="Wrap" />
+                            <TextBlock Text="{Binding Type}" Foreground="BlueViolet" FontSize="14" FontFamily="Global Monospace" VerticalAlignment="Center" TextWrapping="Wrap" />
+                        </StackPanel>
+                        <DockPanel DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Margin="0,20,0,20">
+                            <Button Content="Github" Command="{s:Action GotoGithub}" hc:IconElement.Geometry="{StaticResource GithubGeometry}" DockPanel.Dock="Left" Margin="0,0,10,0" Padding="15,6" HorizontalAlignment="Left" ></Button>
+                            <Button Content="{DynamicResource strFeedback}" Command="{s:Action Feedback}" hc:IconElement.Geometry="{StaticResource IssuesGeometry}" DockPanel.Dock="Left" Margin="0,0,10,0" Padding="15,6" HorizontalAlignment="Left" ></Button>
+                            <Button Content="{DynamicResource strGroup}" Command="{s:Action Telegram}" hc:IconElement.Geometry="{StaticResource TelegramGeometry}" DockPanel.Dock="Left" Margin="0,0,10,0" Padding="15,6" HorizontalAlignment="Left" ></Button>
+                        </DockPanel>
+                    </DockPanel>
+                </Grid>
+
+                <Grid Grid.Row="2" Margin="10,20,0,0" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <hc:Divider Margin="0,1"></hc:Divider>
+                    <StackPanel Grid.Row="1"  Orientation="Horizontal" >
+                        <TextBlock Text="{DynamicResource strDonation}" FontSize="20" Margin="0,20,0,20"></TextBlock>
+                        <TextBlock Text=" : " FontSize="20" Margin="0,20,20,20"></TextBlock>
+                        <Button Content="Paypal" MinWidth="100" Command="{s:Action ClickPaypal}" Style="{DynamicResource ButtonPrimary}" hc:IconElement.Geometry="{StaticResource PaypalGeometry}" DockPanel.Dock="Left" Margin="0,0,10,0" Padding="15,6" HorizontalAlignment="Left" ></Button>
+                        <Button Content="Patreon" MinWidth="100" Command="{s:Action ClickPatreon}" Style="{DynamicResource ButtonDanger}" hc:IconElement.Geometry="{StaticResource PatreonGeometry}" DockPanel.Dock="Left" Margin="0,0,10,0" Padding="15,6" HorizontalAlignment="Left" ></Button>
+                        <ToggleButton Content="{DynamicResource strWechat}" MinWidth="100" Foreground="White" Background="#FF3CB033" hc:IconElement.Geometry="{StaticResource WeixinGeometry}" DockPanel.Dock="Left" Margin="0,0,10,0" Padding="15,6" HorizontalAlignment="Left" Height="31">
+                            <hc:Poptip.Instance>
+                                <hc:Poptip HitMode="None" PlacementType="Top" IsOpen="{Binding Target.IsChecked,RelativeSource={RelativeSource Self}}">
+                                    <hc:Poptip.Content>
+                                        <Image Width="100" Height="100" Source="https://cdn.jsdelivr.net/gh/yaronzz/CDN/my/weixinpay.jpg"/>
+                                    </hc:Poptip.Content>
+                                </hc:Poptip>
+                            </hc:Poptip.Instance>
+                        </ToggleButton>
+                        <ToggleButton Content="{DynamicResource strAlipay}" MinWidth="100" Foreground="White" hc:IconElement.Geometry="{StaticResource AlipayGeometry}" DockPanel.Dock="Left" Margin="0,0,10,0" Padding="15,6" HorizontalAlignment="Left" Background="#FF1477FF" Height="31" >
+                            <hc:Poptip.Instance>
+                                <hc:Poptip HitMode="None" PlacementType="Top" IsOpen="{Binding Target.IsChecked,RelativeSource={RelativeSource Self}}">
+                                    <hc:Poptip.Content>
+                                        <Image Width="100" Height="100" Source="https://cdn.jsdelivr.net/gh/yaronzz/CDN/my/alipay.jpg"/>
+                                    </hc:Poptip.Content>
+                                </hc:Poptip>
+                            </hc:Poptip.Instance>
+                        </ToggleButton>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

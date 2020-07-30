@@ -20,12 +20,12 @@
 
             <Grid Margin="0,16,0,0" >
                 <StackPanel x:Name="PanelOKCancel" Orientation="Horizontal">
-                    <Button Content="OK" Click="Confim" Style="{StaticResource ButtonPrimary}" HorizontalAlignment="Stretch" Width="150" Margin="10,0,10,0" ></Button>
-                    <Button x:Name="BtnClose" Content="Cancel" Command="hc:ControlCommands.Close" HorizontalAlignment="Stretch" Width="150" Margin="10,0,10,0"></Button>
+                    <Button Content="{DynamicResource strOK}" Click="Confim" Style="{StaticResource ButtonPrimary}" HorizontalAlignment="Stretch" Width="150" Margin="10,0,10,0" ></Button>
+                    <Button x:Name="BtnClose" Content="{DynamicResource strCancel}" Command="hc:ControlCommands.Close" HorizontalAlignment="Stretch" Width="150" Margin="10,0,10,0"></Button>
                 </StackPanel>
 
                 <StackPanel x:Name="PanelOK" Orientation="Horizontal">
-                    <Button Content="OK" Click="Confim" Style="{StaticResource ButtonPrimary}" HorizontalAlignment="Stretch" Width="320" Margin="10,0,10,0" ></Button>
+                    <Button Content="{DynamicResource strOK}" Click="Confim" Style="{StaticResource ButtonPrimary}" HorizontalAlignment="Stretch" Width="320" Margin="10,0,10,0" ></Button>
                 </StackPanel>
             </Grid>
             

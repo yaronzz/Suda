@@ -1,4 +1,5 @@
 ﻿using HandyControl.Controls;
+using HandyControl.Tools.Extension;
 using Suda.Else;
 using SudaLib;
 using System;
@@ -12,7 +13,7 @@ using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace Suda.Pages
 {
-    public class PlaylistViewModel : Stylet.Screen
+    public class PlaylistViewModel : Suda.Else.ModelBase
     {
         public MainViewModel VMMain { get; set; }
         public Playlist Playlist { get; set; }
@@ -44,7 +45,7 @@ namespace Suda.Pages
                     iNum++;
             }
             if (iNum <= 0)
-                Growl.Error("Please select tracks!", Global.TOKEN_PLAYLIST);
+                Growl.Error(Language.Get("strmsgPleaseselectTracks"), Global.TOKEN_PLAYLIST);
             else
                 VMMain.SudaPlaylistUpload(Playlist);
             return;
@@ -52,7 +53,7 @@ namespace Suda.Pages
 
         public void DeletePlaylist()
         {
-            Dialog.Show(new MessageView(MessageBoxImage.Information, "Delete this playlist?", true, (x) =>
+            Dialog.Show(new MessageView(MessageBoxImage.Information, Language.Get("strmsgDeleteThisPlaylist"), true, (x) =>
             {
                 VMMain.SudaPlaylistDel(Playlist);
                 Playlist = null;
