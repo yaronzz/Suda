@@ -131,7 +131,6 @@ namespace Suda.Pages
         public bool IsPageShow(object viewmodel)
         {
             return ((ModelBase)viewmodel).ViewVisibility == Visibility.Visible;
-            return ((Screen)viewmodel).View.Visibility == Visibility.Visible;
         }
 
         public void ShowPage(object viewmodel, bool hideElse = true)
@@ -140,16 +139,13 @@ namespace Suda.Pages
             {
                 foreach (var item in VMList)
                     ((ModelBase)item).ViewVisibility = Visibility.Hidden;
-                //((Screen)item).View.Visibility = Visibility.Hidden;
             }
             ((ModelBase)viewmodel).ViewVisibility = Visibility.Visible;
-            //((Screen)viewmodel).View.Visibility = Visibility.Visible;
         }
 
         public void HidePage(object viewmodel)
         {
             ((ModelBase)viewmodel).ViewVisibility = Visibility.Hidden;
-            //((Screen)viewmodel).View.Visibility = Visibility.Hidden;
         }
 
         #endregion

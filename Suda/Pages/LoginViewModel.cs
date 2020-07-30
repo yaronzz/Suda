@@ -149,7 +149,7 @@ namespace Suda.Pages
             }
         }
 
-        public async void TryLogin(object data)
+        public void TryLogin(object data)
         {
             (string html,string cookies) = ((string,string))data;
             (string msg, object key) = SudaLib.Method.GetLoginKey(Plat.Type, html, cookies).Result;
