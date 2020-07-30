@@ -19,35 +19,38 @@
         
         <!--Login by username and password-->
         <Grid Background="{DynamicResource RegionBrush}" Visibility="{Binding InputVisibility}">
-            <Grid >
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="150"/>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="100"/>
-                </Grid.RowDefinitions>
+            <Border Height="400" Width="650"  Style="{StaticResource BorderRegion}" Effect="{StaticResource EffectShadow5}">
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
 
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <Path Fill="{DynamicResource PrimaryTextBrush}" Width="50" Data="{Binding Plat.Logo}"></Path>
-                    <TextBlock Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Plat.Name}" VerticalAlignment="Center" FontWeight="Bold" FontSize="40" Margin="5,0,0,0"></TextBlock>
-                </StackPanel>
+                    <Grid Background="Black">
+                        <Path Fill="White" Width="200" Data="{Binding Plat.Logo}"></Path>
+                    </Grid>
 
-                <StackPanel Orientation="Horizontal" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <Path Fill="{DynamicResource PrimaryTextBrush}" Width="18" Margin="6" Data="{StaticResource AccountGeometry}"/>
-                    <hc:TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" Width="300" FontFamily="Microsoft Yahei Regular" hc:InfoElement.Placeholder="{DynamicResource strUsername}" FontWeight="Normal" VerticalAlignment="Center"  />
-                </StackPanel>
+                    <Grid Grid.Column="1" Margin="10,0,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="140"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="100"/>
+                        </Grid.RowDefinitions>
+                    
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Path Fill="{DynamicResource PrimaryTextBrush}" Width="50" Data="{Binding Plat.Logo}"></Path>
+                            <TextBlock Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Plat.Name}" VerticalAlignment="Center" FontWeight="Bold" FontSize="30" Margin="5,0,0,0"></TextBlock>
+                        </StackPanel>
 
-                <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Path Fill="{DynamicResource PrimaryTextBrush}" Width="18" Margin="6" Data="{StaticResource KeyGeometry}"/>
-                    <PasswordBox FontFamily="Microsoft Yahei Regular" Width="300" aigsc:PasswordBoxHelper.Attach="True" aigsc:PasswordBoxHelper.Password="{Binding Path=Password,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontWeight="Normal" VerticalAlignment="Center" />
-                </StackPanel>
+                        <hc:TextBox Grid.Row="1" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" FontSize="14" Width="300" FontFamily="Microsoft Yahei Regular" hc:InfoElement.Placeholder="{DynamicResource strUsername}" FontWeight="Normal" VerticalAlignment="Center"  />
+                        <PasswordBox Grid.Row="2" FontFamily="Microsoft Yahei Regular" Width="300" FontSize="14" aigsc:PasswordBoxHelper.Attach="True" aigsc:PasswordBoxHelper.Password="{Binding Path=Password,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontWeight="Normal" VerticalAlignment="Center" />
 
-                <Button Grid.Row="3" IsDefault="True" Command="{s:Action Login}" IsEnabled="{Binding BtnLoginEnable}" 
-                    CommandParameter="{Binding ElementName=PasswordBox}" Style="{StaticResource ButtonPrimary}"
-                    Content="{DynamicResource strLogin}" Width="295" Margin="69,35,64,35.8" />
-
-                <TextBlock Grid.Row="3" Text="{Binding Errlabel,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10,0,0,4" ></TextBlock>
-            </Grid>
+                        <Button Grid.Row="3" IsDefault="True" Command="{s:Action Login}" IsEnabled="{Binding BtnLoginEnable}" CommandParameter="{Binding ElementName=PasswordBox}" Style="{StaticResource ButtonPrimary}" Content="{DynamicResource strLogin}" HorizontalAlignment="Stretch" Margin="10,0" IsTabStop="False"></Button>
+                        <TextBlock Grid.Row="3" Text="{Binding Errlabel,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10,0,0,4" ></TextBlock>
+                    </Grid>
+                </Grid>
+            </Border>
         </Grid>
         
         <!--Login by web-->

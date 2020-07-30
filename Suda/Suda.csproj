@@ -263,6 +263,9 @@
   <ItemGroup>
     <Resource Include="Properties\img\favicon.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Properties\img\tidal.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -143,7 +143,7 @@ namespace Suda.Pages
             }
             else if (type == ePlatform.Spotify)
             {
-                await Spotify.WorkBeforeLogin((AccessToken) => { TryLogin((AccessToken, "")); });
+                await Spotify.WorkBeforeLogin((x) => { TryLogin(x); });
                 Browser.Address = Spotify.GetLoginUrl();
                
             }

@@ -33,7 +33,7 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
-                    <Path Fill="{DynamicResource PrimaryTextBrush}" Height="180" Width="180"  Data="{StaticResource LogoGeometry}"></Path>
+                    <Image Source="/Properties/img/favicon.ico" Height="180" Width="180"></Image>
                     <DockPanel Grid.Column="1" Margin="15,0,0,0" VerticalAlignment="Center">
                         <TextBlock Text="SUDA" DockPanel.Dock="Top" FontSize="40" VerticalAlignment="Top" FontWeight="ExtraBlack" Margin="0,15,0,15" />
                         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
@@ -64,25 +64,37 @@
                         <TextBlock Text="{DynamicResource strDonation}" FontSize="20" Margin="0,20,0,20"></TextBlock>
                         <TextBlock Text=" : " FontSize="20" Margin="0,20,20,20"></TextBlock>
                         <Button Content="Paypal" MinWidth="100" Command="{s:Action ClickPaypal}" Style="{DynamicResource ButtonPrimary}" hc:IconElement.Geometry="{StaticResource PaypalGeometry}" DockPanel.Dock="Left" Margin="0,0,10,0" Padding="15,6" HorizontalAlignment="Left" ></Button>
-                        <Button Content="Patreon" MinWidth="100" Command="{s:Action ClickPatreon}" Style="{DynamicResource ButtonDanger}" hc:IconElement.Geometry="{StaticResource PatreonGeometry}" DockPanel.Dock="Left" Margin="0,0,10,0" Padding="15,6" HorizontalAlignment="Left" ></Button>
-                        <ToggleButton Content="{DynamicResource strWechat}" MinWidth="100" Foreground="White" Background="#FF3CB033" hc:IconElement.Geometry="{StaticResource WeixinGeometry}" DockPanel.Dock="Left" Margin="0,0,10,0" Padding="15,6" HorizontalAlignment="Left" Height="31">
+
+                        <Button Content="BTC" MinWidth="100" Foreground="White" Background="Gold" hc:IconElement.Geometry="{StaticResource BTCGeometry}" DockPanel.Dock="Left" Margin="0,0,10,0" Padding="15,6" HorizontalAlignment="Left">
                             <hc:Poptip.Instance>
-                                <hc:Poptip HitMode="None" PlacementType="Top" IsOpen="{Binding Target.IsChecked,RelativeSource={RelativeSource Self}}">
+                                <hc:Poptip PlacementType="Top">
+                                    <hc:Poptip.Content>
+                                        <Image Width="100" Height="100" Source="https://cdn.jsdelivr.net/gh/yaronzz/CDN/my/btc.jpg"/>
+                                    </hc:Poptip.Content>
+                                </hc:Poptip>
+                            </hc:Poptip.Instance>
+                        </Button>
+
+                        <Button Content="{DynamicResource strWechat}" MinWidth="100" Foreground="White" Background="#FF3CB033" hc:IconElement.Geometry="{StaticResource WeixinGeometry}" DockPanel.Dock="Left" Margin="0,0,10,0" Padding="15,6" HorizontalAlignment="Left">
+                            <hc:Poptip.Instance>
+                                <hc:Poptip PlacementType="Top">
                                     <hc:Poptip.Content>
                                         <Image Width="100" Height="100" Source="https://cdn.jsdelivr.net/gh/yaronzz/CDN/my/weixinpay.jpg"/>
                                     </hc:Poptip.Content>
                                 </hc:Poptip>
                             </hc:Poptip.Instance>
-                        </ToggleButton>
-                        <ToggleButton Content="{DynamicResource strAlipay}" MinWidth="100" Foreground="White" hc:IconElement.Geometry="{StaticResource AlipayGeometry}" DockPanel.Dock="Left" Margin="0,0,10,0" Padding="15,6" HorizontalAlignment="Left" Background="#FF1477FF" Height="31" >
+                        </Button>
+
+                        <Button Content="{DynamicResource strAlipay}" MinWidth="100" Foreground="White" hc:IconElement.Geometry="{StaticResource AlipayGeometry}" DockPanel.Dock="Left" Margin="0,0,10,0" Padding="15,6" HorizontalAlignment="Left" Background="#FF1477FF">
                             <hc:Poptip.Instance>
-                                <hc:Poptip HitMode="None" PlacementType="Top" IsOpen="{Binding Target.IsChecked,RelativeSource={RelativeSource Self}}">
+                                <hc:Poptip PlacementType="Top">
                                     <hc:Poptip.Content>
                                         <Image Width="100" Height="100" Source="https://cdn.jsdelivr.net/gh/yaronzz/CDN/my/alipay.jpg"/>
                                     </hc:Poptip.Content>
                                 </hc:Poptip>
                             </hc:Poptip.Instance>
-                        </ToggleButton>
+                        </Button>
+
                     </StackPanel>
                 </Grid>
             </Grid>

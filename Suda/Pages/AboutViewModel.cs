@@ -21,9 +21,14 @@ namespace Suda.Pages
 
         public void GotoGithub() => NetHelper.OpenWeb("https://github.com/yaronzz/Suda");
         public void Feedback() => NetHelper.OpenWeb("https://github.com/yaronzz/Suda/issues");
-        public void Telegram() => NetHelper.OpenWeb("https://github.com/yaronzz/Suda");
-        public void WindowClose() => VMMain.HidePage(VMMain.VMAbout);
+        public void Telegram() => NetHelper.OpenWeb("https://t.me/suda_group");
         public void ClickPaypal() => NetHelper.OpenWeb("https://www.paypal.com/paypalme/yaronzz");
         public void ClickPatreon() => NetHelper.OpenWeb("https://www.patreon.com/yaronzz");
+        public void CopyBTC() => SystemHelper.SetClipBoardData("1KQVpksXqXVNx2BM1q1bng5qwPKEBfMM2s");
+
+        public void WindowClose()
+        {
+            VMMain.HidePage(VMMain.VMAbout);
+        }
     }
 }
