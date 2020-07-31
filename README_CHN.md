@@ -1,6 +1,6 @@
 <br>
     <a href="https://github.com/yaronzz/Suda">English</a> |
-    <a href="https://github.com/yaronzz/Suda/README_CHN.md">简体中文</a>
+    <a href="https://github.com/yaronzz/Suda/blob/master/README_CHN.md">简体中文</a>
 <br>
 <div align="center">
 <img src="https://cdn.jsdelivr.net/gh/yaronzz/Suda/Screenshot/LOGO_TITLE.png" alt="">
