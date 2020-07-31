@@ -10,10 +10,10 @@
              xmlns:local="clr-namespace:Suda.Pages"
              xmlns:sudaelse="clr-namespace:Suda.Else"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="300"
+             d:DesignHeight="600"
              d:DataContext="{d:DesignInstance local:UploadViewModel}">
 
-    <Border Visibility="{Binding ViewVisibility}" Background="{DynamicResource RegionBrush}" Effect="{StaticResource EffectShadow5}" Width="300" BorderThickness="1,0,0,0" BorderBrush="{DynamicResource BorderBrush}" Padding="0">
+    <Border Visibility="{Binding ViewVisibility}" Background="{DynamicResource RegionBrush}" Effect="{StaticResource EffectShadow5}" MinWidth="370" BorderThickness="1,0,0,0" BorderBrush="{DynamicResource BorderBrush}" Padding="0">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>

@@ -13,14 +13,15 @@ namespace Suda.Else
 {
     public class Global : ViewMoudleBase
     {
+        public static MainViewModel VMMain { get; set; }
         public static Cache Cache { get; set; }
         public static Settings Settings { get; set; }
 
         //Path
-        public static string PATH_BASE = SystemHelper.GetUserFolders().PersonalPath + "/Suda/";
-        public static string PATH_CACHE = PATH_BASE + "/data/cache.json";
-        public static string PATH_SETTINGS = PATH_BASE + "/data/settings.json";
-        public static string PATH_SUDA_PLAYLIST = PATH_BASE + "/data/sudaplaylist.json";
+        public static string PATH_BASE = SystemHelper.GetUserFolders().PersonalPath + "\\Suda\\data\\";
+        public static string PATH_CACHE = PATH_BASE + "cache.json";
+        public static string PATH_SETTINGS = PATH_BASE + "settings.json";
+        public static string PATH_SUDA_PLAYLIST = PATH_BASE + "sudaplaylist.json";
 
         //Token
         public static string TOKEN_PLATFORM = "PlatformToken";

@@ -43,9 +43,9 @@ namespace Suda.Else
             else
                 findstr = @"StringResource.xaml";
 
-            ret = pList.FirstOrDefault(x => x.Source.OriginalString.Contains(findstr));
+            ret = pList.FirstOrDefault(x => x.Source != null && x.Source.OriginalString.Contains(findstr));
             if(ret == null)
-                ret = pList.FirstOrDefault(x => x.Source.OriginalString.Contains("StringResource.xaml"));
+                ret = pList.FirstOrDefault(x => x.Source != null && x.Source.OriginalString.Contains("StringResource.xaml"));
             return ret;
         }
 

@@ -12,19 +12,50 @@
 
             <ResourceDictionary.MergedDictionaries>
                 <!--theme-->
-                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDefault.xaml"/>
-                <!--<ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDark.xaml"/>-->
-                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>
-                
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDefault.xaml"/>
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+
                 <!--control-->
                 <ResourceDictionary Source="Properties/Geometries.xaml" />
                 <ResourceDictionary Source="Properties/ControlResources.xaml" />
                 
                 <!--Language-->
-                <ResourceDictionary Source="Properties/Lang/StringResource.xaml" />
                 <ResourceDictionary Source="Properties/Lang/StringResource.zh-CN.xaml" />
+                <ResourceDictionary Source="Properties/Lang/StringResource.xaml" />
 
             </ResourceDictionary.MergedDictionaries>
         </s:ApplicationLoader>
     </Application.Resources>
 </Application>
+
+<!--<Application.Resources>
+    <ResourceDictionary>
+        <ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDefault.xaml"/>
+                    <ResourceDictionary Source="Resources/Themes/SkinDefault.xaml"/>
+                </ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>
+                    <ResourceDictionary Source="Resources/Themes/Theme.xaml"/>
+                </ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary>
+        </ResourceDictionary.MergedDictionaries>
+        <langs:LangProvider x:Key="DemoLangs"/>
+        <viewModel:ViewModelLocator x:Key="Locator" d:IsDataSource="True"/>
+        <hc:EnumDataProvider x:Key="DemoTypes" Type="data:DemoType"/>
+        <hc:EnumDataProvider x:Key="ShowAnimations" Type="hc:ShowAnimation"/>
+        <hc:EnumDataProvider x:Key="HatchStyles" Type="hc:HatchStyle"/>
+    </ResourceDictionary>
+</Application.Resources>-->

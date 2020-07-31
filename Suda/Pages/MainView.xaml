@@ -29,7 +29,7 @@
         <!--Left menu-->
         <Grid Grid.RowSpan="2" Background="black">
             <DockPanel Margin="0,0,0,0" >
-                <Button DockPanel.Dock="Top" Margin="15,20,29,15" Background="black" BorderThickness="0" Height="60" hc:BackgroundSwitchElement.MouseHoverBackground="Gray" Padding="0" Width="156">
+                <Button Command="{s:Action WindowImport}" DockPanel.Dock="Top" Margin="15,20,29,15" Background="black" BorderThickness="0" Height="60" hc:BackgroundSwitchElement.MouseHoverBackground="Gray" Padding="0" Width="156">
                     <StackPanel Orientation="Horizontal">
                         <Path Fill="LightGray" Width="32" Data="{StaticResource LogoGeometry}"></Path>
                         <TextBlock Foreground="LightGray" Text="SUDA" VerticalAlignment="Center" FontWeight="Bold" FontSize="20" Margin="5,0,0,0"></TextBlock>
@@ -72,6 +72,8 @@
         <local:PlatformView Padding="10,0,10,10" Grid.Row="1" Grid.Column="1" s:View.Model="{Binding VMSpotifyPlatform}" />
         <!--Playlist-->
         <Grid x:Name="ctrlPLGrid" Margin="10,0,10,10" Grid.Row="1" Grid.Column="1"/>
+        <!--Import-->
+        <local:ImportView Padding="10,0,10,10" Grid.Row="1" Grid.Column="1" s:View.Model="{Binding VMImport}" />
         <!--Login-->
         <local:LoginView Grid.Row="1" Grid.Column="1" s:View.Model="{Binding VMLogin}" />
         <!--Settings-->

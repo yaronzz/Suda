@@ -16,7 +16,6 @@ namespace Suda.Pages
 {
     public class UploadViewModel : Suda.Else.ModelBase
     {
-        public MainViewModel VMMain;
         public Platform Platform { get; set; }
         public Playlist PlaylistFrom { get; set; }
         public ObservableCollection<UploadItem> UploadItems { get; set; }
@@ -38,11 +37,10 @@ namespace Suda.Pages
             public string Platform { get; set; }
         }
 
-        public void Load(Playlist playlist, MainViewModel main, Platform plat)
+        public void Load(Playlist playlist, Platform plat)
         {
             PlaylistFrom = playlist;
             Platform = plat;
-            VMMain = main;
             IsCancel = false;
             SuccessItems = new ObservableCollection<UploadItem>();
             ErrorItems = new ObservableCollection<UploadItem>();
@@ -88,7 +86,7 @@ namespace Suda.Pages
 
             //find playlist, if can't find, creat new one
             Playlist playlistTo = null;
-            int index = VMMain.FindPlaylist(plAarray, PlaylistFrom);
+            int index = Global.VMMain.FindPlaylist(plAarray, PlaylistFrom);
             if (index >= 0)
                 playlistTo = plAarray[index];
             else
@@ -105,7 +103,7 @@ namespace Suda.Pages
             for (int i = UploadItems.Count - 1; i >= 0; i--)
             {
                 UploadItem item = UploadItems[i];
-                if (VMMain.FindTrack(playlistTo.Tracks, item.Track) >= 0)
+                if (Global.VMMain.FindTrack(playlistTo.Tracks, item.Track) >= 0)
                 {
                     item.Status = Language.Get("strmsgExist");
                     item.StatusColor = Brushes.Green;

@@ -15,15 +15,13 @@ namespace Suda.Pages
 {
     public class PlaylistViewModel : Suda.Else.ModelBase
     {
-        public MainViewModel VMMain { get; set; }
         public Playlist Playlist { get; set; }
         public bool AllCheck { get; set; }
 
-        public void Load(Playlist data, MainViewModel main)
+        public void Load(Playlist data)
         {
             Playlist = data;
             AllCheck = false;
-            VMMain = main;
         }
 
         public void ClickAllCheck()
@@ -47,7 +45,7 @@ namespace Suda.Pages
             if (iNum <= 0)
                 Growl.Error(Language.Get("strmsgPleaseselectTracks"), Global.TOKEN_PLAYLIST);
             else
-                VMMain.SudaPlaylistUpload(Playlist);
+                Global.VMMain.SudaPlaylistUpload(Playlist);
             return;
         }
 
@@ -55,7 +53,7 @@ namespace Suda.Pages
         {
             Dialog.Show(new MessageView(MessageBoxImage.Information, Language.Get("strmsgDeleteThisPlaylist"), true, (x) =>
             {
-                VMMain.SudaPlaylistDel(Playlist);
+                Global.VMMain.SudaPlaylistDel(Playlist);
                 Playlist = null;
             }));
         }

@@ -7,8 +7,10 @@
 
     <aigs:BigEqualThanIntToVisibilityConverter x:Key="ConverterBigEqualThanInt" />
     <aigs:UnBoolConverter x:Key="ConverterUnbool" />
-    <aigs:StringNotEmptyToBallConverter x:Key="ConverterStringNotEmpty" />
-
+    <aigs:StringNotEmptyToBoolConverter x:Key="ConverterStringNotEmpty" />
+    <aigs:NotEmptyToBoolConverter x:Key="ConverterNotEmptyToBool" />
+    <aigs:EmptyToVisibilityConverter x:Key="ConverterEmptyToVisibility" />
+    
     <Style x:Key="MyListBoxItemTransparent" BasedOn="{StaticResource ListBoxItemBaseStyle}" TargetType="ListBoxItem">
         <Setter Property="Visibility" Value="{Binding IsVisible,Converter={StaticResource Boolean2VisibilityConverter}}"/>
         <Setter Property="hc:BorderElement.CornerRadius" Value="4"/>

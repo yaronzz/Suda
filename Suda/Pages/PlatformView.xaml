@@ -94,7 +94,7 @@
                         <TextBlock Text=": "/>
                         <TextBlock Text="{Binding Playlist.Tracks.Count}" Foreground="{DynamicResource SecondaryTextBrush}"/>
                     </StackPanel>
-                    <TextBlock Text="{Binding Playlist.Desc}" DockPanel.Dock="Top" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="13" VerticalAlignment="Top" TextWrapping="Wrap" Width="500" HorizontalAlignment="Left" Height="49"/>
+                    <TextBlock Text="{Binding Playlist.Desc}" DockPanel.Dock="Top" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="13" VerticalAlignment="Top" TextWrapping="Wrap" HorizontalAlignment="Left" Height="49"/>
 
                     <DockPanel DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Margin="0,0,0,20">
                         <Button Content="{DynamicResource strToLocal}" Command="{s:Action ToLocal}" CommandParameter="{Binding Playlist.Title}" hc:IconElement.Geometry="{StaticResource SDownloadGeometry}" DockPanel.Dock="Left" Margin="0,0,10,0" Padding="15,6" HorizontalAlignment="Left" ></Button>
@@ -105,24 +105,27 @@
 
             <DataGrid Grid.Row="1" HeadersVisibility="All" RowHeaderWidth="60" hc:DataGridAttach.ShowRowNumber="True" SelectionMode="Single"  AutoGenerateColumns="False" ItemsSource="{Binding Playlist.Tracks}" >
                 <DataGrid.Columns>
-                    <!--<DataGridCheckBoxColumn Binding="{Binding Check,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
-                        <DataGridCheckBoxColumn.Header>
-                            <Border Background="Transparent" Padding="0" HorizontalAlignment="Center">
-                                <CheckBox IsChecked="{Binding AllCheck}" DataContext="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext}" Command="{s:Action ClickAllCheck}"/>
-                            </Border>
-                        </DataGridCheckBoxColumn.Header>
-                    </DataGridCheckBoxColumn>-->
-                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding Title}" Width="250" Header="{DynamicResource strTITLE}"/>
-                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding ArtistsName}" Width="200" Header="{DynamicResource strARTISTS}"/>
-                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding AlbumTitle}" Width="200" Header="{DynamicResource strALBUM}"/>
-                    <DataGridTemplateColumn Header="{DynamicResource strACT}">
+                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding Title}" Width="250">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text ="{DynamicResource strTITLE}" />
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding ArtistsName}" Width="200">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text ="{DynamicResource strARTISTS}" />
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding AlbumTitle}" Width="200">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text ="{DynamicResource strALBUM}" />
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTemplateColumn >
+                        <DataGridTemplateColumn.Header>
+                            <TextBlock Text ="{DynamicResource strACT}" />
+                        </DataGridTemplateColumn.Header>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <!--<DockPanel Background="Transparent" HorizontalAlignment="Center" Width="32">
-                                    <Button Command="{s:Action DeleteTrack}" CommandParameter="{Binding MidArray}" Width="32" BorderThickness="0" DockPanel.Dock="Right" Padding="0" Background="Transparent">
-                                        <Path Fill="{DynamicResource DangerBrush}" Data="{StaticResource CloseGeometry}"></Path>
-                                    </Button>
-                                </DockPanel>-->
                                 <Button Command="{s:Action DeleteTrack}" CommandParameter="{Binding MidArray}" Height="32" Width="32" Style="{StaticResource MyButtonClose}" Padding="0" Background="Transparent">
                                     <Path Fill="{DynamicResource DangerBrush}" Width="12" Data="{StaticResource CloseGeometry}"></Path>
                                 </Button>

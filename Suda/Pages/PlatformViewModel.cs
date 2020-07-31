@@ -17,7 +17,6 @@ namespace Suda.Pages
 {
     public class PlatformViewModel : Suda.Else.ModelBase
     {
-        public MainViewModel VMMain { get; set; }
         public Platform Platform { get; set; }
         public Playlist Playlist { get; set; }
         public int PlSelectIndex { get; set; }
@@ -25,12 +24,11 @@ namespace Suda.Pages
         public bool AlreadyLoad { get; set; }
         public Visibility LoadingVisibility { get; set; }
 
-        public async void Load(Platform plat, MainViewModel main)
+        public async void Load(Platform plat)
         {
             if (AlreadyLoad)
                 return;
 
-            VMMain = main;
             Platform = plat;
             Playlist = null;
             AllCheck = false;
@@ -59,16 +57,6 @@ namespace Suda.Pages
                 }
             }
         }
-
-        //public void ClickAllCheck()
-        //{
-        //    if (Platform == null || Platform.Playlists == null)
-        //        return;
-        //    foreach (var item in Platform.Playlists)
-        //    {
-        //        item.Check = AllCheck;
-        //    }
-        //}
 
         public void PlaylistSelectChange()
         {
@@ -131,12 +119,12 @@ namespace Suda.Pages
             if(PlaylistTitle.IsNotBlank())
             {
                 if(PlSelectIndex >= 0)
-                    VMMain.SudaPlaylistAdd(new ObservableCollection<Playlist>() { Platform.Playlists[PlSelectIndex] });
+                    Global.VMMain.SudaPlaylistAdd(new ObservableCollection<Playlist>() { Platform.Playlists[PlSelectIndex] });
                 return;
             }
 
             //All
-            VMMain.SudaPlaylistAdd(Platform.Playlists);
+            Global.VMMain.SudaPlaylistAdd(Platform.Playlists);
             return;
         }
 
@@ -162,8 +150,8 @@ namespace Suda.Pages
                 Platform.Playlists = null;
 
                 Platform data = Platform;
-                Load(null, VMMain);
-                VMMain.MenuSelectPlatform(data);
+                Load(null);
+                Global.VMMain.MenuSelectPlatform(data);
             }));
         }
         #endregion

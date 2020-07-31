@@ -11,6 +11,7 @@
     <sys:String x:Key="strLogin">Login</sys:String>
     <sys:String x:Key="strToLocal">ToLocal</sys:String>
     <sys:String x:Key="strUpload">Upload</sys:String>
+    <sys:String x:Key="strImport">Import</sys:String>
     <sys:String x:Key="strSave">Save</sys:String>
     <sys:String x:Key="strAbout">About</sys:String>
     <sys:String x:Key="strSettings">Settings</sys:String>
@@ -19,6 +20,10 @@
     <sys:String x:Key="strDonation">Donation</sys:String>
     <sys:String x:Key="strWechat">Wechat</sys:String>
     <sys:String x:Key="strAlipay">Alipay</sys:String>
+    <sys:String x:Key="strQQMusic">QQ Music</sys:String>
+    <sys:String x:Key="strCloudMusic">Cloud Music</sys:String>
+    <sys:String x:Key="strSpotify">Spotify</sys:String>
+    <sys:String x:Key="strTidal">Tidal</sys:String>
     
     <!--Tip-->
     <sys:String x:Key="strPlatform">Platform</sys:String>
@@ -58,12 +63,17 @@
     <sys:String x:Key="strmsgDeleteThisPlaylist">Delete this playlist?</sys:String>
     <sys:String x:Key="strmsgSelectAPlatformToUpload">Please select a platform to upload.</sys:String>
     <sys:String x:Key="strmsgPleaseselectTracks">Please select tracks!</sys:String>
-
     <sys:String x:Key="strmsgMoreToLocalSuccess">To local success! Updata {0} tracks.</sys:String>
     <sys:String x:Key="strmsgOneToLocalSuccess">"{0}" to local success! Updata {1} tracks.</sys:String>
-
     <sys:String x:Key="strmsgUsernamePasswordError">Username or password is error!</sys:String>
     <sys:String x:Key="strmsgLoginFailed">Login failed!</sys:String>
+
+    <sys:String x:Key="strmsgEnterUrl">Enter playlist url.</sys:String>
+    <sys:String x:Key="strmsgPleaseEnterTheLink">Please enter the playlist link!</sys:String>
+    <sys:String x:Key="strmsgPleaseLoginByFirst">Please login by {0} first!</sys:String>
+    <sys:String x:Key="strmsgUrlIsWrong">Url is wrong!</sys:String>
+    <sys:String x:Key="strmsgGetPlaylistFailed">Get playlist failed!</sys:String>
+
     <!--Playlist Column-->
     <sys:String x:Key="strTITLE">TITLE</sys:String>
     <sys:String x:Key="strARTISTS">ARTISTS</sys:String>
@@ -71,4 +81,13 @@
     <sys:String x:Key="strDURATION">DURATION</sys:String>
     <sys:String x:Key="strACT">ACT</sys:String>
     
+    <!--Settings-->
+    <sys:String x:Key="strTheme">Theme</sys:String>
+    <sys:String x:Key="strLanguage">Language</sys:String>
+    <sys:String x:Key="strSearchMatch">Search | Match</sys:String>
+    <sys:String x:Key="strCompareAlbumTitle">Compare album title</sys:String>
+    <sys:String x:Key="strCompareTrackLive">Compare track-live</sys:String>
+    <sys:String x:Key="strCachePath">Cache path</sys:String>
+    <sys:String x:Key="strPlatformEnable">Platform enable</sys:String>
+
 </ResourceDictionary>

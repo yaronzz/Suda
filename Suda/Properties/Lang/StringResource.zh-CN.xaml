@@ -11,6 +11,7 @@
     <sys:String x:Key="strLogin">登录</sys:String>
     <sys:String x:Key="strToLocal">到本地</sys:String>
     <sys:String x:Key="strUpload">上传</sys:String>
+    <sys:String x:Key="strImport">导入到</sys:String>
     <sys:String x:Key="strSave">保存</sys:String>
     <sys:String x:Key="strAbout">关于</sys:String>
     <sys:String x:Key="strSettings">设置</sys:String>
@@ -19,6 +20,10 @@
     <sys:String x:Key="strDonation">捐赠</sys:String>
     <sys:String x:Key="strWechat">微信</sys:String>
     <sys:String x:Key="strAlipay">支付宝</sys:String>
+    <sys:String x:Key="strQQMusic">QQ音乐</sys:String>
+    <sys:String x:Key="strCloudMusic">网易云</sys:String>
+    <sys:String x:Key="strSpotify">Spotify</sys:String>
+    <sys:String x:Key="strTidal">Tidal</sys:String>
     
     <!--Tip-->
     <sys:String x:Key="strPlatform">平台</sys:String>
@@ -44,7 +49,6 @@
     <sys:String x:Key="strmsgAddToPlaylistFailed">添加到歌单失败!</sys:String>
     <sys:String x:Key="strmsgGetUserPlaylistsFailed">获取用户歌单失败!</sys:String>
     <sys:String x:Key="strmsgCreatPlaylistFailed">新建歌单失败!</sys:String>
-
     <sys:String x:Key="strmsgNoPlatform">没有平台!</sys:String>
     <sys:String x:Key="strmsgSaveSuccess">保存成功!</sys:String>
     <sys:String x:Key="strmsgSaveFailed">保存失败!</sys:String>
@@ -58,17 +62,30 @@
     <sys:String x:Key="strmsgDeleteThisPlaylist">删除歌单?</sys:String>
     <sys:String x:Key="strmsgSelectAPlatformToUpload">请选择一个平台上传。</sys:String>
     <sys:String x:Key="strmsgPleaseselectTracks">请选择歌曲!</sys:String>
-
     <sys:String x:Key="strmsgMoreToLocalSuccess">歌单至本地成功! 更新了 {0} 首歌.</sys:String>
     <sys:String x:Key="strmsgOneToLocalSuccess">"{0}" 至本地成功! 更新了 {1} 首歌.</sys:String>
-
     <sys:String x:Key="strmsgUsernamePasswordError">用户名或密码错误!</sys:String>
     <sys:String x:Key="strmsgLoginFailed">登录失败!</sys:String>
+
+    <sys:String x:Key="strmsgEnterUrl">请输入歌单链接.</sys:String>
+    <sys:String x:Key="strmsgPleaseEnterTheLink">请输入歌单链接!</sys:String>
+    <sys:String x:Key="strmsgPleaseLoginByFirst">请先通过 {0} 登录!</sys:String>
+    <sys:String x:Key="strmsgUrlIsWrong">链接无效!</sys:String>
+    <sys:String x:Key="strmsgGetPlaylistFailed">获取歌单失败!</sys:String>
+
     <!--Playlist Column-->
     <sys:String x:Key="strTITLE">标题</sys:String>
     <sys:String x:Key="strARTISTS">歌手</sys:String>
     <sys:String x:Key="strALBUM">专辑</sys:String>
     <sys:String x:Key="strDURATION">时长</sys:String>
     <sys:String x:Key="strACT">操作</sys:String>
-    
+
+    <!--Settings-->
+    <sys:String x:Key="strTheme">主题</sys:String>
+    <sys:String x:Key="strLanguage">语言</sys:String>
+    <sys:String x:Key="strSearchMatch">搜索 | 匹配</sys:String>
+    <sys:String x:Key="strCompareAlbumTitle">歌曲专辑名称需要一致</sys:String>
+    <sys:String x:Key="strCompareTrackLive">歌曲标题Live标志需要一致</sys:String>
+    <sys:String x:Key="strCachePath">缓存保存地址</sys:String>
+    <sys:String x:Key="strPlatformEnable">启用的平台</sys:String>
 </ResourceDictionary>

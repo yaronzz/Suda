@@ -1,4 +1,5 @@
 ﻿using AIGS.Helper;
+using Suda.Else;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +16,6 @@ namespace Suda.Pages
 #else
         public string Type { get; set; } = "(BETA)";
 #endif
-
-        public MainViewModel VMMain { get; set; }
         public string Version { get; set; } = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
         public void GotoGithub() => NetHelper.OpenWeb("https://github.com/yaronzz/Suda");
@@ -28,7 +27,7 @@ namespace Suda.Pages
 
         public void WindowClose()
         {
-            VMMain.HidePage(VMMain.VMAbout);
+            Global.VMMain.HidePage(Global.VMMain.VMAbout);
         }
     }
 }

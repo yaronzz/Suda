@@ -28,44 +28,38 @@
             <!--common-->
             <StackPanel Margin="0,0,0,20" >
                 <StackPanel Orientation="Horizontal" Margin="0,15">
-                    <TextBlock Text="Theme" VerticalAlignment="Center" FontSize="13"  HorizontalAlignment="Right" Width="150" Margin="10,0" FlowDirection="RightToLeft"/>
-                    <ComboBox Width="200" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <ComboBoxItem>Light</ComboBoxItem>
-                        <ComboBoxItem>Dark</ComboBoxItem>
-                    </ComboBox>
+                    <TextBlock Text="{DynamicResource strTheme}" VerticalAlignment="Center" FontSize="13"  HorizontalAlignment="Right" Width="150" Margin="10,0" FlowDirection="RightToLeft"/>
+                    <ComboBox Width="200" HorizontalAlignment="Left" VerticalAlignment="Center" SelectedValue="{Binding Settings.ThemeType}" ItemsSource="{Binding ThemeCombox}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,15">
-                    <TextBlock Text="Language" VerticalAlignment="Center" FontSize="13" HorizontalAlignment="Right" Width="150" Margin="10,0" FlowDirection="RightToLeft"/>
-                    <ComboBox Width="200" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <ComboBoxItem>Light</ComboBoxItem>
-                        <ComboBoxItem>Dark</ComboBoxItem>
-                    </ComboBox>
+                    <TextBlock Text="{DynamicResource strLanguage}" VerticalAlignment="Center" FontSize="13" HorizontalAlignment="Right" Width="150" Margin="10,0" FlowDirection="RightToLeft"/>
+                    <ComboBox Width="200" HorizontalAlignment="Left" VerticalAlignment="Center" SelectedValue="{Binding Settings.LanguageType}" ItemsSource="{Binding LanguageCombox}"/>
                 </StackPanel>
             </StackPanel>
             
             <!--Search-->
             <StackPanel Orientation="Horizontal" Margin="0,5">
-                <TextBlock Text="Search" VerticalAlignment="top" FontSize="13"  HorizontalAlignment="Right" Width="150" Margin="10,0" FlowDirection="RightToLeft"/>
+                <TextBlock Text="{DynamicResource strSearchMatch}" VerticalAlignment="top" FontSize="13"  HorizontalAlignment="Right" Width="150" Margin="10,0" FlowDirection="RightToLeft"/>
                 <StackPanel>
-                    <CheckBox IsChecked="{Binding ArtistBeforeTitle}" Content="Compare album titles." HorizontalAlignment="Left" Margin="0,0,0,20"/>
-                    <CheckBox IsChecked="{Binding AddAlbumIDBeforeFolder}" Content="Compare track live." HorizontalAlignment="Left" Margin="0,0,0,20"/>
+                    <CheckBox IsChecked="{Binding Settings.Compare.AlbumTitle}" Content="{DynamicResource strCompareAlbumTitle}" HorizontalAlignment="Left" Margin="0,0,0,20"/>
+                    <CheckBox IsChecked="{Binding Settings.Compare.Live}" Content="{DynamicResource strCompareTrackLive}" HorizontalAlignment="Left" Margin="0,0,0,20"/>
                 </StackPanel>
             </StackPanel>
 
             <!--Cache path-->
             <StackPanel Orientation="Horizontal" Margin="0,15">
-                <TextBlock Text="Cache path" VerticalAlignment="Center" FontSize="13"  HorizontalAlignment="Right" Width="150" Margin="10,0" FlowDirection="RightToLeft"/>
-                <Button Content="c:\\file\fdsaf" MinWidth="500"></Button>
+                <TextBlock Text="{DynamicResource strCachePath}" VerticalAlignment="Center" FontSize="13"  HorizontalAlignment="Right" Width="150" Margin="10,0" FlowDirection="RightToLeft"/>
+                <Button Content="{x:Static sudaelse:Global.PATH_BASE}" Command="{s:Action OpenDir}" MinWidth="500" HorizontalContentAlignment="Left"></Button>
             </StackPanel>
 
             <!--Platform-->
             <StackPanel Orientation="Horizontal" Margin="0,15">
-                <TextBlock Text="Platform Enable" VerticalAlignment="top" FontSize="13"  HorizontalAlignment="Right" Width="150" Margin="10,0" FlowDirection="RightToLeft"/>
+                <TextBlock Text="{DynamicResource strPlatform}" VerticalAlignment="top" FontSize="13"  HorizontalAlignment="Right" Width="150" Margin="10,0" FlowDirection="RightToLeft"/>
                 <StackPanel>
-                    <CheckBox IsChecked="{Binding ArtistBeforeTitle}" Content="Spotify" HorizontalAlignment="Left" Margin="0,0,0,20"/>
-                    <CheckBox IsChecked="{Binding AddAlbumIDBeforeFolder}" Content="Tidal" HorizontalAlignment="Left" Margin="0,0,0,20"/>
-                    <CheckBox IsChecked="{Binding AddAlbumIDBeforeFolder}" Content="QQ音乐" HorizontalAlignment="Left" Margin="0,0,0,20"/>
-                    <CheckBox IsChecked="{Binding AddAlbumIDBeforeFolder}" Content="网易云" HorizontalAlignment="Left" Margin="0,0,0,20"/>
+                    <CheckBox IsChecked="{Binding Settings.EnableSpotify}" Content="Spotify" HorizontalAlignment="Left" Margin="0,0,0,20"/>
+                    <CheckBox IsChecked="{Binding Settings.EnableTidal}" Content="Tidal" HorizontalAlignment="Left" Margin="0,0,0,20"/>
+                    <CheckBox IsChecked="{Binding Settings.EnableQQMusic}" Content="QQ音乐" HorizontalAlignment="Left" Margin="0,0,0,20"/>
+                    <CheckBox IsChecked="{Binding Settings.EnableCloudMusic}" Content="网易云" HorizontalAlignment="Left" Margin="0,0,0,20"/>
                 </StackPanel>
             </StackPanel>
         </StackPanel>

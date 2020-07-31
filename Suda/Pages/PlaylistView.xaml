@@ -27,7 +27,7 @@
                 
                 <hc:Gravatar Height="180" Width="180" Source="{Binding Playlist.ImgUrl}"  Margin="10"/>
                 <DockPanel Grid.Column="1" Margin="15,0,0,0">
-                    <TextBlock Text="{Binding Playlist.Title}" DockPanel.Dock="Top" FontSize="40" VerticalAlignment="Top" FontWeight="ExtraBlack" Margin="0,15,0,0" />
+                    <TextBlock Text="{Binding Playlist.Title}" DockPanel.Dock="Top" FontSize="40" VerticalAlignment="Top" FontWeight="ExtraBlack" Margin="0,15,0,5" />
                     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,5">
                         <TextBlock Text="{Binding Playlist.CreatorName}" Foreground="{DynamicResource SecondaryTextBrush}" VerticalAlignment="Center" HorizontalAlignment="Center" />
                         <TextBlock Text=" | " Foreground="{DynamicResource SecondaryTextBrush}"/>
@@ -53,11 +53,30 @@
                             </Border>
                         </DataGridCheckBoxColumn.Header>
                     </DataGridCheckBoxColumn>
-                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding Title}" Width="250" Header="{DynamicResource strTITLE}"/>
-                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding ArtistsName}" Width="200" Header="{DynamicResource strARTISTS}"/>
-                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding AlbumTitle}" Width="200" Header="{DynamicResource strALBUM}"/>
-                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding DurationStr}" Header="{DynamicResource strDURATION}" />
-                    <DataGridTemplateColumn Header="{DynamicResource strACT}">
+                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding Title}" Width="250">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text ="{DynamicResource strTITLE}" />
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding ArtistsName}" Width="200" >
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text ="{DynamicResource strARTISTS}" />
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding AlbumTitle}" Width="200" >
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text ="{DynamicResource strALBUM}" />
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding DurationStr}" >
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text ="{DynamicResource strDURATION}" />
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTemplateColumn >
+                        <DataGridTemplateColumn.Header>
+                            <TextBlock Text ="{DynamicResource strACT}" />
+                        </DataGridTemplateColumn.Header>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <DockPanel Background="Transparent" HorizontalAlignment="Center" Width="32">

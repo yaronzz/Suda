@@ -1,5 +1,7 @@
 ﻿using AIGS.Helper;
 using Microsoft.Win32;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,20 +14,28 @@ namespace Suda.Else
 {
     public class Settings : Stylet.Screen
     {
+        [JsonProperty("Compare")]
         public CompareArgs Compare { get; set; } = new CompareArgs();
-        public Theme.Type ThemeType { get; set; } = Theme.Type.Light;
+        [JsonProperty("ThemeType")]
+        public Theme.Type ThemeType { get; set; } = Theme.Type.Default;
+        [JsonProperty("LanguageType")]
         public Language.Type LanguageType { get; set; } = Language.Type.Default;
 
+        [JsonProperty("EnableQQMusic")]
         public bool EnableQQMusic { get; set; } = true;
+        [JsonProperty("EnableCloudMusic")]
         public bool EnableCloudMusic { get; set; } = true;
+        [JsonProperty("EnableTidal")]
         public bool EnableTidal { get; set; } = true;
+        [JsonProperty("EnableSpotify")]
         public bool EnableSpotify { get; set; } = true;
+        [JsonProperty("EnableAppleMusic")]
         public bool EnableAppleMusic { get; set; } = true;
 
-        public void Write()
+        public bool Save()
         {
-            string data = JsonHelper.ConverObjectToString<Settings>(this);
-            FileHelper.Write(data, true, Global.PATH_SETTINGS);
+            string data = JsonHelper.ConverObjectToString<Settings>(this,true);
+            return FileHelper.Write(data, true, Global.PATH_SETTINGS);
         }
 
         public static Settings Read()
@@ -36,43 +46,6 @@ namespace Suda.Else
                 return new Settings();
             return ret;
         }
-
-        public static void SetWebBrowserFeatures(int ieVersion)
-        {
-            if (LicenseManager.UsageMode != LicenseUsageMode.Runtime)
-                return;
-            var appName = System.IO.Path.GetFileName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
-            UInt32 ieMode = GeoEmulationModee(ieVersion);
-            var featureControlRegKey = @"HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\Main\FeatureControl\";
-            Registry.SetValue(featureControlRegKey + "FEATURE_BROWSER_EMULATION",
-                appName, ieMode, RegistryValueKind.DWord);
-            Registry.SetValue(featureControlRegKey + "FEATURE_ENABLE_CLIPCHILDREN_OPTIMIZATION",
-                appName, 1, RegistryValueKind.DWord);
-        }
-
-        public static UInt32 GeoEmulationModee(int browserVersion)
-        {
-            UInt32 mode = 11000; // Internet Explorer 11. Webpages containing standards-based !DOCTYPE directives are displayed in IE11 Standards mode. 
-            switch (browserVersion)
-            {
-                case 7:
-                    mode = 7000; // Webpages containing standards-based !DOCTYPE directives are displayed in IE7 Standards mode. 
-                    break;
-                case 8:
-                    mode = 8000; // Webpages containing standards-based !DOCTYPE directives are displayed in IE8 mode. 
-                    break;
-                case 9:
-                    mode = 9000; // Internet Explorer 9. Webpages containing standards-based !DOCTYPE directives are displayed in IE9 mode.                    
-                    break;
-                case 10:
-                    mode = 10000; // Internet Explorer 10.
-                    break;
-                case 11:
-                    mode = 11000; // Internet Explorer 11
-                    break;
-            }
-            return mode;
-        }
-
     }
 }
+

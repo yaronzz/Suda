@@ -36,7 +36,7 @@ namespace Suda.Pages
             foreach (var item in Platforms)
             {
                 if (item.LoginKey != null)
-                    ComboxPlatforms.Add((int)item.Type, Method.GetPlatformDisplayName(item.Type));
+                    ComboxPlatforms.Add((int)item.Type, Platform.GetPlatformDisplayName(item.Type));
             }
             CtlCombox.ItemsSource = ComboxPlatforms;
         }

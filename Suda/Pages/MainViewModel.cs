@@ -34,96 +34,149 @@ namespace Suda.Pages
         public UploadViewModel VMUpload { get; set; } = new UploadViewModel();
         public AboutViewModel VMAbout { get; set; } = new AboutViewModel();
         public SettingsViewModel VMSettings { get; set; } = new SettingsViewModel();
+        public ImportViewModel VMImport { get; set; } = new ImportViewModel();
+
 
         public PlatformViewModel VMQQPlatform { get; set; } = new PlatformViewModel();
         public PlatformViewModel VMCloudPlatform { get; set; } = new PlatformViewModel();
         public PlatformViewModel VMTidalPlatform { get; set; } = new PlatformViewModel();
         public PlatformViewModel VMSpotifyPlatform { get; set; } = new PlatformViewModel();
         public List<object> VMList { get; set; } = new List<object>();
-
         public ViewManager VMManager { get; set; }
 
         public MainViewModel(ViewManager manager)
         {
             VMManager = manager;
-
             VMList.Add(VMLogin);
             VMList.Add(VMUpload);
             VMList.Add(VMAbout);
             VMList.Add(VMSettings);
+            VMList.Add(VMImport);
             VMList.Add(VMQQPlatform);
             VMList.Add(VMCloudPlatform);
             VMList.Add(VMTidalPlatform);
             VMList.Add(VMSpotifyPlatform);
         }
 
-        #region Prepare work
-        protected override async void OnViewLoaded()
+        protected override void OnViewLoaded()
         {
             //read global
+            Global.VMMain = this;
             Global.Cache = Cache.Read();
             Global.Settings = Settings.Read();
-            
-            //settings 
-            Language.Change(Global.Settings.LanguageType);
-            Theme.Change(Global.Settings.ThemeType);
-            Settings.SetWebBrowserFeatures(11);
+
+            //ShowImport
+            ShowPage(VMImport);
 
             //read suda playlist
             SudaPlaylistRead();
 
-            //platforms login
-            await PreparePlatforms();
+            //settings
+            ChangeSettings(Global.Settings);
         }
 
-        async Task PreparePlatforms()
+
+        #region Settings
+
+        public void ChangeSettings(Settings newItem, Settings oldItems = null)
         {
-            string msg;
-            if (Global.Settings.EnableSpotify)
-            {
-                Platform Spotify = new Platform();
-                Spotify.Logo = (Geometry)Application.Current.TryFindResource("SpotifyGeometry");
-                Spotify.Name = "Spotify";
-                Spotify.Type = SudaLib.ePlatform.Spotify;
-                Spotify.VMPlatform = VMSpotifyPlatform;
-                (msg, Spotify.LoginKey) = await SudaLib.Method.RefreshLoginKey(Global.Cache.SpotifyLoginkey);
-                Platforms.Add(Spotify);
-            }
+            if(oldItems == null || oldItems.ThemeType != newItem.ThemeType)
+                Theme.Change(newItem.ThemeType);
+            if (oldItems == null || oldItems.LanguageType != newItem.LanguageType)
+                Language.Change(newItem.LanguageType);
 
-            if (Global.Settings.EnableTidal)
+            if (oldItems == null || oldItems.EnableQQMusic != newItem.EnableQQMusic)
             {
-                Platform Tidal = new Platform();
-                Tidal.Logo = (Geometry)Application.Current.TryFindResource("TidalGeometry");
-                Tidal.Type = SudaLib.ePlatform.Tidal;
-                Tidal.Name = SudaLib.Method.GetPlatformDisplayName(Tidal.Type);
-                Tidal.VMPlatform = VMTidalPlatform;
-                (msg, Tidal.LoginKey) = await SudaLib.Method.RefreshLoginKey(Global.Cache.TidalLoginkey);
-                Platforms.Add(Tidal);
+                if(newItem.EnableQQMusic)
+                    AddPlatform(ePlatform.QQMusic);
+                else
+                    DelPlatform(ePlatform.QQMusic);
             }
-
-            if (Global.Settings.EnableQQMusic)
+            if (oldItems == null || oldItems.EnableCloudMusic != newItem.EnableCloudMusic)
             {
-                Platform QQMusic = new Platform();
-                QQMusic.Logo = (Geometry)Application.Current.TryFindResource("QQGeometry");
-                QQMusic.Type = SudaLib.ePlatform.QQMusic;
-                QQMusic.Name = SudaLib.Method.GetPlatformDisplayName(QQMusic.Type);
-                QQMusic.VMPlatform = VMQQPlatform;
-                (msg, QQMusic.LoginKey) = await SudaLib.Method.RefreshLoginKey(Global.Cache.QQLoginkey);
-                Platforms.Add(QQMusic);
+                if (newItem.EnableCloudMusic)
+                    AddPlatform(ePlatform.CloudMusic);
+                else
+                    DelPlatform(ePlatform.CloudMusic);
             }
-
-            if (Global.Settings.EnableCloudMusic)
+            if (oldItems == null || oldItems.EnableTidal != newItem.EnableTidal)
             {
-                Platform CloudMusic = new Platform();
-                CloudMusic.Logo = (Geometry)Application.Current.TryFindResource("NeteaseGeometry");
-                CloudMusic.Type = SudaLib.ePlatform.CloudMusic;
-                CloudMusic.Name = SudaLib.Method.GetPlatformDisplayName(CloudMusic.Type);
-                CloudMusic.VMPlatform = VMCloudPlatform;
-                (msg, CloudMusic.LoginKey) = await SudaLib.Method.RefreshLoginKey(Global.Cache.CloudLoginkey);
-                Platforms.Add(CloudMusic);
+                if (newItem.EnableTidal)
+                    AddPlatform(ePlatform.Tidal);
+                else
+                    DelPlatform(ePlatform.Tidal);
+            }
+            if (oldItems == null || oldItems.EnableSpotify != newItem.EnableSpotify)
+            {
+                if (newItem.EnableSpotify)
+                    AddPlatform(ePlatform.Spotify);
+                else
+                    DelPlatform(ePlatform.Spotify);
             }
         }
         #endregion
+
+
+        #region Platform
+
+        public async void AddPlatform(ePlatform eType)
+        {
+            //exist
+            if (FindPlatforms(eType) != null)
+                return;
+
+            string msg = null;
+            Platform plat = new Platform()
+            {
+                Type = eType,
+                Name = Platform.GetPlatformDisplayName(eType),
+            };
+
+            if (eType == ePlatform.Spotify)
+            {
+                plat.Logo = (Geometry)Application.Current.TryFindResource("SpotifyGeometry");
+                plat.VMPlatform = VMSpotifyPlatform;
+                (msg, plat.LoginKey) = await SudaLib.Method.RefreshLoginKey(Global.Cache.SpotifyLoginkey);
+            }
+            else if (eType == ePlatform.Tidal)
+            {
+                plat.Logo = (Geometry)Application.Current.TryFindResource("TidalGeometry");
+                plat.VMPlatform = VMTidalPlatform;
+                (msg, plat.LoginKey) = await SudaLib.Method.RefreshLoginKey(Global.Cache.TidalLoginkey);
+            }
+            else if (eType == ePlatform.QQMusic)
+            {
+                plat.Logo = (Geometry)Application.Current.TryFindResource("QQGeometry");
+                plat.VMPlatform = VMQQPlatform;
+                (msg, plat.LoginKey) = await SudaLib.Method.RefreshLoginKey(Global.Cache.QQLoginkey);
+            }
+            else if (eType == ePlatform.CloudMusic)
+            {
+                plat.Logo = (Geometry)Application.Current.TryFindResource("NeteaseGeometry");
+                plat.VMPlatform = VMCloudPlatform;
+                (msg, plat.LoginKey) = await SudaLib.Method.RefreshLoginKey(Global.Cache.CloudLoginkey);
+            }
+            Platforms.Add(plat);
+        }
+
+        public Platform FindPlatforms(ePlatform eType)
+        {
+            foreach (var item in Platforms)
+            {
+                if (item.Type == eType)
+                    return item;
+            }
+            return null;
+        }
+
+        public void DelPlatform(ePlatform eType)
+        {
+            Platform item = FindPlatforms(eType);
+            if (item != null)
+                Platforms.Remove(item);
+        }
+        #endregion
+
 
 
         #region Show page
@@ -149,6 +202,7 @@ namespace Suda.Pages
         }
 
         #endregion
+
 
         #region 
         public PlaylistViewModel AddControlPlaylistView()
@@ -176,19 +230,23 @@ namespace Suda.Pages
 
         #endregion
 
+
+
         #region Menu select
 
         public void MenuSelectChange(object sender, RoutedEventArgs e)
         {
             object data = ((RadioButton)sender).DataContext;
-            //select platform
             if (data.GetType() == typeof(Platform))
+            {
+                //select platform
                 MenuSelectPlatform(data);
-            //select playlist
+            }
             else
             {
+                //select playlist
                 Playlist plist = (Playlist)data;
-                ((PlaylistViewModel)plist.VMModel()).Load(plist, this);
+                ((PlaylistViewModel)plist.VMModel()).Load(plist);
                 ShowPage(plist.VMModel());
             }
             return;
@@ -199,7 +257,7 @@ namespace Suda.Pages
             Platform plat = (Platform)data;
             Action<object> action = (x) =>
             {
-                plat.VMPlatform.Load(plat, this);
+                plat.VMPlatform.Load(plat);
                 ShowPage(plat.VMPlatform);
             };
 
@@ -213,6 +271,8 @@ namespace Suda.Pages
         }
 
         #endregion
+
+
 
         #region Suda playlist del
 
@@ -374,7 +434,7 @@ namespace Suda.Pages
                     Platform to = Platforms.First(x => x.Type == type);
                     if (to != null)
                     {
-                        VMUpload.Load(data, this, to);
+                        VMUpload.Load(data, to);
                         ShowPage(VMUpload,false);
                     }
                 }
@@ -416,7 +476,6 @@ namespace Suda.Pages
 
         public void WindowAbout()
         {
-            VMAbout.VMMain = this;
             ShowPage(VMAbout,false);
         }
 
@@ -425,7 +484,10 @@ namespace Suda.Pages
             if (IsPageShow(VMSettings))
                 HidePage(VMSettings);
             else
+            {
+                VMSettings.Load();
                 ShowPage(VMSettings, false);
+            }
         }
 
         public void WindowUpload()
@@ -434,6 +496,11 @@ namespace Suda.Pages
                 HidePage(VMUpload);
             else
                 ShowPage(VMUpload, false);
+        }
+
+        public void WindowImport()
+        {
+            ShowPage(VMImport);
         }
         #endregion
     }
