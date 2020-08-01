@@ -460,9 +460,20 @@ namespace Suda.Pages
             }));
         }
 
-        public void SudaPlaylistUploadAll()
+        public void SudaPlaylistUploadAll(ePlatform ignore = ePlatform.None)
         {
+            //Dialog.Show(new SelectPlatformView(Platforms, ignore, (type) => {
 
+            //    if (type != SudaLib.ePlatform.None)
+            //    {
+            //        Platform to = Platforms.First(x => x.Type == type);
+            //        if (to != null)
+            //        {
+            //            VMUpload.Load(data, to);
+            //            ShowPage(VMUpload, false);
+            //        }
+            //    }
+            //}));
         }
 
         #endregion

@@ -19,6 +19,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition  Height="AUTO"/>
                     <RowDefinition  Height="AUTO"/>
+                    <RowDefinition  Height="AUTO"/>
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Row="0">
@@ -63,6 +64,13 @@
                             <TextBlock Text=" m" FontSize="14" Foreground="Gray" ></TextBlock>
                         </StackPanel>
                         <ProgressBar Margin="0,0,0,10" Value="{Binding ProgressValue}"/>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Grid.Row="2" Margin="10,10,0,0" Visibility="{Binding VisibilityErr}">
+                    <StackPanel >
+                        <TextBlock Foreground="Red" Text="Download failed! Please download and unzip it in the same directory by yourself." HorizontalAlignment="Center"/>
+                        <Button Command="{s:Action OpenRequireUrl}" BorderThickness="0" Foreground="BlueViolet" Content="{x:Static sudaelse:Global.URL_REQUIRE}" HorizontalAlignment="Stretch"></Button>
                     </StackPanel>
                 </Grid>
             </Grid>

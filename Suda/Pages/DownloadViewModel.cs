@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Suda.Pages
 {
@@ -15,14 +16,15 @@ namespace Suda.Pages
     {
         public string Type { get; set; } = "(BETA)";
         public string Version { get; set; } = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
-        public void GotoGithub() => NetHelper.OpenWeb("https://github.com/yaronzz/Suda");
-        public void Feedback() => NetHelper.OpenWeb("https://github.com/yaronzz/Suda/issues");
-        public void Telegram() => NetHelper.OpenWeb("https://t.me/suda_group");
+        public void GotoGithub() => NetHelper.OpenWeb(Global.URL_SUDA_GITHUB);
+        public void Feedback() => NetHelper.OpenWeb(Global.URL_SUDA_ISSUES);
+        public void Telegram() => NetHelper.OpenWeb(Global.URL_SUDA_GROUP);
 
         public int ProgressValue { get; set; }
-        public string TotalSize { get; set; } //M
+        public string TotalSize { get; set; } 
         public string DownloadSize { get; set; } 
         public Action<object> Action { get; set; }
+        public Visibility VisibilityErr { get; set; }
 
         public bool CheckRequire()
         {
@@ -36,15 +38,15 @@ namespace Suda.Pages
             TotalSize = null;
             DownloadSize = null;
             Action = action;
+            VisibilityErr = Visibility.Collapsed;
 
-            if(UnzipRequire())
+            if (UnzipRequire())
             {
                 Action((true, "Unzip require success!"));
                 return false;
             }
 
-            string url = "https://onedrive.gimhoy.com/1drv/aHR0cHM6Ly8xZHJ2Lm1zL3UvcyFBc3h5VUd1Q0w4SGFoWXdkdGxRM25rSVdZeFlpQ2c/ZT1sZG5xRVY=.zip";
-            DownloadFileHepler.StartAsync(url, Global.PATH_REQUIRE, null, UpdateDownloadNotify, CompleteDownloadNotify, ErrDownloadNotify, 3);
+            DownloadFileHepler.StartAsync(Global.PATH_REQUIRE, Global.PATH_REQUIRE, null, UpdateDownloadNotify, CompleteDownloadNotify, ErrDownloadNotify, 3);
             return true;
         }
 
@@ -92,12 +94,22 @@ namespace Suda.Pages
             if(UnzipRequire())
                 Action((true, "Download success!"));
             else
-                Action((false, "Unzip failed!"));
+                ShowErr();
         }
 
         public void ErrDownloadNotify(long lTotalSize, long lAlreadyDownloadSize, string sErrMsg, object data)
         {
-            Action((false,"Download failed!"));
+            ShowErr();
+        }
+
+        public void OpenRequireUrl()
+        {
+            NetHelper.OpenWeb(Global.PATH_REQUIRE);
+        }
+
+        public void ShowErr()
+        {
+            VisibilityErr = Visibility.Visible;
         }
     }
 }

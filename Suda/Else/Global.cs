@@ -25,6 +25,13 @@ namespace Suda.Else
         public static string PATH_SUDA_PLAYLIST = PATH_BASE + "sudaplaylist.json";
         public static string PATH_REQUIRE = Path.GetFullPath("./") + "require.zip";
 
+        //url
+        public static string URL_REQUIRE = "https://github.com/yaronzz/CDN/raw/master/app/suda/require.zip";
+        public static string URL_SUDA_GROUP = "https://t.me/suda_group";
+        public static string URL_SUDA_GITHUB = "https://github.com/yaronzz/Suda";
+        public static string URL_SUDA_ISSUES = "https://github.com/yaronzz/Suda/issues";
+        public static string URL_PAYPAL = "https://www.paypal.com/paypalme/yaronzz";
+
         //Token
         public static string TOKEN_PLATFORM = "PlatformToken";
         public static string TOKEN_MAIN = "MainToken";
