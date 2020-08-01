@@ -23,7 +23,7 @@ namespace Suda.Else
         {
             try
             {
-                Result result = await HttpHelper.GetOrPostAsync("https://cdn.jsdelivr.net/gh/yaronzz/CDN/app/todayplaylist.json");
+                Result result = await HttpHelper.GetOrPostAsync("https://cdn.jsdelivr.net/gh/yaronzz/CDN/app/suda/todayplaylist.json");
                 if(result.sData.IsNotBlank())
                 {
                     ObservableCollection<CoverCard> pList = JsonHelper.ConverStringToObject<ObservableCollection<CoverCard>>(result.sData);
@@ -38,21 +38,21 @@ namespace Suda.Else
         {
             CoverCard card1 = new CoverCard()
             {
-                ImgUrl = "https://i.scdn.co/image/ab67706f000000039921a400ba34f282317e2c3a",
+                ImgUrl = "https://cdn.jsdelivr.net/gh/yaronzz/CDN/app/suda/1.jpg",
                 Title = "Today's Top Hits",
                 Platform = "Spotify",
                 Url = "https://open.spotify.com/playlist/37i9dQZF1DXcBWIGoYBM5M",
             };
             CoverCard card2 = new CoverCard()
             {
-                ImgUrl = "https://thisis-images.scdn.co/37i9dQZF1DZ06evO3NSzPI-large.jpg",
+                ImgUrl = "https://cdn.jsdelivr.net/gh/yaronzz/CDN/app/suda/2.jpg",
                 Title = "This Is back number",
                 Platform = "Spotify",
                 Url = "https://open.spotify.com/playlist/37i9dQZF1DZ06evO3NSzPI",
             };
             CoverCard card3 = new CoverCard()
             {
-                ImgUrl = "https://thisis-images.scdn.co/37i9dQZF1DZ06evO1Dy2vS-large.jpg",
+                ImgUrl = "https://cdn.jsdelivr.net/gh/yaronzz/CDN/app/suda/3.jpg",
                 Title = "This Is 陳奕迅",
                 Platform = "Spotify",
                 Url = "https://open.spotify.com/playlist/37i9dQZF1DZ06evO1Dy2vS",

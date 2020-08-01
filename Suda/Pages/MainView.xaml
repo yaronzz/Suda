@@ -80,6 +80,8 @@
         <local:SettingsView Padding="10,0,10,10" Grid.Row="1" Grid.Column="1" s:View.Model="{Binding VMSettings}" />
         <!--About-->
         <local:AboutView Padding="0" Grid.RowSpan="3" Grid.ColumnSpan="3" s:View.Model="{Binding VMAbout}" />
+        <!--Download-->
+        <local:DownloadView Padding="0" Grid.RowSpan="3" Grid.ColumnSpan="3" s:View.Model="{Binding VMDownload}" />
         <!--Upload-->
         <hc:TransitioningContentControl  Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalContentAlignment="Right">
             <local:UploadView s:View.Model="{Binding VMUpload}" HorizontalAlignment="Right" />

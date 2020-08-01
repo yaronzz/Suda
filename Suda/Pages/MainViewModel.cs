@@ -33,6 +33,7 @@ namespace Suda.Pages
         public LoginViewModel VMLogin { get; set; } = new LoginViewModel();
         public UploadViewModel VMUpload { get; set; } = new UploadViewModel();
         public AboutViewModel VMAbout { get; set; } = new AboutViewModel();
+        public DownloadViewModel VMDownload { get; set; } = new DownloadViewModel();
         public SettingsViewModel VMSettings { get; set; } = new SettingsViewModel();
         public ImportViewModel VMImport { get; set; } = new ImportViewModel();
 
@@ -50,6 +51,7 @@ namespace Suda.Pages
             VMList.Add(VMLogin);
             VMList.Add(VMUpload);
             VMList.Add(VMAbout);
+            VMList.Add(VMDownload);
             VMList.Add(VMSettings);
             VMList.Add(VMImport);
             VMList.Add(VMQQPlatform);
@@ -58,7 +60,7 @@ namespace Suda.Pages
             VMList.Add(VMSpotifyPlatform);
         }
 
-        protected override void OnViewLoaded()
+        protected override async void OnViewLoaded()
         {
             //read global
             Global.VMMain = this;
@@ -71,14 +73,31 @@ namespace Suda.Pages
             //read suda playlist
             SudaPlaylistRead();
 
+            //check require
+            if (VMDownload.CheckRequire() == false)
+            {
+                bool bNeed = VMDownload.DownloadRequire((x) =>
+                {
+                    (bool flag, string msg) = ((bool, string))x;
+                    if (flag)
+                        Growl.Success(msg, Global.TOKEN_MAIN);
+                    else
+                        Growl.Error(msg, Global.TOKEN_MAIN);
+                    HidePage(VMDownload);
+                });
+
+                if(bNeed)
+                    ShowPage(VMDownload);
+            }
+
             //settings
-            ChangeSettings(Global.Settings);
+            await ChangeSettings(Global.Settings);
         }
 
 
         #region Settings
 
-        public void ChangeSettings(Settings newItem, Settings oldItems = null)
+        public async Task ChangeSettings(Settings newItem, Settings oldItems = null)
         {
             if(oldItems == null || oldItems.ThemeType != newItem.ThemeType)
                 Theme.Change(newItem.ThemeType);
@@ -88,28 +107,28 @@ namespace Suda.Pages
             if (oldItems == null || oldItems.EnableQQMusic != newItem.EnableQQMusic)
             {
                 if(newItem.EnableQQMusic)
-                    AddPlatform(ePlatform.QQMusic);
+                    await AddPlatform(ePlatform.QQMusic);
                 else
                     DelPlatform(ePlatform.QQMusic);
             }
             if (oldItems == null || oldItems.EnableCloudMusic != newItem.EnableCloudMusic)
             {
                 if (newItem.EnableCloudMusic)
-                    AddPlatform(ePlatform.CloudMusic);
+                    await AddPlatform(ePlatform.CloudMusic);
                 else
                     DelPlatform(ePlatform.CloudMusic);
             }
             if (oldItems == null || oldItems.EnableTidal != newItem.EnableTidal)
             {
                 if (newItem.EnableTidal)
-                    AddPlatform(ePlatform.Tidal);
+                    await AddPlatform(ePlatform.Tidal);
                 else
                     DelPlatform(ePlatform.Tidal);
             }
             if (oldItems == null || oldItems.EnableSpotify != newItem.EnableSpotify)
             {
                 if (newItem.EnableSpotify)
-                    AddPlatform(ePlatform.Spotify);
+                    await AddPlatform(ePlatform.Spotify);
                 else
                     DelPlatform(ePlatform.Spotify);
             }
@@ -119,7 +138,7 @@ namespace Suda.Pages
 
         #region Platform
 
-        public async void AddPlatform(ePlatform eType)
+        public async Task AddPlatform(ePlatform eType)
         {
             //exist
             if (FindPlatforms(eType) != null)
@@ -425,9 +444,9 @@ namespace Suda.Pages
 
         #region Suda playlist upload
 
-        public void SudaPlaylistUpload(Playlist data)
+        public void SudaPlaylistUpload(Playlist data, ePlatform ignore = ePlatform.None)
         {
-            Dialog.Show(new SelectPlatformView(Platforms, (type)=> {
+            Dialog.Show(new SelectPlatformView(Platforms, ignore, (type)=> {
 
                 if (type != SudaLib.ePlatform.None)
                 {

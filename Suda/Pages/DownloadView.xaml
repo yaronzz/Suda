@@ -1,0 +1,71 @@
+﻿<UserControl x:Class="Suda.Pages.DownloadView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Suda.Pages"
+             xmlns:s="https://github.com/canton7/Stylet"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:aigsc="clr-namespace:AIGS.Control;assembly=AIGS"
+             xmlns:aigs="clr-namespace:AIGS.Common;assembly=AIGS"
+             xmlns:sudaelse="clr-namespace:Suda.Else"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance local:DownloadViewModel}">
+    <Grid Visibility="{Binding ViewVisibility}">
+        <Grid Background="Black" Opacity="0.3"></Grid>
+        <Border Style="{StaticResource BorderRegion}" Effect="{DynamicResource EffectShadow3}" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Grid Margin="10,0,10,10">
+                <Grid.RowDefinitions>
+                    <RowDefinition  Height="AUTO"/>
+                    <RowDefinition  Height="AUTO"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Image Source="/Properties/img/favicon.ico" Height="180" Width="180"></Image>
+                    <DockPanel Grid.Column="1" Margin="15,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="SUDA" DockPanel.Dock="Top" FontSize="40" VerticalAlignment="Top" FontWeight="ExtraBlack" Margin="0,15,0,15" />
+                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                            <TextBlock Text="MADE WITH ♥ BY " Foreground="Gray" FontSize="15" VerticalAlignment="Center" Height="25" Margin="0" FontFamily="Global Monospace" />
+                            <TextBlock Text="YARONZZ" Foreground="BlueViolet" FontSize="15" VerticalAlignment="Center" Height="25" Margin="0" FontFamily="Global Monospace" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                            <TextBlock Text="{DynamicResource strVERSION}" Foreground="Gray" FontSize="14" FontFamily="Global Monospace" VerticalAlignment="Center" TextWrapping="Wrap" Margin="0,0,5,0" />
+                            <TextBlock Text="{Binding Version}" Foreground="BlueViolet" FontSize="14" FontFamily="Global Monospace" VerticalAlignment="Center" TextWrapping="Wrap" />
+                            <TextBlock Text="{Binding Type}" Foreground="BlueViolet" FontSize="14" FontFamily="Global Monospace" VerticalAlignment="Center" TextWrapping="Wrap" />
+                        </StackPanel>
+                        <DockPanel DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Margin="0,20,0,20">
+                            <Button Content="Github" Command="{s:Action GotoGithub}" hc:IconElement.Geometry="{StaticResource GithubGeometry}" DockPanel.Dock="Left" Margin="0,0,10,0" Padding="15,6" HorizontalAlignment="Left" ></Button>
+                            <Button Content="{DynamicResource strFeedback}" Command="{s:Action Feedback}" hc:IconElement.Geometry="{StaticResource IssuesGeometry}" DockPanel.Dock="Left" Margin="0,0,10,0" Padding="15,6" HorizontalAlignment="Left" ></Button>
+                            <Button Content="{DynamicResource strGroup}" Command="{s:Action Telegram}" hc:IconElement.Geometry="{StaticResource TelegramGeometry}" DockPanel.Dock="Left" Margin="0,0,10,0" Padding="15,6" HorizontalAlignment="Left" ></Button>
+                        </DockPanel>
+                    </DockPanel>
+                </Grid>
+
+                <Grid Grid.Row="1" Margin="10,10,0,0" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <hc:Divider Margin="0,1"></hc:Divider>
+                    <StackPanel Grid.Row="1">
+                        <StackPanel Orientation="Horizontal" Margin="0,10,0,10">
+                            <TextBlock Text="Download Require" FontSize="14" Foreground="Gray" ></TextBlock>
+                            <TextBlock Text=" : " FontSize="14" Foreground="Gray" ></TextBlock>
+                            <TextBlock Text="{Binding TotalSize}" FontSize="14" Foreground="Gray" ></TextBlock>
+                            <TextBlock Text=" \ " FontSize="14" Foreground="Gray" ></TextBlock>
+                            <TextBlock Text="{Binding DownloadSize}" FontSize="14" Foreground="Gray" ></TextBlock>
+                            <TextBlock Text=" m" FontSize="14" Foreground="Gray" ></TextBlock>
+                        </StackPanel>
+                        <ProgressBar Margin="0,0,0,10" Value="{Binding ProgressValue}"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

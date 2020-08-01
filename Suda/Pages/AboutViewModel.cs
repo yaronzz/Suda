@@ -11,11 +11,7 @@ namespace Suda.Pages
 {
     public class AboutViewModel : Suda.Else.ModelBase
     {
-#if DEBUG
-        public string Type { get; set; } = "(DEBUG)";
-#else
         public string Type { get; set; } = "(BETA)";
-#endif
         public string Version { get; set; } = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
         public void GotoGithub() => NetHelper.OpenWeb("https://github.com/yaronzz/Suda");

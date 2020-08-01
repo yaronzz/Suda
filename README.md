@@ -56,7 +56,7 @@ Download from [GitHub Releases](https://github.com/yaronzz/Suda/releases) and in
 
 ## User Interface
 
-<img src="https://cdn.jsdelivr.net/gh/yaronzz/Suda/Screenshot/1.jpg" alt="image" style="zoom: 50%;" />
+<img src="https://cdn.jsdelivr.net/gh/yaronzz/Suda/Screenshot/2.jpg" alt="image" style="zoom: 50%;" />
 
 ## Support
 

@@ -28,14 +28,14 @@ namespace Suda.Pages
         public Dictionary<int, string> ComboxPlatforms { get; set; } = new Dictionary<int, string>();
         Action<SudaLib.ePlatform> Action { get; set; }
 
-        public SelectPlatformView(ObservableCollection<Platform> Platforms, Action<SudaLib.ePlatform> action)
+        public SelectPlatformView(ObservableCollection<Platform> Platforms, ePlatform ignore, Action<SudaLib.ePlatform> action)
         {
             InitializeComponent();
 
             Action = action;
             foreach (var item in Platforms)
             {
-                if (item.LoginKey != null)
+                if (item.LoginKey != null && ignore != item.Type)
                     ComboxPlatforms.Add((int)item.Type, Platform.GetPlatformDisplayName(item.Type));
             }
             CtlCombox.ItemsSource = ComboxPlatforms;

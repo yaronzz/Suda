@@ -109,6 +109,10 @@ namespace Suda.Pages
             }
         }
 
+        public void ImportTo(string PlaylistTitle = null)
+        {
+            Global.VMMain.SudaPlaylistUpload(Platform.Playlists[PlSelectIndex], Platform.Type);
+        }
 
         public void ToLocal(string PlaylistTitle = null)
         {

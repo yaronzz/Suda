@@ -4,6 +4,7 @@ using Suda.Pages;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,7 @@ namespace Suda.Else
         public static string PATH_CACHE = PATH_BASE + "cache.json";
         public static string PATH_SETTINGS = PATH_BASE + "settings.json";
         public static string PATH_SUDA_PLAYLIST = PATH_BASE + "sudaplaylist.json";
+        public static string PATH_REQUIRE = Path.GetFullPath("./") + "require.zip";
 
         //Token
         public static string TOKEN_PLATFORM = "PlatformToken";

@@ -56,7 +56,7 @@
 
 ## 🦄 用户界面
 
-<img src="https://cdn.jsdelivr.net/gh/yaronzz/Suda/Screenshot/1.jpg" alt="image" style="zoom: 50%;" />
+<img src="https://cdn.jsdelivr.net/gh/yaronzz/Suda/Screenshot/2.jpg" alt="image" style="zoom: 50%;" />
 
 ## 🤝 支持
 

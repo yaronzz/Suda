@@ -28,11 +28,11 @@ namespace Suda.Pages
             Load();
         }
 
-        public void Confim()
+        public async void Confim()
         {
             if (Settings.Save())
             {
-                Global.VMMain.ChangeSettings(Settings, Global.Settings);
+                await Global.VMMain.ChangeSettings(Settings, Global.Settings);
                 Global.Settings = Settings.Read();
                 Growl.Success(Language.Get("strmsgSaveSuccess"), Global.TOKEN_MAIN);
             }
@@ -45,4 +45,6 @@ namespace Suda.Pages
             System.Diagnostics.Process.Start(Global.PATH_BASE);
         }
     }
+
+    
 }

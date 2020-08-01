@@ -10,6 +10,7 @@ using SpotifyAPI.Web;
 using SpotifyAPI.Web.Auth;
 using static SudaLib.Common;
 using static SpotifyAPI.Web.Scopes;
+using AIGS.Helper;
 
 namespace SudaLib
 {
@@ -33,8 +34,7 @@ namespace SudaLib
 
         #region Login
 
-        private static string CLIENT_ID = "ddcfe87f7ded4cec843769b882905d89";
-        private static string CLIENT_SECRET = "9896b8f8de5e4a26a599def1986749d4";
+        private static string CLIENT = "ddcfe87f7ded4cec843769b882905d89";
         private static string BASE_URL = "http://localhost:5000/callback";
         private static EmbedIOAuthServer SERVER = new EmbedIOAuthServer(new Uri(BASE_URL), 5000);
         private static Action<object> ACTION = null;
@@ -42,9 +42,7 @@ namespace SudaLib
         private static async Task OnAuthorizationCodeReceived(object sender, AuthorizationCodeResponse response)
         {
             await SERVER.Stop();
-            AuthorizationCodeTokenResponse token = await new OAuthClient().RequestToken(
-              new AuthorizationCodeTokenRequest(CLIENT_ID, CLIENT_SECRET, response.Code, SERVER.BaseUri)
-            );
+            AuthorizationCodeTokenResponse token = await new OAuthClient().RequestToken( new AuthorizationCodeTokenRequest(CLIENT, EncryptHelper.Decode("S9TRJK2xov+CK84ztwfeabCVzq9jlzSzwkMlx2Uim1hHFwDKxK4+1A==", CLIENT), response.Code, SERVER.BaseUri) );
             ACTION((token.AccessToken, token.RefreshToken));
         }
 
@@ -57,7 +55,7 @@ namespace SudaLib
 
         public static string GetLoginUrl()
         {
-            var request = new LoginRequest(new Uri(BASE_URL), CLIENT_ID, LoginRequest.ResponseType.Code)
+            var request = new LoginRequest(new Uri(BASE_URL), CLIENT, LoginRequest.ResponseType.Code)
             {
                 Scope = new List<string> { 
                     UserReadEmail, 
@@ -78,7 +76,7 @@ namespace SudaLib
         {
             try
             {
-                AuthorizationCodeRefreshResponse newResponse = await new OAuthClient().RequestToken(new AuthorizationCodeRefreshRequest(CLIENT_ID, CLIENT_SECRET, rtoken));
+                AuthorizationCodeRefreshResponse newResponse = await new OAuthClient().RequestToken(new AuthorizationCodeRefreshRequest(CLIENT, EncryptHelper.Decode("S9TRJK2xov+CK84ztwfeabCVzq9jlzSzwkMlx2Uim1hHFwDKxK4+1A==", CLIENT), rtoken));
                 string newAccessToken = newResponse.AccessToken;
                 return (null, newAccessToken);
             }
@@ -91,7 +89,6 @@ namespace SudaLib
 
         public static async Task<(string,LoginKey)> GetLoginKey(string sAccessToken, string sRefreshToken, bool tryRefresh = true)
         {
-
             try
             {
                 if (sAccessToken.IsBlank())

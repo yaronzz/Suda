@@ -97,6 +97,7 @@
                     <TextBlock Text="{Binding Playlist.Desc}" DockPanel.Dock="Top" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="13" VerticalAlignment="Top" TextWrapping="Wrap" HorizontalAlignment="Left" Height="49"/>
 
                     <DockPanel DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Margin="0,0,0,20">
+                        <Button Content="{DynamicResource strImport}" Style="{DynamicResource ButtonPrimary}" Command="{s:Action ImportTo}" CommandParameter="{Binding Playlist.Title}" hc:IconElement.Geometry="{StaticResource SImportGeometry}" DockPanel.Dock="Left" Margin="0,0,10,0" Padding="15,6" HorizontalAlignment="Left" ></Button>
                         <Button Content="{DynamicResource strToLocal}" Command="{s:Action ToLocal}" CommandParameter="{Binding Playlist.Title}" hc:IconElement.Geometry="{StaticResource SDownloadGeometry}" DockPanel.Dock="Left" Margin="0,0,10,0" Padding="15,6" HorizontalAlignment="Left" ></Button>
                         <Button Content="{DynamicResource strDelete}" Command="{s:Action AskDeletePlaylist}" hc:IconElement.Geometry="{StaticResource DeleteFillCircleGeometry}" Style="{StaticResource ButtonDanger}" DockPanel.Dock="Left" Margin="0,0,10,0" Padding="15,6" HorizontalAlignment="Left" ></Button>
                     </DockPanel>
