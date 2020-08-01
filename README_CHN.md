@@ -31,6 +31,8 @@
 
 从 [GitHub Releases](https://github.com/yaronzz/Suda/releases) 下载并安装。
 
+完成后打开`suda.exe`，它会自动下载[require.zip](https://github.com/yaronzz/CDN/raw/master/app/suda/require.zip)动态库包。如果下载失败（raw.githubusercontent.com 有时会被墙），那就自己下载并解压到`suda.exe`目录下即可。
+
 ## 📡 Telegram
 
 - [Group](https://t.me/suda_group) : 沟通反馈群

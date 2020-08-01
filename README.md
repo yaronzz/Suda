@@ -31,6 +31,8 @@
 
 Download from [GitHub Releases](https://github.com/yaronzz/Suda/releases) and install it.
 
+Open the `suda.exe` it will automatically download the [require.zip](https://github.com/yaronzz/CDN/raw/master/app/suda/require.zip). If failed, please download it and unzip it in the same directory by yourself. 
+
 ## 📡 Telegram
 
 - [Group](https://t.me/suda_group) : Feed back
