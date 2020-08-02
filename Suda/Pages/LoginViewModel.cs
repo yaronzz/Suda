@@ -145,8 +145,9 @@ namespace Suda.Pages
             {
                 await Spotify.WorkBeforeLogin((x) => { TryLogin(x); });
                 Browser.Address = Spotify.GetLoginUrl();
-               
             }
+
+            return;
         }
 
         public void TryLogin(object data)

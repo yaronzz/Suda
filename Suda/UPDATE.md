@@ -1,6 +1,7 @@
 ﻿## v1.0.0.2
 - Use a new url for require.zip
-
+- Spotify: skip some tracks which are episode
+ 
 ## v1.0.0.1
 - Merge all platform playlists, edit offline and upload
 - Search add import playlists

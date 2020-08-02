@@ -185,6 +185,10 @@ namespace SudaLib
                     Paging<SavedTrack> plist = await oKey.API().Library.GetTracks(request);
                     for (int i = 0; plist != null && plist.Items != null && i < plist.Items.Count(); i++)
                     {
+                        //if track is a FullEpisode???
+                        if (plist.Items[i].Track.GetType() == typeof(FullEpisode))
+                            continue;
+
                         Track item = ConvertTrack((FullTrack)plist.Items[i].Track);
                         Tracks.Add(item);
                     }
@@ -275,6 +279,10 @@ namespace SudaLib
                     Paging<PlaylistTrack<IPlayableItem>> plist = await oKey.API().Playlists.GetItems(sID, new PlaylistGetItemsRequest(PlaylistGetItemsRequest.AdditionalTypes.Track) { Offset = offset, Limit = limit });
                     for (int i = 0; i < plist.Items.Count(); i++)
                     {
+                        //if track is a FullEpisode???
+                        if (plist.Items[i].Track.GetType() == typeof(FullEpisode))
+                            continue;
+
                         Track item = ConvertTrack((FullTrack)plist.Items[i].Track);
                         ret.Tracks.Add(item);
                     }
