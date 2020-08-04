@@ -35,6 +35,8 @@
 
 ## 📡 Telegram
 
+- [QQ群](https://jq.qq.com/?_wv=1027&k=O0nlNefy) : 沟通反馈群
+
 - [Group](https://t.me/suda_group) : 沟通反馈群
   
 - [Channel](https://t.me/suda_channel) : 新版本通知公众号
