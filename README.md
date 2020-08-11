@@ -27,7 +27,7 @@
 </div>
 
 
-## 🖥 Installation
+## 📺 Installation
 
 Download from [GitHub Releases](https://github.com/yaronzz/Suda/releases) and install it.
 
@@ -48,7 +48,7 @@ Open the `suda.exe` it will automatically download the [require.zip](https://git
 - Provides options for matching songs
   
     - ☑️ You can choose whether to match the album title
-  
+    
     - ☑️ You can choose whether to match the Live version
   
 - Multilanguage support
@@ -56,7 +56,7 @@ Open the `suda.exe` it will automatically download the [require.zip](https://git
 - Multiple theme selection
 
 
-## User Interface
+## 💽 User Interface
 
 <img src="https://cdn.jsdelivr.net/gh/yaronzz/Suda/Screenshot/2.jpg" alt="image" style="zoom: 50%;" />
 

@@ -1,7 +1,11 @@
 ﻿## v1.0.0.2
-- Use a new url for require.zip
-- Spotify: skip some tracks which are episode
- 
+- ☑️ Spotify: skip some tracks which are episode
+- ☑️ Compression software size
+- Support Apple Music
+- Support 虾米音乐
+- Support 酷狗
+- Support 咪咕
+
 ## v1.0.0.1
 - Merge all platform playlists, edit offline and upload
 - Search add import playlists

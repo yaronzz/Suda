@@ -155,7 +155,7 @@ namespace Suda.Pages
             {
                 plat.Logo = (Geometry)Application.Current.TryFindResource("SpotifyGeometry");
                 plat.VMPlatform = VMSpotifyPlatform;
-                //(msg, plat.LoginKey) = await SudaLib.Method.RefreshLoginKey(Global.Cache.SpotifyLoginkey);
+                (msg, plat.LoginKey) = await SudaLib.Method.RefreshLoginKey(Global.Cache.SpotifyLoginkey);
             }
             else if (eType == ePlatform.Tidal)
             {

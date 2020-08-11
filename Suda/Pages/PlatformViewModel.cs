@@ -35,7 +35,6 @@ namespace Suda.Pages
             PlSelectIndex = 0;
             Playlist = null;
             LoadingVisibility = Visibility.Hidden;
-            AlreadyLoad = true;
 
             if (Platform != null)
             {
@@ -55,6 +54,8 @@ namespace Suda.Pages
                     PlSelectIndex = 0;
                     Playlist = Platform.Playlists[0];
                 }
+
+                AlreadyLoad = true;
             }
         }
 
@@ -149,9 +150,13 @@ namespace Suda.Pages
         {
             Dialog.Show(new MessageView(MessageBoxImage.Information, Language.Get("strmsgLogout"), true, (x) =>
             {
-                Platform.LoginKey = null;
-                Platform.UserInfo = null;
-                Platform.Playlists = null;
+                if (Platform != null)
+                {
+                    Platform.LoginKey = null;
+                    Platform.UserInfo = null;
+                    Platform.Playlists = null;
+                }
+                AlreadyLoad = false;
 
                 Platform data = Platform;
                 Load(null);

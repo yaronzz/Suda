@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using AIGS.Common;
-using CefSharp;
-using CefSharp.Wpf;
+using AIGS.Helper;
+//using CefSharp;
+//using CefSharp.Wpf;
 using Stylet;
 using Suda.Else;
 using SudaLib;
@@ -20,14 +21,17 @@ namespace Suda.Pages
         public Platform Plat { get; set; }
         public Visibility InputVisibility { get; set; } = Visibility.Hidden;
         public Visibility WebVisibility { get; set; } = Visibility.Hidden;
+        public Visibility PCWebVisibility { get; set; } = Visibility.Hidden;
 
         public string Username { get; set; }
         public string Password { get; set; }
         public string Errlabel { get; set; }
         public bool   BtnLoginEnable { get; set; } = true;
 
+        public string WebUrl { get; set; }
+
         public Action<object> Action { get; set; }
-        CollapsableChromiumWebBrowser Browser { get; set; }
+        WebBrowser Browser { get; set; }
 
         public void Load(Platform data, Action<object> action = null)
         {
@@ -40,10 +44,7 @@ namespace Suda.Pages
                 case ePlatform.Spotify:
                     //creat Browser
                     if (Browser == null)
-                    {
-                        Browser = new CollapsableChromiumWebBrowser();
-                        ((LoginView)this.View).ctrlBrowerGrid.Children.Add(Browser);
-                    }
+                        Browser = ((LoginView)this.View).Browser;
                     LoadWebBrowser(Plat.Type);
                     break;
                 case ePlatform.CloudMusic:
@@ -56,14 +57,16 @@ namespace Suda.Pages
 
         public void ShowPage(ePlatform type)
         {
+            PCWebVisibility = Visibility.Hidden;
             WebVisibility = Visibility.Hidden;
             InputVisibility = Visibility.Hidden;
 
-            if (type == ePlatform.CloudMusic ||
-                type == ePlatform.Tidal)
+            if (type == ePlatform.CloudMusic || type == ePlatform.Tidal)
                 InputVisibility = Visibility.Visible;
-            else
+            else if (type == ePlatform.QQMusic)
                 WebVisibility = Visibility.Visible;
+            else
+                PCWebVisibility = Visibility.Visible;
         }
 
         /// <summary>
@@ -75,13 +78,6 @@ namespace Suda.Pages
                 Action(null);
 
             Global.Cache.Save(Plat.LoginKey);
-
-            //remove Browser (consume big memory)
-            if (Browser != null)
-            {
-                ((LoginView)this.View).ctrlBrowerGrid.Children.Remove(Browser);
-                Browser = null;
-            }
         }
 
         #region Login by input username and password
@@ -138,16 +134,29 @@ namespace Suda.Pages
             //load
             if (type == ePlatform.QQMusic)
             {
-                Browser.FrameLoadEnd += Browser_FrameLoadEnd;
-                Browser.Address = QQMusic.GetLoginUrl();
+                WebUrl = QQMusic.GetLoginUrl();
+                Browser.DocumentCompleted += Browser_DocumentCompleted;
+                Browser.Navigate(WebUrl);
             }
             else if (type == ePlatform.Spotify)
             {
+                WebUrl = Spotify.GetLoginUrl();
                 await Spotify.WorkBeforeLogin((x) => { TryLogin(x); });
-                Browser.Address = Spotify.GetLoginUrl();
             }
 
             return;
+        }
+
+        public void OpenWeb()
+        {
+            NetHelper.OpenWeb(WebUrl);
+        }
+
+        private void Browser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+            string html = Browser.DocumentText;
+            string cookie = Browser.Document.Cookie;
+            TryLogin((html, cookie));
         }
 
         public void TryLogin(object data)
@@ -161,56 +170,8 @@ namespace Suda.Pages
             }
         }
 
-        private async void Browser_FrameLoadEnd(object sender, FrameLoadEndEventArgs e)
-        {
-            CookieVisitor.Html = await Browser.GetSourceAsync();
-            CookieVisitor visitor = new CookieVisitor();
-            visitor.Action += TryLogin;
-            Cef.GetGlobalCookieManager().VisitAllCookies(visitor);
-            return;
-        }
-
-        public class CookieVisitor : ICookieVisitor
-        {
-            public static string Cookies = null;
-            public static string Html = null;
-            public event Action<object> Action;
-            public bool Visit(CefSharp.Cookie cookie, int count, int total, ref bool deleteCookie)
-            {
-                if(count == 0)
-                    Cookies = null;
-                
-                Cookies += cookie.Name + "=" + cookie.Value + ";";
-                deleteCookie = false;
-                return true;
-            }
-
-            public void Dispose() 
-            {
-                if (Action != null)
-                    Action((Html, Cookies));
-                return;
-            }
-        }
-
         #endregion
     }
 
-    internal sealed class CollapsableChromiumWebBrowser : ChromiumWebBrowser
-    {
-        public CollapsableChromiumWebBrowser()
-        {
-            this.Loaded += this.BrowserLoaded;
-        }
 
-        private void BrowserLoaded(object sender, System.Windows.RoutedEventArgs e)
-        {
-            // Avoid loading CEF in designer
-            if (DesignerProperties.GetIsInDesignMode(this))
-                return;
-            // Avoid NRE in AbstractRenderHandler.OnPaint
-            ApplyTemplate();
-            CreateOffscreenBrowser(new Size(400, 400));
-        }
-    }
 }

@@ -8,7 +8,6 @@
              xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:aigsc="clr-namespace:AIGS.Control;assembly=AIGS"
              xmlns:aigs="clr-namespace:AIGS.Common;assembly=AIGS"
-             xmlns:wpf="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
              xmlns:Forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
              xmlns:wfi ="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
              xmlns:WindowsFormsIntegration="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
@@ -55,6 +54,13 @@
         </Grid>
         
         <!--Login by web-->
-        <Grid x:Name="ctrlBrowerGrid" Visibility="{Binding WebVisibility}" Grid.Row="1"/>
+        <wfi:WindowsFormsHost x:Name="ctrlBrowerGrid" Visibility="{Binding WebVisibility}" Grid.Row="1">
+            <Forms:WebBrowser x:Name="Browser"></Forms:WebBrowser>
+        </wfi:WindowsFormsHost>
+
+
+        <Grid Background="{DynamicResource RegionBrush}"  Visibility="{Binding PCWebVisibility}" Grid.Row="1">
+            <Button Content="Login by web" Style="{DynamicResource ButtonPrimary}" Command="{s:Action OpenWeb}"></Button>
+        </Grid>
     </Grid>
 </UserControl>

@@ -186,7 +186,7 @@ namespace SudaLib
                     for (int i = 0; plist != null && plist.Items != null && i < plist.Items.Count(); i++)
                     {
                         //if track is a FullEpisode???
-                        if (plist.Items[i].Track.GetType() == typeof(FullEpisode))
+                        if (plist.Items[i].Track.GetType() != typeof(FullTrack))
                             continue;
 
                         Track item = ConvertTrack((FullTrack)plist.Items[i].Track);
