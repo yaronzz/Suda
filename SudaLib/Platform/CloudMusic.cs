@@ -99,10 +99,19 @@ namespace SudaLib
             string url = "http://music.163.com/weapi/login";
             Dictionary<string, string> data = new Dictionary<string, string>()
             {
-                { "username" , sUserName},
                 { "password" , Encrypt_Music163.MD5(sPassword)},
                 { "rememberLogin" , "true"}
             };
+
+            //phone or eamil
+            if (StringHelper.IsNumeric(sUserName))
+            {
+                data.Add("phone", sUserName);
+                url = "http://music.163.com/weapi/login/cellphone";
+            }
+            else
+                data.Add("username", sUserName);
+
             CookieContainer cookie = new CookieContainer();
             (string errmsg, string sjson) = await HttpRequest(url, data, cookie);
             if (errmsg.IsNotBlank() || sjson.IsBlank() || JsonHelper.GetValue(sjson, "code") != "200")
